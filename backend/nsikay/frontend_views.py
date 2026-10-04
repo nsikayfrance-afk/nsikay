@@ -6,7 +6,7 @@ from django.http import FileResponse, Http404
 FRONTEND_DIST = settings.BASE_DIR / "frontend_dist"
 
 
-def frontend_index(request):
+def frontend_index(request, path=None):
     index_file = FRONTEND_DIST / "index.html"
 
     if not index_file.exists():
