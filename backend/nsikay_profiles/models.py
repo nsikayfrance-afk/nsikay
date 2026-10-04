@@ -59,6 +59,24 @@ class NsikayProfile(models.Model):
         blank=True,
     )
 
+    personal_photo = models.ImageField(
+        upload_to="nsikay/identity/personal/",
+        blank=True,
+        null=True,
+    )
+
+    identity_document_photo = models.ImageField(
+        upload_to="nsikay/identity/document/",
+        blank=True,
+        null=True,
+    )
+
+    identity_with_document_photo = models.ImageField(
+        upload_to="nsikay/identity/verification/",
+        blank=True,
+        null=True,
+    )
+
     country = models.CharField(
         max_length=100,
         blank=True,
@@ -103,7 +121,10 @@ class NsikayProfile(models.Model):
         default=False,
     )
 
-    specialized_data = models.JSONField(default=dict, blank=True)
+    specialized_data = models.JSONField(
+        default=dict,
+        blank=True,
+    )
 
     certification_status = models.CharField(
         max_length=30,
@@ -128,13 +149,21 @@ class NsikayProfile(models.Model):
                 name="uniq_primary_profile_per_user",
             ),
         ]
+
         indexes = [
-            models.Index(fields=["user", "profile_type"]),
-            models.Index(fields=["profile_type", "status"]),
-            models.Index(fields=["country", "profile_type"]),
+            models.Index(
+                fields=["user", "profile_type"]
+            ),
+            models.Index(
+                fields=["profile_type", "status"]
+            ),
+            models.Index(
+                fields=["country", "profile_type"]
+            ),
         ]
 
     def __str__(self):
-        return f"{self.display_name} — {self.get_profile_type_display()}"
-
-
+        return (
+            f"{self.display_name} — "
+            f"{self.get_profile_type_display()}"
+        )

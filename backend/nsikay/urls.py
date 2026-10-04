@@ -2,6 +2,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
+from nsikay.frontend_views import frontend_index, frontend_static
 
 from nsikay_activities.views import (
     ActivityDashboardView,
@@ -14,6 +15,11 @@ from nsikay_activities.views import (
 )
 
 urlpatterns = [
+    path("assets/<path:path>", frontend_static, {"folder": "assets"}),
+    path("images/<path:path>", frontend_static, {"folder": "images"}),
+    path("favicon.svg", frontend_static, {"path": "favicon.svg", "folder": ""}, name="frontend-favicon"),
+    path("icons.svg", frontend_static, {"path": "icons.svg", "folder": ""}, name="frontend-icons"),
+    path("", frontend_index, name="frontend-home"),
     path("transport/", include("transport.urls")),
     path("api/media-library/", include("media_library.urls")),
     path("api/events/", include("events.urls")),
@@ -54,8 +60,8 @@ urlpatterns = [
     # SERVICES SYSTEME
     #
     # IMPORTANT :
-    # /api/services/ appartient ÃƒÂ  service_control.
-    # Les services liÃƒÂ©s ÃƒÂ  une activitÃƒÂ© sont sous :
+    # /api/services/ appartient â”œÃ¢Ã£Ã†â”œÃ©â”¬Ã¡ service_control.
+    # Les services liâ”œÃ¢Ã£Ã†â”œÃ©â”¬Â®s â”œÃ¢Ã£Ã†â”œÃ©â”¬Ã¡ une activitâ”œÃ¢Ã£Ã†â”œÃ©â”¬Â® sont sous :
     # /api/activities/services/
     # ========================================================
 
@@ -189,6 +195,16 @@ urlpatterns = [
         "api/tv-regie/",
         include("tv_regie.urls"),
     ),
+
+    # ========================================================
+    # FRONTEND REACT / SPA FALLBACK
+    # ========================================================
+
+    path(
+        "<path:path>",
+        frontend_index,
+        name="frontend-spa-fallback",
+    ),
 ]
 
 
@@ -201,4 +217,3 @@ if settings.DEBUG:
         settings.MEDIA_URL,
         document_root=settings.MEDIA_ROOT,
     )
-

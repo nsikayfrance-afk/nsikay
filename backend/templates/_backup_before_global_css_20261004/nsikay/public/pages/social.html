@@ -1,0 +1,110 @@
+﻿{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>NSIKAY â€” Social</title>
+
+    <meta
+        name="description"
+        content="DÃ©couvrez les initiatives sociales, projets, actions et engagements de l'Ã©cosystÃ¨me NSIKAY."
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/nsikay_design12_public.css' %}"
+    >
+
+</head>
+
+<body class="ns-public-page page-social">
+
+    {% include "nsikay/public/components/header_public.html" %}
+
+    <main>
+
+        {% include "nsikay/public/components/breadcrumb.html" %}
+
+        <section class="ns-page-title-block">
+
+            <span class="ns-public-kicker">
+                SOCIAL
+            </span>
+
+            <h1>
+                Social
+            </h1>
+
+            <p>
+                DÃ©couvrez les initiatives sociales, projets, actions et engagements de l'Ã©cosystÃ¨me NSIKAY.
+            </p>
+
+        </section>
+
+        <section class="ns-content-placeholder" id="contenu">
+
+            <div class="ns-placeholder-symbol">
+                NS
+            </div>
+
+            <div>
+
+                <span class="ns-public-kicker">
+                    ESPACE SOCIAL
+                </span>
+
+                <h2>
+                    Social
+                </h2>
+
+                <p>
+                    Cet espace est prÃ©parÃ© pour recevoir
+                    les contenus, services, publications,
+                    Ã©vÃ©nements et fonctionnalitÃ©s NSIKAY
+                    correspondant Ã  ce domaine.
+                </p>
+
+                <div class="ns-placeholder-actions">
+
+                    <a
+                        href="#evenements"
+                        class="ns-public-btn ns-public-btn-gold"
+                    >
+                        Ã‰vÃ©nements
+                    </a>
+
+                    <a
+                        href="#publicite"
+                        class="ns-public-btn ns-public-btn-dark"
+                    >
+                        PublicitÃ©
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        {% include "nsikay/public/components/advertising_master.html" %}
+
+        {% include "nsikay/public/components/events_public.html" %}
+
+        {% include "nsikay/public/components/institutional_public.html" %}
+
+    </main>
+
+    {% include "nsikay/public/components/footer_public.html" %}
+
+</body>
+
+</html>

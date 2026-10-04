@@ -1,0 +1,670 @@
+﻿/* ============================================================
+   NSIKAY GLOBAL DESIGN SYSTEM
+   Version 1.0
+   Fondation visuelle commune de l'écosystème NSIKAY
+   ============================================================ */
+
+/* ============================================================
+   1. IDENTITÉ VISUELLE
+   ============================================================ */
+
+:root {
+    --ns-blue: #0b2d5c;
+    --ns-blue-dark: #071d3b;
+    --ns-blue-light: #174f8f;
+
+    --ns-gold: #d4a72c;
+    --ns-gold-light: #f0d36a;
+
+    --ns-white: #ffffff;
+    --ns-black: #111111;
+
+    --ns-text: #263247;
+    --ns-muted: #718096;
+
+    --ns-background: #f5f7fb;
+    --ns-card: #ffffff;
+    --ns-border: #e2e7ef;
+
+    --ns-success: #16865b;
+    --ns-danger: #b83a3a;
+    --ns-warning: #b87500;
+    --ns-red: #9d2027;
+
+    --ns-radius-sm: 8px;
+    --ns-radius-md: 12px;
+    --ns-radius-lg: 18px;
+    --ns-radius-xl: 24px;
+
+    --ns-shadow-sm: 0 4px 14px rgba(7, 29, 59, 0.06);
+    --ns-shadow-md: 0 10px 28px rgba(7, 29, 59, 0.08);
+    --ns-shadow-lg: 0 14px 35px rgba(7, 29, 59, 0.09);
+
+    --ns-container: 1400px;
+
+    --ns-transition: 0.2s ease;
+}
+
+
+/* ============================================================
+   2. RESET GLOBAL
+   ============================================================ */
+
+html {
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family:
+        Inter,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+    color: var(--ns-text);
+    background: var(--ns-background);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+
+/* ============================================================
+   3. CONTENEURS
+   ============================================================ */
+
+.ns-container {
+    width: min(100% - 32px, var(--ns-container));
+    margin-inline: auto;
+}
+
+.ns-container-sm {
+    width: min(100% - 32px, 900px);
+    margin-inline: auto;
+}
+
+.ns-container-md {
+    width: min(100% - 32px, 1100px);
+    margin-inline: auto;
+}
+
+.ns-container-lg {
+    width: min(100% - 32px, 1600px);
+    margin-inline: auto;
+}
+
+
+/* ============================================================
+   4. SECTIONS
+   ============================================================ */
+
+.ns-section {
+    padding: 64px 0;
+}
+
+.ns-section-sm {
+    padding: 40px 0;
+}
+
+.ns-section-lg {
+    padding: 88px 0;
+}
+
+.ns-section-heading {
+    margin-bottom: 28px;
+}
+
+.ns-section-heading h2 {
+    margin: 0 0 8px;
+    color: var(--ns-blue-dark);
+    font-size: clamp(1.5rem, 2.4vw, 2.2rem);
+    line-height: 1.2;
+}
+
+.ns-section-heading p {
+    margin: 0;
+    color: var(--ns-muted);
+}
+
+
+/* ============================================================
+   5. TITRES
+   ============================================================ */
+
+.ns-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    color: var(--ns-gold);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.ns-title {
+    margin: 0;
+    color: var(--ns-blue-dark);
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    line-height: 1.08;
+    font-weight: 800;
+}
+
+.ns-subtitle {
+    margin: 12px 0 0;
+    max-width: 760px;
+    color: var(--ns-muted);
+    font-size: 1rem;
+}
+
+
+/* ============================================================
+   6. BOUTONS COMMUNS
+   ============================================================ */
+
+.ns-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 10px 18px;
+    border: 1px solid transparent;
+    border-radius: var(--ns-radius-md);
+    font-weight: 700;
+    line-height: 1.2;
+    transition:
+        transform var(--ns-transition),
+        background var(--ns-transition),
+        border-color var(--ns-transition),
+        color var(--ns-transition),
+        box-shadow var(--ns-transition);
+}
+
+.ns-btn:hover {
+    transform: translateY(-1px);
+}
+
+.ns-btn:focus-visible {
+    outline: 3px solid rgba(212, 167, 44, 0.35);
+    outline-offset: 2px;
+}
+
+.ns-btn-primary {
+    color: var(--ns-white);
+    background: var(--ns-blue);
+    border-color: var(--ns-blue);
+    box-shadow: var(--ns-shadow-sm);
+}
+
+.ns-btn-primary:hover {
+    background: var(--ns-blue-dark);
+    border-color: var(--ns-blue-dark);
+}
+
+.ns-btn-gold {
+    color: var(--ns-blue-dark);
+    background: var(--ns-gold);
+    border-color: var(--ns-gold);
+}
+
+.ns-btn-gold:hover {
+    background: var(--ns-gold-light);
+    border-color: var(--ns-gold-light);
+}
+
+.ns-btn-outline {
+    color: var(--ns-blue);
+    background: transparent;
+    border-color: var(--ns-blue);
+}
+
+.ns-btn-outline:hover {
+    color: var(--ns-white);
+    background: var(--ns-blue);
+}
+
+.ns-btn-dark {
+    color: var(--ns-white);
+    background: var(--ns-black);
+    border-color: var(--ns-black);
+}
+
+.ns-btn-light {
+    color: var(--ns-blue-dark);
+    background: var(--ns-white);
+    border-color: var(--ns-border);
+}
+
+
+/* ============================================================
+   7. CARTES
+   ============================================================ */
+
+.ns-card {
+    background: var(--ns-card);
+    border: 1px solid var(--ns-border);
+    border-radius: var(--ns-radius-lg);
+    box-shadow: var(--ns-shadow-sm);
+}
+
+.ns-card-body {
+    padding: 24px;
+}
+
+.ns-card-hover {
+    transition:
+        transform var(--ns-transition),
+        box-shadow var(--ns-transition),
+        border-color var(--ns-transition);
+}
+
+.ns-card-hover:hover {
+    transform: translateY(-3px);
+    border-color: rgba(23, 79, 143, 0.25);
+    box-shadow: var(--ns-shadow-md);
+}
+
+
+/* ============================================================
+   8. GRILLES
+   ============================================================ */
+
+.ns-grid {
+    display: grid;
+    gap: 24px;
+}
+
+.ns-grid-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.ns-grid-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.ns-grid-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+
+/* ============================================================
+   9. FORMULAIRES
+   ============================================================ */
+
+.ns-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-bottom: 18px;
+}
+
+.ns-label {
+    color: var(--ns-blue-dark);
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.ns-input,
+.ns-select,
+.ns-textarea {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 13px;
+    color: var(--ns-text);
+    background: var(--ns-white);
+    border: 1px solid var(--ns-border);
+    border-radius: var(--ns-radius-md);
+    outline: none;
+    transition:
+        border-color var(--ns-transition),
+        box-shadow var(--ns-transition);
+}
+
+.ns-textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.ns-input:focus,
+.ns-select:focus,
+.ns-textarea:focus {
+    border-color: var(--ns-blue-light);
+    box-shadow: 0 0 0 3px rgba(23, 79, 143, 0.12);
+}
+
+
+/* ============================================================
+   10. BADGES / STATUTS
+   ============================================================ */
+
+.ns-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 28px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 800;
+}
+
+.ns-badge-primary {
+    color: var(--ns-blue);
+    background: #e8f0fa;
+}
+
+.ns-badge-gold {
+    color: #765700;
+    background: #fff4cf;
+}
+
+.ns-badge-success {
+    color: #116342;
+    background: #e8f7ef;
+}
+
+.ns-badge-danger {
+    color: #8e2020;
+    background: #fbeaec;
+}
+
+.ns-badge-warning {
+    color: #805600;
+    background: #fff4df;
+}
+
+
+/* ============================================================
+   11. ALERTES
+   ============================================================ */
+
+.ns-alert {
+    padding: 14px 16px;
+    border: 1px solid var(--ns-border);
+    border-radius: var(--ns-radius-md);
+    background: var(--ns-white);
+}
+
+.ns-alert-success {
+    color: #116342;
+    background: #e8f7ef;
+    border-color: #bce8d0;
+}
+
+.ns-alert-danger {
+    color: #8e2020;
+    background: #fbeaec;
+    border-color: #efc3c7;
+}
+
+.ns-alert-warning {
+    color: #805600;
+    background: #fff4df;
+    border-color: #ecd9a8;
+}
+
+.ns-alert-info {
+    color: var(--ns-blue);
+    background: #edf3fb;
+    border-color: #cddced;
+}
+
+
+/* ============================================================
+   12. TABLEAUX
+   ============================================================ */
+
+.ns-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--ns-border);
+    border-radius: var(--ns-radius-lg);
+    background: var(--ns-white);
+}
+
+.ns-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.ns-table th,
+.ns-table td {
+    padding: 13px 15px;
+    border-bottom: 1px solid var(--ns-border);
+    text-align: left;
+}
+
+.ns-table th {
+    color: var(--ns-blue-dark);
+    background: #f7f9fc;
+    font-size: 0.82rem;
+    font-weight: 800;
+}
+
+.ns-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.ns-table tbody tr:hover {
+    background: #fafcff;
+}
+
+
+/* ============================================================
+   13. FILIGRANE / IDENTITÉ
+   ============================================================ */
+
+.ns-watermark {
+    position: absolute;
+    z-index: 0;
+    pointer-events: none;
+    user-select: none;
+    opacity: 0.035;
+}
+
+.ns-gold-line {
+    width: 64px;
+    height: 3px;
+    background: var(--ns-gold);
+    border-radius: 999px;
+}
+
+
+/* ============================================================
+   14. UTILITAIRES
+   ============================================================ */
+
+.ns-text-blue {
+    color: var(--ns-blue);
+}
+
+.ns-text-gold {
+    color: var(--ns-gold);
+}
+
+.ns-text-muted {
+    color: var(--ns-muted);
+}
+
+.ns-text-white {
+    color: var(--ns-white);
+}
+
+.ns-bg-blue {
+    background: var(--ns-blue);
+}
+
+.ns-bg-dark {
+    background: var(--ns-blue-dark);
+}
+
+.ns-bg-gold {
+    background: var(--ns-gold);
+}
+
+.ns-bg-white {
+    background: var(--ns-white);
+}
+
+.ns-hidden {
+    display: none !important;
+}
+
+.ns-flex {
+    display: flex;
+}
+
+.ns-flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ns-flex-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.ns-gap-sm {
+    gap: 8px;
+}
+
+.ns-gap-md {
+    gap: 16px;
+}
+
+.ns-gap-lg {
+    gap: 24px;
+}
+
+
+/* ============================================================
+   15. ACCESSIBILITÉ
+   ============================================================ */
+
+.ns-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}
+
+
+/* ============================================================
+   16. RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 1100px) {
+    .ns-grid-4 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .ns-grid-3 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .ns-section {
+        padding: 52px 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .ns-container,
+    .ns-container-sm,
+    .ns-container-md,
+    .ns-container-lg {
+        width: min(100% - 24px, var(--ns-container));
+    }
+
+    .ns-section,
+    .ns-section-lg {
+        padding: 40px 0;
+    }
+
+    .ns-grid-2,
+    .ns-grid-3,
+    .ns-grid-4 {
+        grid-template-columns: 1fr;
+    }
+
+    .ns-card-body {
+        padding: 18px;
+    }
+
+    .ns-btn {
+        min-height: 42px;
+        padding: 9px 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .ns-title {
+        font-size: 1.8rem;
+    }
+
+    .ns-subtitle {
+        font-size: 0.95rem;
+    }
+
+    .ns-section {
+        padding: 32px 0;
+    }
+}

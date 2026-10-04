@@ -1,0 +1,91 @@
+﻿{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>NSIKAY — Administration des pays</title>
+    <link rel="stylesheet" href="{% static 'css/nsikay_design13_admin.css' %}">
+</head>
+<body class="ns-admin-body">
+
+<div class="ns-admin-shell">
+
+    {% include "nsikay/admin/components/header_admin.html" %}
+
+    <div class="ns-admin-layout">
+
+        {% include "nsikay/admin/components/sidebar_admin.html" %}
+
+        <main class="ns-admin-main">
+
+            <section class="ns-admin-page-heading">
+                <div>
+                    <div class="ns-admin-breadcrumb">
+                        NSIKAY / Administration / Pays
+                    </div>
+                    <h1>Pays & territoires</h1>
+                    <p>
+                        Configuration des pays principaux, états opérationnels
+                        et historique des configurations.
+                    </p>
+                </div>
+            </section>
+
+            <section class="admin-section-block">
+
+                <div class="admin-mini-grid">
+
+                    <div class="mini-card">
+                        <span>Pays principaux</span>
+                        <strong>249</strong>
+                    </div>
+
+                    <div class="mini-card">
+                        <span>Pays opérationnels</span>
+                        <strong>240</strong>
+                    </div>
+
+                    <div class="mini-card">
+                        <span>Pays inactifs</span>
+                        <strong>9</strong>
+                    </div>
+
+                    <div class="mini-card">
+                        <span>Configurations historisées</span>
+                        <strong>3</strong>
+                    </div>
+
+                </div>
+
+            </section>
+
+            <section class="admin-section-block">
+
+                <div class="panel-heading">
+                    <div>
+                        <span class="panel-kicker">ADMINISTRATION</span>
+                        <h2>Configuration opérationnelle</h2>
+                    </div>
+                </div>
+
+                <div class="warning-admin-box">
+                    <strong>Contrôle administratif</strong>
+                    <p>
+                        Toute modification de la configuration des pays
+                        doit rester soumise aux contrôles administratifs,
+                        à l'historisation et au mécanisme de rollback.
+                    </p>
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+</div>
+
+</body>
+</html>
+

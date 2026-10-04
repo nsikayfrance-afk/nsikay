@@ -1,0 +1,45 @@
+﻿{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>NSIKAY — Demandes d'activation</title>
+    <link rel="stylesheet" href="{% static 'css/nsikay_design13_admin.css' %}">
+</head>
+<body class="ns-admin-body">
+
+<div class="ns-admin-shell">
+
+    {% include "nsikay/admin/components/header_admin.html" %}
+
+    <div class="ns-admin-layout">
+
+        {% include "nsikay/admin/components/sidebar_admin.html" %}
+
+        <main class="ns-admin-main">
+
+            <section class="ns-admin-page-heading">
+                <div>
+                    <div class="ns-admin-breadcrumb">
+                        NSIKAY / Administration / Activations
+                    </div>
+                    <h1>Workflow des activations</h1>
+                    <p>
+                        Suivi administratif des demandes et contrôles
+                        avant toute activation finale.
+                    </p>
+                </div>
+            </section>
+
+            {% include "nsikay/admin/components/requests_admin.html" %}
+
+        </main>
+
+    </div>
+
+</div>
+
+</body>
+</html>
+
