@@ -1,4 +1,4 @@
-import "./styles/nsikay-global.css";
+﻿import "./styles/nsikay-global.css";
 import {
     BrowserRouter,
     Navigate,
@@ -31,6 +31,7 @@ import ResetPassword from "./pages/ResetPassword";
 import Transport from "./pages/Transport";
 import TransportOnboarding from "./pages/TransportOnboarding";
 import Home from "./pages/Home";
+import Editorial from "./pages/Editorial";
 import "./styles/nsikay-auth.css";
 
 import "./styles/nsikay-modules-v2.css";
@@ -52,7 +53,7 @@ function Placeholder({ title, icon }) {
             </p>
 
             <a href="/espace">
-                Ã¢â€ Â Retour ÃƒÂ  mon espace
+                ÃƒÂ¢Ã¢â‚¬Â Ã‚Â Retour ÃƒÆ’Ã‚Â  mon espace
             </a>
         </div>
     );
@@ -85,6 +86,8 @@ export default function App() {
                 path="/reinitialiser-mot-de-passe"
                 element={<ResetPassword />}
             /><Route path="/" element={<Home />} />
+<Route path="/editorial" element={<Editorial />} />
+<Route path="/editorial/:category" element={<Editorial />} />
 <Route
                         path="/connexion"
                         element={<Login />}
@@ -140,8 +143,8 @@ export default function App() {
                         element={
                             <ProtectedRoute>
                                 <Placeholder
-                                    title="MÃƒÂ©tiers"
-                                    icon="Ã°Å¸Â§â€˜Ã¢â‚¬ÂÃ°Å¸â€™Â¼"
+                                    title="MÃƒÆ’Ã‚Â©tiers"
+                                    icon="ÃƒÂ°Ã…Â¸Ã‚Â§Ã¢â‚¬ËœÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â¼"
                                 />
                             </ProtectedRoute>
                         }
@@ -152,7 +155,7 @@ export default function App() {
                             <ProtectedRoute>
                                 <Placeholder
                                     title="Certification"
-                                    icon="Ã°Å¸â€ºÂ¡Ã¯Â¸Â"
+                                    icon="ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂºÃ‚Â¡ÃƒÂ¯Ã‚Â¸Ã‚Â"
                                 />
                             </ProtectedRoute>
                         }
@@ -163,7 +166,7 @@ export default function App() {
                             <ProtectedRoute>
                                 <Placeholder
                                     title="WENZE"
-                                    icon="Ã°Å¸â€ºâ€™"
+                                    icon="ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂºÃ¢â‚¬â„¢"
                                 />
                             </ProtectedRoute>
                         }
@@ -174,7 +177,7 @@ export default function App() {
                             <ProtectedRoute>
                                 <Placeholder
                                     title="Libenga"
-                                    icon="Ã°Å¸â€™Â°"
+                                    icon="ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â°"
                                 />
                             </ProtectedRoute>
                         }
@@ -184,8 +187,8 @@ export default function App() {
                         element={
                             <ProtectedRoute>
                                 <Placeholder
-                                    title="Ãƒâ€°vÃƒÂ©nements"
-                                    icon="Ã°Å¸Å½Â«"
+                                    title="ÃƒÆ’Ã¢â‚¬Â°vÃƒÆ’Ã‚Â©nements"
+                                    icon="ÃƒÂ°Ã…Â¸Ã…Â½Ã‚Â«"
                                 />
                             </ProtectedRoute>
                         }
@@ -211,8 +214,8 @@ export default function App() {
     element={
         <ProtectedRoute>
             <Placeholder
-                title="Publicité"
-                icon="📢"
+                title="PublicitÃ©"
+                icon="ðŸ“¢"
             />
         </ProtectedRoute>
     }
@@ -275,6 +278,9 @@ export default function App() {
         </BrowserRouter>
     );
 }
+
+
+
 
 
 
