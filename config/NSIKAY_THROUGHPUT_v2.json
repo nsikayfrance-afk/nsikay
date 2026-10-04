@@ -1,0 +1,38 @@
+﻿{
+    "SECURITY":  {
+                     "LOGIN_CHECKS_PER_SECOND":  2000,
+                     "AUDIT_WRITES_PER_SECOND":  5000
+                 },
+    "VERSION":  "NSIKAY v2.0",
+    "GLOBAL":  {
+                   "DAILY_EVENTS_TARGET":  432000000,
+                   "DAILY_TRANSACTIONS_TARGET":  86400000,
+                   "DATA_RETENTION_YEARS":  10
+               },
+    "VALIDATION":  {
+                       "DATABASE_MONITORING_REQUIRED":  true,
+                       "PERFORMANCE_TEST_REQUIRED":  true,
+                       "LOAD_TEST_REQUIRED":  true
+                   },
+    "DATABASE":  {
+                     "TARGET_CONNECTIONS":  500,
+                     "TRANSACTIONS_PER_SECOND":  1000,
+                     "ENGINE":  "PostgreSQL 17",
+                     "READ_OPERATIONS_PER_SECOND":  5000,
+                     "WRITE_OPERATIONS_PER_SECOND":  1000
+                 },
+    "API":  {
+                "CONCURRENT_USERS_TARGET":  100000,
+                "REQUESTS_PER_SECOND_TARGET":  2000,
+                "MAX_RESPONSE_TIME_MS":  300
+            },
+    "MEDIA":  {
+                  "CONTENT_READS_PER_SECOND":  10000,
+                  "VIDEO_REQUESTS_PER_SECOND":  5000
+              },
+    "FINANCE":  {
+                    "TRANSACTIONS_PER_SECOND_TARGET":  1000,
+                    "WALLET_OPERATIONS_PER_SECOND":  2000,
+                    "AUDIT_EVENTS_PER_SECOND":  5000
+                }
+}

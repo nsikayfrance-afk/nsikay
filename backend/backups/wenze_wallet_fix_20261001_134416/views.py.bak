@@ -1,0 +1,212 @@
+﻿from decimal import Decimal
+from uuid import uuid4
+
+from django.contrib.auth.decorators import login_required
+from django.db import transaction
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, render
+
+from financial_routing.wenze import prepare_wenze_revenue
+
+from .models import BukaPrixCampaign, WenzeOrder, WenzeProduct
+
+
+def index(request):
+    products = WenzeProduct.objects.filter(status="ACTIVE").select_related("seller")
+    campaigns = BukaPrixCampaign.objects.filter(active=True).select_related("product")
+
+    return render(
+        request,
+        "wenze/index.html",
+        {
+            "products": products,
+            "campaigns": campaigns,
+        },
+    )
+
+
+@login_required
+@transaction.atomic
+def create_order(request, product_id):
+    product = get_object_or_404(
+        WenzeProduct.objects.select_for_update(),
+        id=product_id,
+        status="ACTIVE",
+    )
+
+    if request.method != "POST":
+        return HttpResponse("Méthode non autorisée", status=405)
+
+    try:
+        quantity = int(request.POST.get("quantity", "1"))
+    except (TypeError, ValueError):
+        return HttpResponse("Quantité invalide", status=400)
+
+    if quantity < 1:
+        return HttpResponse("Quantité invalide", status=400)
+
+    if product.stock < quantity:
+        return HttpResponse("Stock insuffisant", status=400)
+
+    unit_price = product.current_price
+    total = unit_price * Decimal(quantity)
+
+    # ============================================================
+    # PREPARATION FINANCIERE WENZE
+    # ============================================================
+    # WENZE = 0 % de commission commerciale.
+    #
+    # Cette étape :
+    # - calcule les frais WENZE ;
+    # - recherche la règle de routage APPROVED ;
+    # - utilise la devise réelle de la commande ;
+    # - ne crée aucune transaction financière ;
+    # - ne modifie aucun portefeuille ;
+    # - ne débite/crédite aucun partenaire.
+    #
+    # Le paiement réel sera branché ultérieurement sur
+    # la validation effective de la commande/paiement.
+    financial_preparation = prepare_wenze_revenue(
+        amount=total,
+        currency_code=product.currency,
+    )
+
+    order = WenzeOrder.objects.create(
+        buyer=request.user,
+        product=product,
+        quantity=quantity,
+        unit_price=unit_price,
+        currency=product.currency,
+        total_amount=total,
+        reference=f"WENZE-{uuid4().hex[:16].upper()}",
+    )
+
+    product.stock -= quantity
+    product.save(update_fields=["stock", "updated_at"])
+
+    return render(
+        request,
+        "wenze/order_created.html",
+        {
+            "order": order,
+            "financial_preparation": financial_preparation,
+        },
+    )
+@login_required
+@transaction.atomic
+def pay_order(request, order_id):
+    """
+    Paiement d'une commande WENZE avec le portefeuille NSIKAY.
+    Le paiement est uniquement autorisé pour le propriétaire
+    de la commande et pour une commande PENDING.
+    """
+    if request.method != "POST":
+        return HttpResponse("Méthode non autorisée", status=405)
+
+    order = get_object_or_404(
+        WenzeOrder.objects.select_related(
+            "product",
+            "product__seller",
+            "buyer",
+        ),
+        id=order_id,
+        buyer=request.user,
+    )
+
+    if order.status != "PENDING":
+        return render(
+            request,
+            "wenze/payment_result.html",
+            {
+                "success": False,
+                "order": order,
+                "error": "Cette commande n'est plus en attente de paiement.",
+            },
+            status=400,
+        )
+
+    wallet_id = request.POST.get("wallet_id")
+
+    if not wallet_id:
+        return render(
+            request,
+            "wenze/payment_result.html",
+            {
+                "success": False,
+                "order": order,
+                "error": "Veuillez sélectionner un portefeuille NSIKAY.",
+            },
+            status=400,
+        )
+
+    from finance.models import Wallet
+    from .payment import WenzePaymentError, pay_wenze_order_with_wallet
+
+    wallet = (
+        Wallet.objects
+        .select_related("currency", "user")
+        .filter(
+            id=wallet_id,
+            user=request.user,
+            active=True,
+        )
+        .first()
+    )
+
+    if wallet is None:
+        return render(
+            request,
+            "wenze/payment_result.html",
+            {
+                "success": False,
+                "order": order,
+                "error": "Le portefeuille sélectionné est introuvable ou inactif.",
+            },
+            status=400,
+        )
+
+    try:
+        result = pay_wenze_order_with_wallet(
+            order=order,
+            buyer_wallet=wallet,
+        )
+
+        order.refresh_from_db()
+
+        return render(
+            request,
+            "wenze/payment_result.html",
+            {
+                "success": True,
+                "order": order,
+                "result": result,
+            },
+        )
+
+    except WenzePaymentError as exc:
+        order.refresh_from_db()
+
+        return render(
+            request,
+            "wenze/payment_result.html",
+            {
+                "success": False,
+                "order": order,
+                "error": str(exc),
+            },
+            status=400,
+        )
+
+    except Exception as exc:
+        order.refresh_from_db()
+
+        return render(
+            request,
+            "wenze/payment_result.html",
+            {
+                "success": False,
+                "order": order,
+                "error": f"Erreur technique lors du paiement : {exc}",
+            },
+            status=500,
+        )

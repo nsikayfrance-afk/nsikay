@@ -1,0 +1,26 @@
+﻿NSIKAY - DESACTIVATION MARKETPLACE LEGACY
+Date : 2026-10-01 12:04:51
+
+STATUT
+------
+WENZE = MODULE COMMERCIAL OFFICIEL
+MARKETPLACE LEGACY = INTERFACE DESACTIVEE
+
+CONSERVATION
+------------
+Anciens modeles conserves
+Migrations historiques conservees
+Aucune suppression de donnees
+Aucune modification de wallet
+Aucune modification de finance marketplace
+Aucune nouvelle migration
+
+VERIFICATIONS
+-------------
+PY_COMPILE=OK
+DJANGO_CHECK=OK
+MAKEMIGRATIONS_CHECK=OK
+
+BACKUP
+------
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups_marketplace_deactivation_20261001_120442

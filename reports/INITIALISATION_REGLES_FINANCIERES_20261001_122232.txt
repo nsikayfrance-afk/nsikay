@@ -1,0 +1,27 @@
+﻿============================================================
+ NSIKAY - INITIALISATION REGLES FINANCIERES
+============================================================
+
+DATE=2026-10-01 12:22:51
+
+REGLES:
+TRANSFERT_INTERNE_NSikay=0.500%
+TRANSFERT_EXTERNE=0.850%
+TRANSFERT_MOBILE_MONEY=0.850%
+TRANSFERT_VISA=0.850%
+TRANSFERT_AUTRE_PARTENAIRE_FINANCIER=0.850%
+RETRAIT=1.200%
+WENZE_COMMISSION_COMMERCIALE=0.000%
+
+ADMIN_ROUTAGE=OK
+ADMIN_FRAIS=OK
+DJANGO_CHECK=OK
+MAKEMIGRATIONS_CHECK=OK
+
+Aucune banque fictive creee.
+Aucun compte bancaire fictif cree.
+Aucun solde modifie.
+Aucune transaction creee.
+Aucun paiement WENZE effectue.
+
+BACKUP=C:\Users\DELL Technologies\Desktop\nsikay nante\backups_routing_rules_20261001_122232

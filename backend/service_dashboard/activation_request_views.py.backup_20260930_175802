@@ -1,0 +1,169 @@
+﻿from django.contrib import messages
+from django.contrib.auth.decorators import user_passes_test
+from django.shortcuts import get_object_or_404, redirect, render
+
+from service_control.models import (
+    CountryServiceStatus,
+    GlobalService,
+)
+
+from service_dashboard.models import (
+    ServiceActivationRequest,
+)
+
+from service_dashboard.activation_request_services import (
+    ActivationRequestManager,
+    ActivationRequestValidator,
+)
+
+
+def _is_nsikay_admin(user):
+
+    if not user or not user.is_authenticated:
+        return False
+
+    return (
+        user.is_superuser
+        or str(user.username).strip().lower()
+        == "constantdoriskayembe"
+        or user.groups.filter(
+            name__in=[
+                "Super Administrateur",
+                "Administration Pays",
+                "Autorité Certification",
+                "Contrôleur Financier",
+            ]
+        ).exists()
+    )
+
+
+@user_passes_test(_is_nsikay_admin)
+def activation_requests(request):
+
+    requests = (
+        ServiceActivationRequest.objects
+        .select_related(
+            "service",
+            "country",
+            "requested_by",
+        )
+        .order_by("-created_at")
+    )
+
+    return render(
+        request,
+        "service_dashboard/activation_requests.html",
+        {
+            "requests": requests,
+        },
+    )
+
+
+@user_passes_test(_is_nsikay_admin)
+def create_activation_request(request):
+
+    if request.method != "POST":
+
+        return redirect(
+            "service_dashboard:activation_requests"
+        )
+
+    service_id = request.POST.get(
+        "service"
+    )
+
+    country_id = request.POST.get(
+        "country"
+    )
+
+    service = get_object_or_404(
+        GlobalService,
+        id=service_id,
+    )
+
+    country = get_object_or_404(
+        CountryServiceStatus,
+        id=country_id,
+        is_primary=True,
+    )
+
+    activation_request = (
+        ActivationRequestManager.create_request(
+            service=service,
+            country=country,
+            requested_by=request.user,
+        )
+    )
+
+    messages.success(
+        request,
+        (
+            "Demande d'activation créée : "
+            f"{service.name} / "
+            f"{country.country_name}"
+        ),
+    )
+
+    return redirect(
+        "service_dashboard:activation_request_detail",
+        request_id=activation_request.id,
+    )
+
+
+@user_passes_test(_is_nsikay_admin)
+def activation_request_detail(
+    request,
+    request_id,
+):
+
+    activation_request = get_object_or_404(
+        ServiceActivationRequest,
+        id=request_id,
+    )
+
+    result = None
+
+    if request.method == "POST":
+
+        action = request.POST.get(
+            "action"
+        )
+
+        if action == "validate":
+
+            valid, message = (
+                ActivationRequestValidator.validate(
+                    activation_request
+                )
+            )
+
+            result = {
+                "valid": valid,
+                "message": message,
+            }
+
+            if valid:
+
+                messages.success(
+                    request,
+                    "Demande validée."
+                )
+
+            else:
+
+                messages.error(
+                    request,
+                    (
+                        "Demande refusée : "
+                        f"{message}"
+                    ),
+                )
+
+    return render(
+        request,
+        "service_dashboard/activation_request_detail.html",
+        {
+            "activation_request": activation_request,
+            "result": result,
+        },
+    )

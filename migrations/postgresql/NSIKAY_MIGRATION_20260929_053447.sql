@@ -1,0 +1,8 @@
+-- NSIKAY PostgreSQL Migration v2.0
+
+BEGIN;
+
+CREATE SCHEMA IF NOT EXISTS core;
+CREATE SCHEMA IF NOT EXISTS certification;
+
+COMMIT;

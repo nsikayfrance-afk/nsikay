@@ -1,0 +1,512 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+
+    <title>NSIKAY - Centre de contrôle administration</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 30px;
+            background: #f4f6f8;
+            color: #17202a;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: auto;
+        }
+
+        h1 {
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #667085;
+            margin-bottom: 30px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 22px;
+            box-shadow: 0 2px 8px rgba(0,0,0,.08);
+        }
+
+        .label {
+            color: #667085;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .value {
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,.08);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 11px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+        }
+
+        th {
+            background: #f8fafc;
+        }
+
+        .ok {
+            color: #198754;
+            font-weight: 700;
+        }
+
+        .warning {
+            color: #b54708;
+            font-weight: 700;
+        }
+
+        .danger {
+            color: #b42318;
+            font-weight: 700;
+        }
+
+        .links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .links a {
+            display: inline-block;
+            padding: 11px 16px;
+            background: #1f4e79;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+
+        .small {
+            color: #667085;
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Centre de contrôle Administration NSIKAY</h1>
+
+    <div class="subtitle">
+        Vue globale de supervision des pays, services et configurations.
+    </div>
+
+    <!-- =====================================================
+         INDICATEURS PAYS
+         ===================================================== -->
+
+    <div class="grid">
+
+        <div class="card">
+            <div class="label">Pays ISO principaux</div>
+            <div class="value">
+                {{ primary_count }}
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="label">Pays opérationnels</div>
+            <div class="value ok">
+                {{ operational_count }}
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="label">Pays inactifs</div>
+            <div class="value danger">
+                {{ inactive_country_count }}
+            </div>
+        </div>
+
+    </div>
+
+    <!-- =====================================================
+         INDICATEURS SERVICES
+         ===================================================== -->
+
+    <div class="grid">
+
+        <div class="card">
+            <div class="label">Services enregistrés</div>
+            <div class="value">
+                {{ service_count }}
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="label">Services globaux actifs</div>
+            <div class="value ok">
+                {{ global_active_service_count }}
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="label">Activations service/pays actives</div>
+            <div class="value ok">
+                {{ active_activation_count }}
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="label">Relations service/pays inactives</div>
+            <div class="value">
+                {{ inactive_activation_count }}
+            </div>
+        </div>
+
+    </div>
+
+    <!-- =====================================================
+         SERVICES
+         ===================================================== -->
+
+    <div class="section">
+
+        <h2>Services NSIKAY</h2>
+
+        <table>
+
+            <tr>
+                <th>Service</th>
+                <th>Catégorie</th>
+                <th>Global</th>
+            </tr>
+
+            {% for service in services %}
+
+            <tr>
+
+                <td>
+                    {{ service.name }}
+                </td>
+
+                <td>
+                    {{ service.category }}
+                </td>
+
+                <td>
+
+                    {% if service.active_global %}
+                        <span class="ok">ACTIF</span>
+                    {% else %}
+                        <span class="warning">INACTIF</span>
+                    {% endif %}
+
+                </td>
+
+            </tr>
+
+            {% empty %}
+
+            <tr>
+                <td colspan="3">
+                    Aucun service enregistré.
+                </td>
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+    </div>
+
+    <!-- =====================================================
+         PAYS OPERATIONNELS
+         ===================================================== -->
+
+    <div class="section">
+
+        <h2>Pays opérationnels</h2>
+
+        <p class="small">
+            Aperçu des 20 premiers pays opérationnels.
+        </p>
+
+        <table>
+
+            <tr>
+                <th>Code</th>
+                <th>Pays</th>
+                <th>ISO2</th>
+                <th>État</th>
+            </tr>
+
+            {% for country in operational_countries %}
+
+            <tr>
+
+                <td>
+                    {{ country.country_code }}
+                </td>
+
+                <td>
+                    {{ country.country_name }}
+                </td>
+
+                <td>
+                    {{ country.iso2_code }}
+                </td>
+
+                <td class="ok">
+                    OPÉRATIONNEL
+                </td>
+
+            </tr>
+
+            {% empty %}
+
+            <tr>
+                <td colspan="4">
+                    Aucun pays opérationnel.
+                </td>
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+    </div>
+
+    <!-- =====================================================
+         PAYS INACTIFS
+         ===================================================== -->
+
+    <div class="section">
+
+        <h2>Pays inactifs</h2>
+
+        <table>
+
+            <tr>
+                <th>Code</th>
+                <th>Pays</th>
+                <th>État</th>
+            </tr>
+
+            {% for country in inactive_countries %}
+
+            <tr>
+
+                <td>
+                    {{ country.country_code }}
+                </td>
+
+                <td>
+                    {{ country.country_name }}
+                </td>
+
+                <td class="danger">
+                    INACTIF
+                </td>
+
+            </tr>
+
+            {% empty %}
+
+            <tr>
+                <td colspan="3">
+                    Aucun pays inactif.
+                </td>
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+    </div>
+
+    <!-- =====================================================
+         JOURNAL SERVICES
+         ===================================================== -->
+
+    <div class="section">
+
+        <h2>Dernières actions services</h2>
+
+        <table>
+
+            <tr>
+                <th>Date</th>
+                <th>Action</th>
+                <th>Service</th>
+                <th>Pays</th>
+                <th>Administrateur</th>
+            </tr>
+
+            {% for log in recent_service_logs %}
+
+            <tr>
+
+                <td>
+                    {{ log.created_at }}
+                </td>
+
+                <td>
+                    {{ log.action }}
+                </td>
+
+                <td>
+                    {{ log.service.name }}
+                </td>
+
+                <td>
+                    {{ log.country.country_name }}
+                </td>
+
+                <td>
+                    {{ log.admin_user }}
+                </td>
+
+            </tr>
+
+            {% empty %}
+
+            <tr>
+                <td colspan="5">
+                    Aucun journal de service.
+                </td>
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+    </div>
+
+    <!-- =====================================================
+         CONFIGURATIONS PAYS
+         ===================================================== -->
+
+    <div class="section">
+
+        <h2>Dernières configurations pays</h2>
+
+        <table>
+
+            <tr>
+                <th>Date</th>
+                <th>Action</th>
+                <th>Administrateur</th>
+                <th>Nombre</th>
+                <th>État</th>
+            </tr>
+
+            {% for configuration in configurations %}
+
+            <tr>
+
+                <td>
+                    {{ configuration.created_at }}
+                </td>
+
+                <td>
+                    {{ configuration.action }}
+                </td>
+
+                <td>
+                    {{ configuration.admin_user }}
+                </td>
+
+                <td>
+                    {{ configuration.selected_count }}
+                </td>
+
+                <td>
+
+                    {% if configuration.rolled_back %}
+                        <span class="warning">ANNULÉE</span>
+                    {% else %}
+                        <span class="ok">ACTIVE</span>
+                    {% endif %}
+
+                </td>
+
+            </tr>
+
+            {% empty %}
+
+            <tr>
+                <td colspan="5">
+                    Aucune configuration.
+                </td>
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+    </div>
+
+    <!-- =====================================================
+         NAVIGATION ADMINISTRATION
+         ===================================================== -->
+
+    <div class="section">
+
+        <h2>Administration</h2>
+
+        <div class="links">
+
+            <a href="{% url 'service_dashboard:country_statistics' %}">
+                Statistiques pays
+            </a>
+
+            <a href="{% url 'service_dashboard:operational_countries' %}">
+                Configuration pays
+            </a>
+
+            <a href="{% url 'service_dashboard:operational_countries_history' %}">
+                Historique pays
+            </a>
+
+            <a href="{% url 'service_dashboard:control_center_filtered' %}">
+                Contrôle filtré
+            </a>
+
+            <a href="{% url 'service_dashboard:administration_history' %}">
+                Journal administration
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
+

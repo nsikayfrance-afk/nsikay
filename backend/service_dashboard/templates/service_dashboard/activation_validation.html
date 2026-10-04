@@ -1,0 +1,314 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Validation activation Service × Pays - NSIKAY</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 24px;
+            background: #f4f6f8;
+        }
+
+        h1 {
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+            color: #555;
+            margin-bottom: 22px;
+        }
+
+        .nav {
+            margin-bottom: 20px;
+        }
+
+        .nav a {
+            display: inline-block;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            padding: 8px 12px;
+            background: #1f2937;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+            min-width: 180px;
+            box-shadow: 0 2px 8px rgba(0,0,0,.08);
+        }
+
+        .card strong {
+            display: block;
+            font-size: 24px;
+            margin-top: 5px;
+        }
+
+        .panel {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,.08);
+        }
+
+        select,
+        button {
+            padding: 9px;
+            margin-right: 8px;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        .result {
+            padding: 18px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .valid {
+            background: #e8f5e9;
+            border: 1px solid #66bb6a;
+        }
+
+        .invalid {
+            background: #ffebee;
+            border: 1px solid #ef5350;
+        }
+
+        .result-title {
+            font-weight: bold;
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .warning {
+            margin-top: 15px;
+            padding: 12px;
+            background: #fff3cd;
+            border: 1px solid #e0b400;
+        }
+
+        ul {
+            line-height: 1.7;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<h1>Validation d'activation Service × Pays</h1>
+
+<div class="subtitle">
+    Contrôle préalable obligatoire avant toute activation
+    d'un service dans un pays.
+</div>
+
+<div class="nav">
+
+    <a href="{% url 'service_dashboard:service_country_control' %}">
+        Gestion Services × Pays
+    </a>
+
+    <a href="{% url 'service_dashboard:control_center' %}">
+        Centre de contrôle
+    </a>
+
+    <a href="{% url 'service_dashboard:global_administrative_log' %}">
+        Journal administratif
+    </a>
+
+</div>
+
+<div class="cards">
+
+    <div class="card">
+        Relations Service × Pays
+        <strong>{{ total_relations }}</strong>
+    </div>
+
+    <div class="card">
+        Activations actives
+        <strong>{{ active_count }}</strong>
+    </div>
+
+    <div class="card">
+        Activations validées
+        <strong>{{ validated_count }}</strong>
+    </div>
+
+</div>
+
+<div class="panel">
+
+    <h2>Contrôle préalable</h2>
+
+    <form method="post">
+
+        {% csrf_token %}
+
+        <label>
+            Pays :
+        </label>
+
+        <select name="country" required>
+
+            <option value="">
+                Sélectionner un pays
+            </option>
+
+            {% for country in countries %}
+
+                <option
+                    value="{{ country.country_code }}"
+                    {% if selected_country and selected_country.id == country.id %}
+                        selected
+                    {% endif %}
+                >
+                    {{ country.country_name }}
+                    ({{ country.country_code }})
+                </option>
+
+            {% endfor %}
+
+        </select>
+
+        <label>
+            Service :
+        </label>
+
+        <select name="service" required>
+
+            <option value="">
+                Sélectionner un service
+            </option>
+
+            {% for service in services %}
+
+                <option
+                    value="{{ service.id }}"
+                    {% if selected_service and selected_service.id == service.id %}
+                        selected
+                    {% endif %}
+                >
+                    {{ service.name }}
+                </option>
+
+            {% endfor %}
+
+        </select>
+
+        <button type="submit">
+            Vérifier les conditions
+        </button>
+
+    </form>
+
+    <div class="warning">
+        <strong>Important :</strong>
+        cette opération effectue uniquement un contrôle préalable.
+        Elle ne déclenche aucune activation de service.
+    </div>
+
+</div>
+
+{% if result %}
+
+    <div class="panel">
+
+        {% if result.valid %}
+
+            <div class="result valid">
+
+                <div class="result-title">
+                    VALIDATION RÉUSSIE
+                </div>
+
+                <p>
+                    Les conditions actuelles permettent
+                    l'activation de ce service dans ce pays.
+                </p>
+
+                <p>
+                    <strong>Pays :</strong>
+                    {{ result.country.country_name }}
+                </p>
+
+                <p>
+                    <strong>Service :</strong>
+                    {{ result.service.name }}
+                </p>
+
+                <p>
+                    <strong>Contrôle :</strong>
+                    {{ result.reason }}
+                </p>
+
+                <div class="warning">
+                    L'activation n'a pas été exécutée.
+                    Une action d'activation distincte sera nécessaire.
+                </div>
+
+            </div>
+
+        {% else %}
+
+            <div class="result invalid">
+
+                <div class="result-title">
+                    VALIDATION REFUSÉE
+                </div>
+
+                <p>
+                    <strong>Pays :</strong>
+                    {{ result.country.country_name }}
+                </p>
+
+                <p>
+                    <strong>Service :</strong>
+                    {{ result.service.name }}
+                </p>
+
+                <p>
+                    <strong>Motif :</strong>
+                    {{ result.reason }}
+                </p>
+
+                <p>
+                    Le service ne doit pas être activé tant que
+                    la condition manquante n'est pas satisfaite.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+{% endif %}
+
+</body>
+
+</html>
+

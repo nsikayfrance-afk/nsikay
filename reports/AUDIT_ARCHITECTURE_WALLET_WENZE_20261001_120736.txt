@@ -1,0 +1,985 @@
+﻿============================================================
+ NSIKAY - AUDIT ARCHITECTURE WALLET POUR WENZE
+============================================================
+Date : 2026-10-01 12:07:36
+
+=== 1. FINANCE.WALLET ===
+--- finance\models.py lignes 1-135 ---
+1: from django.db import models
+2: from django.contrib.auth.models import User
+3: 
+4: 
+5: class Currency(models.Model):
+6: 
+7:     name = models.CharField(
+8:         max_length=100
+9:     )
+10: 
+11:     code = models.CharField(
+12:         max_length=10,
+13:         unique=True
+14:     )
+15: 
+16:     symbol = models.CharField(
+17:         max_length=10
+18:     )
+19: 
+20:     reference_nsikay = models.BooleanField(
+21:         default=False
+22:     )
+23: 
+24:     approved = models.BooleanField(
+25:         default=False
+26:     )
+27: 
+28: 
+29:     def __str__(self):
+30:         return self.code
+31: 
+32: 
+33: 
+34: class Wallet(models.Model):
+35: 
+36:     user = models.ForeignKey(
+37:         User,
+38:         related_name='finance_wallets', on_delete=models.CASCADE
+39:     )
+40: 
+41:     currency = models.ForeignKey(
+42:         Currency,
+43:         on_delete=models.PROTECT
+44:     )
+45: 
+46:     balance = models.DecimalField(
+47:         max_digits=20,
+48:         decimal_places=2,
+49:         default=0
+50:     )
+51: 
+52:     active = models.BooleanField(
+53:         default=True
+54:     )
+55: 
+56:     created_at = models.DateTimeField(
+57:         auto_now_add=True
+58:     )
+59: 
+60: 
+61: class WalletTransaction(models.Model):
+62: 
+63:     TYPES = (
+64:         ("deposit","Dépôt"),
+65:         ("withdraw","Retrait"),
+66:         ("transfer","Transfert"),
+67:         ("purchase","Achat"),
+68:         ("reward","Récompense"),
+69:     )
+70: 
+71:     wallet = models.ForeignKey(
+72:         Wallet,
+73:         related_name='finance_wallets', on_delete=models.CASCADE
+74:     )
+75: 
+76:     transaction_type = models.CharField(
+77:         max_length=50,
+78:         choices=TYPES
+79:     )
+80: 
+81:     amount = models.DecimalField(
+82:         max_digits=20,
+83:         decimal_places=2
+84:     )
+85: 
+86:     reference = models.CharField(
+87:         max_length=255,
+88:         unique=True
+89:     )
+90: 
+91:     status = models.CharField(
+92:         max_length=50,
+93:         default="pending"
+94:     )
+95: 
+96:     created_at = models.DateTimeField(
+97:         auto_now_add=True
+98:     )
+99: 
+100: 
+101: class ExchangeRate(models.Model):
+102: 
+103:     from_currency = models.ForeignKey(
+104:         Currency,
+105:         related_name='exchange_from', on_delete=models.CASCADE
+106:     )
+107: 
+108:     to_currency = models.ForeignKey(
+109:         Currency,
+110:         related_name='exchange_to', on_delete=models.CASCADE
+111:     )
+112: 
+113:     rate = models.DecimalField(
+114:         max_digits=20,
+115:         decimal_places=8
+116:     )
+117: 
+118:     source = models.CharField(
+119:         max_length=255
+120:     )
+121: 
+122:     active_date = models.DateTimeField(
+123:         auto_now_add=True
+124:     )
+125: 
+126: 
+127: 
+128: from django.db import models
+129: 
+130: 
+131: 
+132: class FinancialLedger(models.Model):
+133: 
+134:     TYPES = (
+135: 
+
+=== 2. FINANCE.WALLET_MODELS ===
+--- finance\wallet_models.py ---
+1: from django.db import models
+2: 
+3: 
+4: 
+5: class Wallet(models.Model):
+6: 
+7:     owner = models.ForeignKey(
+8: 
+9:         "core.Profile",
+10: 
+11:         on_delete=models.CASCADE
+12: 
+13:     )
+14: 
+15: 
+16:     currency = models.ForeignKey(
+17: 
+18:         "finance.Currency",
+19: 
+20:         on_delete=models.PROTECT
+21: 
+22:     )
+23: 
+24: 
+25:     balance = models.DecimalField(
+26: 
+27:         max_digits=20,
+28: 
+29:         decimal_places=2,
+30: 
+31:         default=0
+32: 
+33:     )
+34: 
+35: 
+36:     active = models.BooleanField(
+37: 
+38:         default=True
+39: 
+40:     )
+41: 
+42: 
+43:     created_at = models.DateTimeField(
+44: 
+45:         auto_now_add=True
+46: 
+47:     )
+48: 
+49: 
+50:     def __str__(self):
+51: 
+52:         return (
+53: 
+54:             str(self.owner)
+55: 
+56:             +
+57: 
+58:             " - "
+59: 
+60:             +
+61: 
+62:             self.currency.code
+63: 
+64:         )
+65: 
+66: 
+67: 
+68: 
+69: class WalletOperation(models.Model):
+70: 
+71: 
+72:     TYPES = [
+73: 
+74:         ("credit","Crédit"),
+75: 
+76:         ("debit","Débit"),
+77: 
+78:     ]
+79: 
+80: 
+81:     wallet = models.ForeignKey(
+82: 
+83:         Wallet,
+84: 
+85:         on_delete=models.CASCADE
+86: 
+87:     )
+88: 
+89: 
+90:     amount = models.DecimalField(
+91: 
+92:         max_digits=20,
+93: 
+94:         decimal_places=2
+95: 
+96:     )
+97: 
+98: 
+99:     operation_type = models.CharField(
+100: 
+101:         max_length=20,
+102: 
+103:         choices=TYPES
+104: 
+105:     )
+106: 
+107: 
+108:     reference = models.CharField(
+109: 
+110:         max_length=100,
+111: 
+112:         unique=True
+113: 
+114:     )
+115: 
+116: 
+117:     created_at = models.DateTimeField(
+118: 
+119:         auto_now_add=True
+120: 
+121:     )
+122: 
+
+=== 3. FINANCE.WALLET_SERVICE ===
+--- finance\wallet_service.py ---
+1: from decimal import Decimal
+2: 
+3: from .models import WalletTransaction
+4: 
+5: 
+6: 
+7: def credit_wallet(wallet, amount, reference):
+8: 
+9:     wallet.balance += Decimal(amount)
+10: 
+11:     wallet.save()
+12: 
+13: 
+14:     WalletTransaction.objects.create(
+15: 
+16:         wallet=wallet,
+17: 
+18:         transaction_type="deposit",
+19: 
+20:         amount=amount,
+21: 
+22:         reference=reference,
+23: 
+24:         status="completed"
+25: 
+26:     )
+27: 
+28: 
+29:     return wallet.balance
+30: 
+31: 
+32: 
+33: 
+34: def debit_wallet(wallet, amount, reference):
+35: 
+36:     amount = Decimal(amount)
+37: 
+38: 
+39:     if wallet.balance < amount:
+40: 
+41:         raise Exception(
+42:             "Solde insuffisant"
+43:         )
+44: 
+45: 
+46:     wallet.balance -= amount
+47: 
+48:     wallet.save()
+49: 
+50: 
+51:     WalletTransaction.objects.create(
+52: 
+53:         wallet=wallet,
+54: 
+55:         transaction_type="withdraw",
+56: 
+57:         amount=amount,
+58: 
+59:         reference=reference,
+60: 
+61:         status="completed"
+62: 
+63:     )
+64: 
+65: 
+66:     return wallet.balance
+67: 
+68: 
+69: 
+70: 
+71: def transfer_wallet(sender, receiver, amount, reference):
+72: 
+73:     amount = Decimal(amount)
+74: 
+75: 
+76:     if sender.balance < amount:
+77: 
+78:         raise Exception(
+79:             "Solde insuffisant"
+80:         )
+81: 
+82: 
+83:     sender.balance -= amount
+84: 
+85:     receiver.balance += amount
+86: 
+87: 
+88:     sender.save()
+89: 
+90:     receiver.save()
+91: 
+92: 
+93:     WalletTransaction.objects.create(
+94: 
+95:         wallet=sender,
+96: 
+97:         transaction_type="transfer",
+98: 
+99:         amount=amount,
+100: 
+101:         reference=reference+"-OUT",
+102: 
+103:         status="completed"
+104: 
+105:     )
+106: 
+107: 
+108:     WalletTransaction.objects.create(
+109: 
+110:         wallet=receiver,
+111: 
+112:         transaction_type="transfer",
+113: 
+114:         amount=amount,
+115: 
+116:         reference=reference+"-IN",
+117: 
+118:         status="completed"
+119: 
+120:     )
+121: 
+122: 
+123:     return True
+124: 
+125: 
+
+=== 4. WALLET.MODELS ===
+--- wallet\models.py ---
+1: from django.db import models
+2: from django.conf import settings
+3: 
+4: 
+5: class Wallet(models.Model):
+6: 
+7:     STATUS = [
+8:         ("ACTIVE","ACTIVE"),
+9:         ("BLOCKED","BLOCKED"),
+10:         ("SUSPENDED","SUSPENDED"),
+11:         ("CLOSED","CLOSED"),
+12:     ]
+13: 
+14:     user = models.OneToOneField(
+15:         settings.AUTH_USER_MODEL,
+16:         related_name='wallet_related_items', on_delete=models.CASCADE
+17:     )
+18: 
+19:     status = models.CharField(
+20:         max_length=20,
+21:         choices=STATUS,
+22:         default="ACTIVE"
+23:     )
+24: 
+25:     created_at = models.DateTimeField(
+26:         auto_now_add=True
+27:     )
+28: 
+29: 
+30:     def __str__(self):
+31:         return f"Wallet {self.user}"
+32: 
+33: 
+34: class WalletBalance(models.Model):
+35: 
+36:     wallet = models.ForeignKey(
+37:         Wallet,
+38:         related_name='balances', on_delete=models.CASCADE
+39:     )
+40: 
+41:     currency = models.CharField(
+42:         max_length=10
+43:     )
+44: 
+45:     available_balance = models.DecimalField(
+46:         max_digits=20,
+47:         decimal_places=2,
+48:         default=0
+49:     )
+50: 
+51:     locked_balance = models.DecimalField(
+52:         max_digits=20,
+53:         decimal_places=2,
+54:         default=0
+55:     )
+56: 
+57:     updated_at = models.DateTimeField(
+58:         auto_now=True
+59:     )
+60: 
+61: 
+62:     class Meta:
+63:         unique_together = (
+64:             "wallet",
+65:             "currency"
+66:         )
+67: 
+68: 
+69: class WalletTransaction(models.Model):
+70: 
+71:     TYPES = [
+72:         ("DEPOSIT","DEPOSIT"),
+73:         ("WITHDRAWAL","WITHDRAWAL"),
+74:         ("TRANSFER","TRANSFER"),
+75:         ("PAYMENT","PAYMENT"),
+76:         ("REFUND","REFUND"),
+77:         ("FEE","FEE"),
+78:     ]
+79: 
+80: 
+81:     wallet = models.ForeignKey(
+82:         Wallet,
+83:         related_name='wallet_transactions', on_delete=models.CASCADE
+84:     )
+85: 
+86:     transaction_type = models.CharField(
+87:         max_length=30,
+88:         choices=TYPES
+89:     )
+90: 
+91:     amount = models.DecimalField(
+92:         max_digits=20,
+93:         decimal_places=2
+94:     )
+95: 
+96:     currency = models.CharField(
+97:         max_length=10
+98:     )
+99: 
+100:     reference = models.CharField(
+101:         max_length=100,
+102:         unique=True
+103:     )
+104: 
+105:     status = models.CharField(
+106:         max_length=30,
+107:         default="PENDING"
+108:     )
+109: 
+110:     created_at = models.DateTimeField(
+111:         auto_now_add=True
+112:     )
+113: 
+114: 
+115: class ExchangeRate(models.Model):
+116: 
+117:     base_currency = models.CharField(
+118:         max_length=10
+119:     )
+120: 
+121:     target_currency = models.CharField(
+122:         max_length=10
+123:     )
+124: 
+125:     rate = models.DecimalField(
+126:         max_digits=20,
+127:         decimal_places=6
+128:     )
+129: 
+130:     source = models.CharField(
+131:         max_length=100,
+132:         default="NSIKAY"
+133:     )
+134: 
+135:     created_at = models.DateTimeField(
+136:         auto_now_add=True
+137:     )
+138: 
+139: 
+140: class WalletSecurityEvent(models.Model):
+141: 
+142:     wallet = models.ForeignKey(
+143:         Wallet,
+144:         related_name='security_events', on_delete=models.CASCADE
+145:     )
+146: 
+147:     event = models.CharField(
+148:         max_length=100
+149:     )
+150: 
+151:     description = models.TextField(
+152:         blank=True
+153:     )
+154: 
+155:     created_at = models.DateTimeField(
+156:         auto_now_add=True
+157:     )
+158: 
+159: 
+160: 
+161: 
+162: 
+163: 
+164: from django.db import models
+165: from django.contrib.auth import get_user_model
+166: 
+167: User = get_user_model()
+168: 
+169: 
+170: class WalletOperation(models.Model):
+171: 
+172:     TYPES = (
+173:         ("deposit","DEPOT"),
+174:         ("withdraw","RETRAIT"),
+175:         ("transfer","TRANSFERT"),
+176:     )
+177: 
+178:     wallet = models.ForeignKey(
+179:         "wallet.Wallet",
+180:         on_delete=models.CASCADE,
+181:         related_name="operations"
+182:     )
+183: 
+184:     operation_type = models.CharField(
+185:         max_length=20,
+186:         choices=TYPES
+187:     )
+188: 
+189:     amount = models.DecimalField(
+190:         max_digits=20,
+191:         decimal_places=2
+192:     )
+193: 
+194:     currency = models.CharField(
+195:         max_length=10,
+196:         default="USD"
+197:     )
+198: 
+199:     fee = models.DecimalField(
+200:         max_digits=20,
+201:         decimal_places=2,
+202:         default=0
+203:     )
+204: 
+205:     destination_wallet = models.ForeignKey(
+206:         "wallet.Wallet",
+207:         null=True,
+208:         blank=True,
+209:         on_delete=models.SET_NULL,
+210:         related_name="incoming_operations"
+211:     )
+212: 
+213:     created_at = models.DateTimeField(
+214:         auto_now_add=True
+215:     )
+216: 
+217: 
+218:     def __str__(self):
+219:         return f"{self.operation_type} {self.amount} {self.currency}"
+220: 
+221: 
+222: 
+223: class WalletCommission(models.Model):
+224: 
+225:     transfer_fee_percent = models.DecimalField(
+226:         max_digits=5,
+227:         decimal_places=2,
+228:         default=0.25
+229:     )
+230: 
+231:     withdrawal_fee_percent = models.DecimalField(
+232:         max_digits=5,
+233:         decimal_places=2,
+234:         default=1.20
+235:     )
+236: 
+237:     updated_at = models.DateTimeField(
+238:         auto_now=True
+239:     )
+240: 
+241: from django.db import models
+242: 
+243: 
+244: class WalletAuditLog(models.Model):
+245: 
+246:     ACTIONS = (
+247:         ("LOGIN","Connexion"),
+248:         ("DEPOSIT","Dépôt"),
+249:         ("WITHDRAW","Retrait"),
+250:         ("TRANSFER","Transfert"),
+251:         ("SECURITY","Sécurité"),
+252:     )
+253: 
+254: 
+255:     wallet = models.ForeignKey(
+256:         "wallet.Wallet",
+257:         on_delete=models.CASCADE,
+258:         related_name="audit_logs"
+259:     )
+260: 
+261: 
+262:     action = models.CharField(
+263:         max_length=30,
+264:         choices=ACTIONS
+265:     )
+266: 
+267: 
+268:     ip_address = models.GenericIPAddressField(
+269:         null=True,
+270:         blank=True
+271:     )
+272: 
+273: 
+274:     details = models.JSONField(
+275:         default=dict
+276:     )
+277: 
+278: 
+279:     created_at = models.DateTimeField(
+280:         auto_now_add=True
+281:     )
+282: 
+283: 
+284:     def __str__(self):
+285:         return f"{self.action} - {self.wallet}"
+286: 
+287: from django.db import models
+288: 
+289: 
+290: class WalletKYCProfile(models.Model):
+291: 
+292:     LEVELS = (
+293:         ("LEVEL_1","Niveau 1"),
+294:         ("LEVEL_2","Niveau 2"),
+295:         ("LEVEL_3","Niveau 3"),
+296:     )
+297: 
+298: 
+299:     user = models.OneToOneField(
+300:         "auth.User",
+301:         on_delete=models.CASCADE,
+302:         related_name="wallet_kyc"
+303:     )
+304: 
+305: 
+306:     level = models.CharField(
+307:         max_length=20,
+308:         choices=LEVELS,
+309:         default="LEVEL_1"
+310:     )
+311: 
+312: 
+313:     daily_deposit_limit = models.DecimalField(
+314:         max_digits=20,
+315:         decimal_places=2,
+316:         default=1000
+317:     )
+318: 
+319: 
+320:     daily_withdraw_limit = models.DecimalField(
+321:         max_digits=20,
+322:         decimal_places=2,
+323:         default=500
+324:     )
+325: 
+326: 
+327:     daily_transfer_limit = models.DecimalField(
+328:         max_digits=20,
+329:         decimal_places=2,
+330:         default=500
+331:     )
+332: 
+333: 
+334:     active = models.BooleanField(
+335:         default=True
+336:     )
+337: 
+338: 
+339:     updated_at = models.DateTimeField(
+340:         auto_now=True
+341:     )
+342: 
+343: 
+344: 
+345:     def __str__(self):
+346: 
+347:         return f"{self.user} - {self.level}"
+348: 
+349: from django.db import models
+350: 
+351: 
+352: class WalletBankAccount(models.Model):
+353: 
+354:     STATUS = (
+355: 
+356:         ("PENDING","En attente"),
+357: 
+358:         ("VERIFIED","Certifié"),
+359: 
+360:         ("BLOCKED","Bloqué"),
+361: 
+362:     )
+363: 
+364: 
+365:     wallet = models.ForeignKey(
+366: 
+367:         "wallet.Wallet",
+368: 
+369:         on_delete=models.CASCADE,
+370: 
+371:         related_name="bank_accounts"
+372: 
+373:     )
+374: 
+375: 
+376:     bank_name = models.CharField(
+377: 
+378:         max_length=255
+379: 
+380:     )
+381: 
+382: 
+383:     account_name = models.CharField(
+384: 
+385:         max_length=255
+386: 
+387:     )
+388: 
+389: 
+390:     account_number = models.CharField(
+391: 
+392:         max_length=100
+393: 
+394:     )
+395: 
+396: 
+397:     country = models.CharField(
+398: 
+399:         max_length=100
+400: 
+401:     )
+402: 
+403: 
+404:     currency = models.CharField(
+405: 
+406:         max_length=10,
+407: 
+408:         default="USD"
+409: 
+410:     )
+411: 
+412: 
+413:     status = models.CharField(
+414: 
+415:         max_length=20,
+416: 
+417:         choices=STATUS,
+418: 
+419:         default="PENDING"
+420: 
+421:     )
+422: 
+423: 
+424:     certified = models.BooleanField(
+425: 
+426:         default=False
+427: 
+428:     )
+429: 
+430: 
+431:     created_at = models.DateTimeField(
+432: 
+433:         auto_now_add=True
+434: 
+435:     )
+436: 
+437: 
+438:     def __str__(self):
+439: 
+440:         return self.bank_name + " - " + self.account_name
+441: 
+442: 
+
+=== 5. IMPORTS / UTILISATIONS WALLET ===
+
+--- from finance.models import Wallet ---
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\add_dashboard_stats.py:10 : from finance.models import Wallet, Currency
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\add_finance_dashboard.py:10 : from finance.models import Wallet, Currency, ExchangeRate
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\add_wenze_dashboard.py:9 : from finance.models import Wallet
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\models.py:3 : from finance.models import Wallet, Currency
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\security_engine.py:62 : from finance.models import WalletSecurityStatus
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\operations\services.py:3 : from finance.models import Wallet
+
+--- from finance.models import Wallet, ---
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\add_dashboard_stats.py:10 : from finance.models import Wallet, Currency
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\add_finance_dashboard.py:10 : from finance.models import Wallet, Currency, ExchangeRate
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\models.py:3 : from finance.models import Wallet, Currency
+
+--- from finance.wallet_models import Wallet ---
+AUCUNE OCCURRENCE
+
+--- from wallet.models import Wallet ---
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\bank_models.py:2 : from wallet.models import Wallet
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\finance_admin_views.py:5 : from wallet.models import Wallet
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\signals.py:5 : from wallet.models import Wallet
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\wallet_api_views.py:2 : from wallet.models import Wallet, WalletTransaction, WalletSecurityEvent
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\wallet_bank_views.py:6 : from wallet.models import WalletBankAccount
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\wallet_dashboard_views.py:6 : from wallet.models import Wallet, WalletTransaction
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\serializers\wallet_audit_serializer.py:3 : from wallet.models import WalletAuditLog
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\serializers\wallet_bank_serializer.py:3 : from wallet.models import WalletBankAccount
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\serializers\wallet_serializers.py:2 : from wallet.models import Wallet, WalletTransaction, WalletSecurityEvent
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\currency_models.py:2 : from wallet.models import Wallet
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\signals.py:6 : from wallet.models import Wallet
+
+--- import Wallet ---
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\add_dashboard_stats.py:10 : from finance.models import Wallet, Currency
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\add_finance_dashboard.py:10 : from finance.models import Wallet, Currency, ExchangeRate
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\add_wenze_dashboard.py:9 : from finance.models import Wallet
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\update_finance_dashboard_real.py:29 : from banking.models import Wallet
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\bank_models.py:2 : from wallet.models import Wallet
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\finance_admin_views.py:5 : from wallet.models import Wallet
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\signals.py:5 : from wallet.models import Wallet
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\wallet_api_views.py:2 : from wallet.models import Wallet, WalletTransaction, WalletSecurityEvent
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\wallet_api_views.py:10 : from api_nsikay.permissions.wallet_permissions import WalletAccessPermission
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\wallet_bank_views.py:6 : from wallet.models import WalletBankAccount
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\wallet_dashboard_views.py:6 : from wallet.models import Wallet, WalletTransaction
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\serializers\currency_wallet_serializer.py:2 : from wallet.currency_models import WalletCurrencyBalance
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\serializers\wallet_audit_serializer.py:3 : from wallet.models import WalletAuditLog
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\serializers\wallet_bank_serializer.py:3 : from wallet.models import WalletBankAccount
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\serializers\wallet_serializers.py:2 : from wallet.models import Wallet, WalletTransaction, WalletSecurityEvent
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\models.py:3 : from finance.models import Wallet, Currency
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\dashboard\views.py:370 : from banking.models import Wallet
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\security_engine.py:62 : from finance.models import WalletSecurityStatus
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\wallet_service.py:3 : from .models import WalletTransaction
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\operations\services.py:3 : from finance.models import Wallet
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\apps.py:13 : import wallet.signals
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\currency_models.py:2 : from wallet.models import Wallet
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\signals.py:6 : from wallet.models import Wallet
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\signals.py:7 : from wallet.currency_models import WalletCurrencyBalance
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\views.py:3 : from .models import WalletBalance, WalletTransaction
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\views_secure.py:5 : from .models import Wallet, WalletBalance, WalletTransaction
+
+--- Wallet.objects ---
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\add_dashboard_stats.py:22 : Wallet.objects.count(),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\add_finance_dashboard.py:36 : Wallet.objects.count(),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\add_wenze_dashboard.py:19 : Wallet.objects.count(),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\add_wenze_dashboard.py:27 : Wallet.objects.values(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\update_finance_dashboard_real.py:69 : for wallet in Wallet.objects.all():
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\update_real_dashboards.py:145 : "portefeuilles": Wallet.objects.count(),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\finance_admin_views.py:19 : wallets = Wallet.objects.count()
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\signals.py:19 : Wallet.objects.create(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\wallet_api_views.py:16 : queryset = Wallet.objects.all()
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\wallet_dashboard_views.py:17 : wallet = Wallet.objects.filter(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\dashboard\views.py:206 : "portefeuilles": Wallet.objects.count(),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\dashboard\views.py:410 : for wallet in Wallet.objects.all():
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\operations\services.py:24 : wallet = Wallet.objects.get(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\operations\services.py:76 : wallet = Wallet.objects.get(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\signals.py:19 : wallet, created_wallet = Wallet.objects.get_or_create(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\views_secure.py:18 : wallet, created = Wallet.objects.get_or_create(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\views_secure.py:67 : wallet=Wallet.objects.get(
+
+--- WalletTransaction.objects ---
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\update_real_dashboards.py:147 : "transactions_wallet": WalletTransaction.objects.count()
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\wallet_api_views.py:24 : queryset = WalletTransaction.objects.all()
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\dashboard\views.py:208 : "transactions_wallet": WalletTransaction.objects.count()
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\wallet_service.py:14 : WalletTransaction.objects.create(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\wallet_service.py:51 : WalletTransaction.objects.create(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\wallet_service.py:93 : WalletTransaction.objects.create(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\wallet_service.py:108 : WalletTransaction.objects.create(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\views.py:28 : transactions = WalletTransaction.objects.all()
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\views_secure.py:65 : transaction = WalletTransaction.objects.create(
+
+--- WalletOperation.objects ---
+AUCUNE OCCURRENCE
+
+=== 6. COMPTAGE DONNEES EXISTANTES ===
+
+=== 7. FRAIS FINANCIERS A VERIFIER ===
+
+--- finance\fees.py ---
+4: TRANSFER_COMMISSION = Decimal("0.0025")
+6: WITHDRAW_FEE = Decimal("0.005")
+10: def calculate_platform_commission(amount):
+12: return Decimal(amount) * TRANSFER_COMMISSION
+18: return Decimal(amount) * WITHDRAW_FEE
+
+--- finance\ledger.py ---
+5: WITHDRAW_FEE_RATE = Decimal("0.005")
+7: TRANSFER_FEE_RATE = Decimal("0.0025")
+12: def calculate_withdraw_fee(amount):
+17: WITHDRAW_FEE_RATE
+23: def calculate_transfer_fee(amount):
+28: TRANSFER_FEE_RATE
+
+--- transactions\services.py ---
+4: def calculate_fees(transaction_type, amount):
+11: return amount * Decimal("0.0025")
+16: return amount * Decimal("0.0050")
+26: fees = calculate_fees(
+54: "fees":
+55: str(fees),
+
+--- wallet\services.py ---
+5: TRANSFER_FEE = Decimal("0.25")
+6: WITHDRAW_FEE = Decimal("1.20")
+9: def calculate_transfer_fee(amount):
+12: amount * TRANSFER_FEE / Decimal("100")
+17: def calculate_withdraw_fee(amount):
+20: amount * WITHDRAW_FEE / Decimal("100")
+27: fee = calculate_transfer_fee(amount)
+33: "commission": fee,
+41: fee = calculate_withdraw_fee(amount)
+46: "fee": fee,
+47: "received": amount-fee,
+
+=== 8. DJANGO CHECK ===
+=== ALIASES DASHBOARD NSIKAY FINALISES ===
+=== API NSIKAY VIEWS COMPATIBILITE CHARGEES ===
+System check identified no issues (0 silenced).
+DJANGO_CHECK=OK
+
+=== CONCLUSION ===
+AUDIT UNIQUEMENT.
+AUCUN WALLET MODIFIE.
+AUCUNE TRANSACTION CREEE.
+AUCUNE COMMANDE WENZE MODIFIEE.
+AUCUNE MIGRATION MODIFIEE.

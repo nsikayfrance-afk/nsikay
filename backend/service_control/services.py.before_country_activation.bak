@@ -1,0 +1,454 @@
+﻿from dataclasses import dataclass
+
+from django.utils import timezone
+
+from service_control.models import (
+    GlobalService,
+    CountryServiceStatus,
+    ServiceActivation,
+    ServiceRule,
+)
+
+from certification.models import NSIKAYCertification
+
+from administration.models import HealthInsurance
+
+from banking.models import (
+    Bank,
+    BankCountry,
+    BankCountryAccess,
+)
+
+from partner_finance.models import (
+    PartnerApplication,
+    PartnerCertification,
+)
+
+
+@dataclass
+class ActivationResult:
+    allowed: bool
+    message: str
+    activation: ServiceActivation | None = None
+
+
+class ServiceActivationValidator:
+
+    @staticmethod
+    def check_certification(service, user=None):
+        """
+        Verification de la certification du prestataire.
+
+        La certification est controlee au niveau du prestataire,
+        et non au niveau de la disponibilite generale du service
+        dans un pays.
+
+        Pendant la transition des anciennes donnees NSIKAY,
+        les statuts 'approved' et 'VALIDE' sont acceptes.
+        """
+
+        if not user:
+            return (
+                False,
+                "Certification requise : aucun utilisateur/prestataire "
+                "n'a ete fourni pour la verification."
+            )
+
+        certifications = NSIKAYCertification.objects.filter(
+            owner=user
+        )
+
+        valid_statuses = {"approved", "VALIDE"}
+
+        certification = None
+
+        for item in certifications:
+            status = str(item.status).strip()
+
+            if status not in valid_statuses:
+                continue
+
+            activity = str(item.activity or "").strip().lower()
+            service_name = str(service.name or "").strip().lower()
+
+            if activity == service_name:
+                certification = item
+                break
+
+            if service_name and service_name in activity:
+                certification = item
+                break
+
+        if not certification:
+            return (
+                False,
+                f"Aucune certification validee pour le service "
+                f"« {service.name} »."
+            )
+
+        return True, "Certification validee."
+
+
+    @staticmethod
+    def check_health_insurance(service, user=None, country=None):
+        """
+        Controle l'assurance sante du prestataire/personne
+        lorsque la regle du service l'exige.
+
+        Conditions :
+        - utilisateur fourni ;
+        - assurance validee ;
+        - validation administrative ;
+        - contrat actuellement en vigueur ;
+        - pays correspondant lorsque le pays est fourni.
+        """
+
+        if not user:
+            return (
+                False,
+                "Assurance sante requise : aucun utilisateur/prestataire "
+                "n'a ete fourni."
+            )
+
+        today = timezone.localdate()
+
+        queryset = HealthInsurance.objects.filter(
+            insured_user=user,
+            status="validated",
+            validated_by_admin=True,
+            start_date__lte=today,
+            end_date__gte=today,
+        )
+
+        if country:
+            country_name = country.country_name.strip()
+
+            queryset = queryset.filter(
+                country__iexact=country_name
+            )
+
+        insurance = queryset.order_by("-end_date").first()
+
+        if not insurance:
+            if country:
+                return (
+                    False,
+                    f"Aucune assurance sante validee et en cours "
+                    f"pour {country.country_name}."
+                )
+
+            return (
+                False,
+                "Aucune assurance sante validee et en cours "
+                "n'a ete trouvee."
+            )
+
+        return True, "Assurance sante validee et actuellement en vigueur."
+
+
+    @staticmethod
+    def check_bank(country):
+        country_name = country.country_name.strip()
+
+        banks = Bank.objects.filter(
+            country__iexact=country_name,
+            certified=True,
+            active=True,
+        )
+
+        if not banks.exists():
+            banks = Bank.objects.filter(
+                certified=True,
+                active=True,
+                bankcountryaccess__country_name__iexact=country_name,
+                bankcountryaccess__approved=True,
+            )
+
+        if not banks.exists():
+            banks = Bank.objects.filter(
+                certified=True,
+                active=True,
+                bankcountry__country__iexact=country_name,
+                bankcountry__approved=True,
+            )
+
+        if not banks.exists():
+            return (
+                False,
+                f"Aucun partenaire bancaire certifie et actif "
+                f"n'est valide pour {country_name}."
+            )
+
+        return True, "Partenaire bancaire valide trouve."
+
+
+    @staticmethod
+    def check_financial_partner(country):
+        country_name = country.country_name.strip()
+
+        partners = PartnerApplication.objects.filter(
+            status="approved"
+        ).filter(
+            partner_certification_relation__identity_verified=True,
+            partner_certification_relation__documents_verified=True,
+        )
+
+        if not partners.exists():
+            return (
+                False,
+                "Aucun partenaire financier certifie n'est disponible."
+            )
+
+        valid_banks = Bank.objects.filter(
+            country__iexact=country_name,
+            certified=True,
+            active=True,
+        )
+
+        if not valid_banks.exists():
+            valid_banks = Bank.objects.filter(
+                certified=True,
+                active=True,
+                bankcountryaccess__country_name__iexact=country_name,
+                bankcountryaccess__approved=True,
+            )
+
+        if not valid_banks.exists():
+            return (
+                False,
+                f"Aucun partenaire bancaire valide dans {country_name}."
+            )
+
+        return (
+            True,
+            f"Partenaire financier et bancaire valide pour {country_name}."
+        )
+
+
+    @staticmethod
+    def check_country_authorization(service, country):
+        activation = ServiceActivation.objects.filter(
+            service=service,
+            country=country,
+        ).first()
+
+        if not activation:
+            return (
+                False,
+                "La relation service/pays n'existe pas."
+            )
+
+        return True, "Relation service/pays existante."
+
+
+    @staticmethod
+    def validate(
+        service,
+        country,
+        *,
+        user=None,
+        health_insurance_validated=False,
+    ):
+        """
+        Validation complete d'un exercice de service.
+
+        La disponibilite du service dans le pays est controlee
+        separément de l'eligibilite du prestataire.
+        """
+
+        if not isinstance(service, GlobalService):
+            return ActivationResult(
+                False,
+                "Service NSIKAY invalide.",
+            )
+
+        if not isinstance(country, CountryServiceStatus):
+            return ActivationResult(
+                False,
+                "Pays NSIKAY invalide.",
+            )
+
+        try:
+            rule = ServiceRule.objects.get(
+                service=service
+            )
+        except ServiceRule.DoesNotExist:
+            return ActivationResult(
+                False,
+                "Aucune regle d'activation definie pour ce service.",
+            )
+
+        activation = ServiceActivation.objects.filter(
+            service=service,
+            country=country,
+        ).first()
+
+        if not activation:
+            return ActivationResult(
+                False,
+                "La relation service/pays n'existe pas.",
+            )
+
+        # Certification du prestataire
+        if rule.certification_required:
+            valid, message = ServiceActivationValidator.check_certification(
+                service,
+                user=user,
+            )
+
+            if not valid:
+                return ActivationResult(
+                    False,
+                    message,
+                    activation,
+                )
+
+        # Partenaire bancaire
+        if rule.partner_bank_required:
+            valid, message = ServiceActivationValidator.check_bank(
+                country
+            )
+
+            if not valid:
+                return ActivationResult(
+                    False,
+                    message,
+                    activation,
+                )
+
+        # Partenaire financier
+        if rule.financial_partner_required:
+            valid, message = ServiceActivationValidator.check_financial_partner(
+                country
+            )
+
+            if not valid:
+                return ActivationResult(
+                    False,
+                    message,
+                    activation,
+                )
+
+        # Assurance sante
+        if rule.health_insurance_required:
+
+            if health_insurance_validated:
+                insurance_valid = True
+                insurance_message = (
+                    "Assurance sante deja validee par le processus appelant."
+                )
+            else:
+                insurance_valid, insurance_message = (
+                    ServiceActivationValidator.check_health_insurance(
+                        service,
+                        user=user,
+                        country=country,
+                    )
+                )
+
+            if not insurance_valid:
+                return ActivationResult(
+                    False,
+                    insurance_message,
+                    activation,
+                )
+
+        # Autorisation du pays
+        if rule.country_authorization_required:
+            valid, message = (
+                ServiceActivationValidator.check_country_authorization(
+                    service,
+                    country,
+                )
+            )
+
+            if not valid:
+                return ActivationResult(
+                    False,
+                    message,
+                    activation,
+                )
+
+        return ActivationResult(
+            True,
+            "Toutes les conditions d'activation sont satisfaites.",
+            activation,
+        )
+
+
+class ServiceActivationManager:
+
+    @staticmethod
+    def activate(
+        service,
+        country,
+        *,
+        user=None,
+        health_insurance_validated=False,
+    ):
+        result = ServiceActivationValidator.validate(
+            service,
+            country,
+            user=user,
+            health_insurance_validated=health_insurance_validated,
+        )
+
+        if not result.allowed:
+            return result
+
+        activation = result.activation
+
+        activation.active = True
+        activation.validated_by_admin = True
+        activation.reason = (
+            "Activation autorisee apres verification "
+            "des conditions NSIKAY."
+        )
+
+        activation.save(
+            update_fields=[
+                "active",
+                "validated_by_admin",
+                "reason",
+            ]
+        )
+
+        return ActivationResult(
+            True,
+            "Service active avec succes.",
+            activation,
+        )
+
+
+    @staticmethod
+    def deactivate(service, country, reason=None):
+        activation = ServiceActivation.objects.filter(
+            service=service,
+            country=country,
+        ).first()
+
+        if not activation:
+            return ActivationResult(
+                False,
+                "La relation service/pays n'existe pas.",
+            )
+
+        activation.active = False
+
+        activation.reason = (
+            reason
+            or "Service desactive par l'administration NSIKAY."
+        )
+
+        activation.save(
+            update_fields=[
+                "active",
+                "reason",
+            ]
+        )
+
+        return ActivationResult(
+            True,
+            "Service desactive avec succes.",
+            activation,
+        )

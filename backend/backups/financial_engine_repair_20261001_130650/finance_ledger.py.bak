@@ -1,0 +1,70 @@
+﻿from financial_routing.services import calculate_fee
+
+
+def calculate_withdraw_fee(amount):
+
+    fee, _ = calculate_fee(
+        amount,
+        "WITHDRAWAL"
+    )
+
+    return fee
+
+
+def calculate_transfer_fee(amount):
+
+    fee, _ = calculate_fee(
+        amount,
+        "TRANSFER_INTERNAL"
+    )
+
+    return fee
+
+
+def calculate_mobile_money_fee(amount):
+
+    fee, _ = calculate_fee(
+        amount,
+        "TRANSFER_MOBILE_MONEY"
+    )
+
+    return fee
+
+
+def calculate_visa_fee(amount):
+
+    fee, _ = calculate_fee(
+        amount,
+        "TRANSFER_VISA"
+    )
+
+    return fee
+
+
+def calculate_wenze_fee(amount):
+
+    fee, _ = calculate_fee(
+        amount,
+        "WENZE"
+    )
+
+    return fee
+
+
+def create_ledger_entry(
+    wallet,
+    operation,
+    amount,
+    currency,
+    reference
+):
+
+    from finance.models import FinancialLedger
+
+    return FinancialLedger.objects.create(
+        wallet=wallet,
+        transaction_type=operation,
+        amount=amount,
+        currency=currency,
+        reference=reference
+    )

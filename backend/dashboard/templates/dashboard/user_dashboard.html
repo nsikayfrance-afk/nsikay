@@ -1,0 +1,45 @@
+﻿<h1>Mon compte NSIKAY</h1>
+
+
+<h2>Mes portefeuilles</h2>
+
+
+{% for wallet in wallets %}
+
+<p>
+
+{{ wallet.currency.code }}
+
+:
+
+{{ wallet.balance }}
+
+</p>
+
+
+{% empty %}
+
+<p>Aucun portefeuille disponible</p>
+
+
+{% endfor %}
+
+
+<hr>
+
+
+<h2>Services</h2>
+
+
+<button>Transfert</button>
+
+<button>Dépôt</button>
+
+<button>Retrait</button>
+
+<button>Achat</button>
+
+<button>Demander un crédit</button>
+
+<button>Assurance</button>
+

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+width="512" height="512" viewBox="0 0 512 512">
+<rect width="512" height="512" rx="90" fill="#102a43"/>
+<polygon
+points="256,60 410,175 350,365 256,445 162,365 102,175"
+fill="#dbeafe"
+stroke="#ffffff"
+stroke-width="8"/>
+<polygon
+points="256,60 410,175 256,445"
+fill="#ffffff"
+opacity="0.30"/>
+<polygon
+points="256,60 256,445 102,175"
+fill="#94a3b8"
+opacity="0.35"/>
+<text x="256" y="472"
+text-anchor="middle"
+font-family="Arial"
+font-size="25"
+font-weight="bold"
+fill="white">Quartz</text>
+<text x="256" y="500"
+text-anchor="middle"
+font-family="Arial"
+font-size="17"
+fill="#dbeafe">0.10 EUR</text>
+</svg>

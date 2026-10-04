@@ -1,0 +1,244 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="utf-8">
+
+<title>Détail demande NSIKAY</title>
+
+<style>
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 30px;
+    background: #f5f7fa;
+}
+
+.box {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    max-width: 900px;
+}
+
+.row {
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.actions {
+    margin-top: 25px;
+}
+
+textarea {
+    width: 500px;
+    max-width: 100%;
+    padding: 10px;
+}
+
+button {
+    padding: 10px 15px;
+    margin-top: 8px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="box">
+
+<h1>
+Demande #{{ activation_request.id }}
+</h1>
+
+<div class="row">
+<strong>Service :</strong>
+{{ activation_request.service.name }}
+</div>
+
+<div class="row">
+<strong>Pays :</strong>
+{{ activation_request.country.country_name }}
+</div>
+
+<div class="row">
+<strong>Pays primaire :</strong>
+{{ activation_request.country.is_primary }}
+</div>
+
+<div class="row">
+<strong>Pays opérationnel :</strong>
+{{ activation_request.country.is_operational }}
+</div>
+
+<div class="row">
+<strong>Demandeur :</strong>
+{{ activation_request.requested_by.username }}
+</div>
+
+<div class="row">
+<strong>Bénéficiaire :</strong>
+{{ activation_request.beneficiary_user.username }}
+</div>
+
+<div class="row">
+<strong>Statut :</strong>
+{{ activation_request.get_status_display }}
+</div>
+
+<div class="row">
+<strong>Certification :</strong>
+{{ activation_request.certification_checked }}
+</div>
+
+<div class="row">
+<strong>Assurance santé :</strong>
+{{ activation_request.health_insurance_checked }}
+</div>
+
+<div class="row">
+<strong>Partenaire bancaire :</strong>
+{{ activation_request.bank_partner_checked }}
+</div>
+
+<div class="row">
+<strong>Partenaire financier :</strong>
+{{ activation_request.financial_partner_checked }}
+</div>
+
+<div class="row">
+<strong>Autorisation pays :</strong>
+{{ activation_request.country_authorization_checked }}
+</div>
+
+<div class="row">
+<strong>Validation administrative :</strong>
+{{ activation_request.admin_validated }}
+</div>
+
+<div class="row">
+<strong>Message :</strong>
+{{ activation_request.validation_message }}
+</div>
+
+<div class="row">
+<strong>Motif de rejet :</strong>
+{{ activation_request.rejection_reason }}
+</div>
+
+<div class="row">
+<strong>Création :</strong>
+{{ activation_request.created_at }}
+</div>
+
+<div class="row">
+<strong>Validation :</strong>
+{{ activation_request.validated_at }}
+</div>
+
+<div class="row">
+<strong>Activation :</strong>
+{{ activation_request.activated_at }}
+</div>
+
+
+{% if activation_request.status == "pending" %}
+
+<div class="actions">
+
+<form
+method="post"
+action="{% url 'workflow_admin_validate' activation_request.id %}"
+>
+
+{% csrf_token %}
+
+<textarea
+name="message"
+rows="3"
+placeholder="Commentaire de validation..."
+></textarea>
+
+<br>
+
+<button type="submit">
+Valider la demande
+</button>
+
+</form>
+
+
+<form
+method="post"
+action="{% url 'workflow_admin_reject' activation_request.id %}"
+>
+
+{% csrf_token %}
+
+<textarea
+name="reason"
+rows="3"
+placeholder="Motif obligatoire du rejet..."
+required
+></textarea>
+
+<br>
+
+<button type="submit">
+Rejeter la demande
+</button>
+
+</form>
+
+</div>
+
+{% endif %}
+
+
+{% if activation_request.status == "validated" %}
+
+<div class="actions">
+
+<form
+method="post"
+action="{% url 'workflow_admin_activate' activation_request.id %}"
+>
+
+{% csrf_token %}
+
+<textarea
+name="message"
+rows="3"
+placeholder="Commentaire d'activation..."
+></textarea>
+
+<br>
+
+<button type="submit">
+Exécuter l'activation finale
+</button>
+
+</form>
+
+</div>
+
+{% endif %}
+
+
+<p>
+
+<a href="{% url 'workflow_admin_dashboard' %}">
+Retour au tableau
+</a>
+
+</p>
+
+</div>
+
+</body>
+
+</html>
+

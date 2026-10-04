@@ -1,0 +1,249 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>
+Contrôle Assurance Santé et Partenaire - NSIKAY
+</title>
+
+<style>
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    padding: 25px;
+}
+
+.panel {
+    background: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.08);
+}
+
+select,
+button {
+    padding: 9px;
+    margin: 6px;
+}
+
+.ok {
+    background: #e8f5e9;
+    border: 1px solid #66bb6a;
+    padding: 15px;
+}
+
+.bad {
+    background: #ffebee;
+    border: 1px solid #ef5350;
+    padding: 15px;
+}
+
+.info {
+    background: #e3f2fd;
+    border: 1px solid #64b5f6;
+    padding: 15px;
+}
+
+a {
+    display: inline-block;
+    padding: 8px 12px;
+    margin-right: 8px;
+    background: #1f2937;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>
+Contrôle Assurance Santé / Partenaire Financier
+</h1>
+
+<div class="panel">
+
+<a href="{% url 'service_dashboard:activation_validation' %}">
+Validation activation
+</a>
+
+<a href="{% url 'service_dashboard:certification_control' %}">
+Certification
+</a>
+
+</div>
+
+<div class="panel">
+
+<form method="post">
+
+{% csrf_token %}
+
+<select name="country" required>
+
+<option value="">
+Sélectionner un pays
+</option>
+
+{% for country in countries %}
+
+<option
+value="{{ country.country_code }}"
+{% if selected_country and selected_country.id == country.id %}
+selected
+{% endif %}
+>
+{{ country.country_name }}
+({{ country.country_code }})
+</option>
+
+{% endfor %}
+
+</select>
+
+<select name="service" required>
+
+<option value="">
+Sélectionner un service
+</option>
+
+{% for service in services %}
+
+<option
+value="{{ service.id }}"
+{% if selected_service and selected_service.id == service.id %}
+selected
+{% endif %}
+>
+{{ service.name }}
+</option>
+
+{% endfor %}
+
+</select>
+
+<button type="submit">
+Contrôler
+</button>
+
+</form>
+
+</div>
+
+{% if result %}
+
+<div class="panel">
+
+<h2>{{ result.service.name }}</h2>
+
+<p>
+Pays :
+<strong>{{ result.country.country_name }}</strong>
+</p>
+
+<hr>
+
+<h3>Assurance santé</h3>
+
+{% if result.health_required %}
+
+<div class="bad">
+<strong>ASSURANCE SANTÉ REQUISE</strong>
+<p>
+Une assurance santé valide devra être vérifiée
+avant l'engagement/activation concerné.
+</p>
+</div>
+
+{% else %}
+
+<div class="ok">
+Assurance santé non exigée par la règle actuelle
+de ce service.
+</div>
+
+{% endif %}
+
+<hr>
+
+<h3>Partenaire bancaire</h3>
+
+{% if result.bank_required %}
+
+{% if result.bank_available %}
+
+<div class="ok">
+Partenaire bancaire certifié et actif trouvé
+pour ce pays.
+</div>
+
+{% else %}
+
+<div class="bad">
+<strong>PARTENAIRE BANCAIRE MANQUANT</strong>
+<p>
+L'activation bancaire doit rester bloquée.
+</p>
+</div>
+
+{% endif %}
+
+{% else %}
+
+<div class="info">
+Aucun partenaire bancaire obligatoire
+pour ce service.
+</div>
+
+{% endif %}
+
+<hr>
+
+<h3>Partenaire financier</h3>
+
+{% if result.financial_required %}
+
+{% if result.financial_partner_available %}
+
+<div class="ok">
+Partenaire financier approuvé trouvé.
+</div>
+
+{% else %}
+
+<div class="bad">
+<strong>PARTENAIRE FINANCIER MANQUANT</strong>
+<p>
+Le service financier doit rester INACTIF
+tant qu'un partenaire financier certifié
+et validé n'est pas disponible.
+</p>
+</div>
+
+{% endif %}
+
+{% else %}
+
+<div class="info">
+Aucun partenaire financier obligatoire
+pour ce service.
+</div>
+
+{% endif %}
+
+</div>
+
+{% endif %}
+
+</body>
+
+</html>
+

@@ -1,0 +1,244 @@
+﻿from django.utils import timezone
+
+from service_control.models import (
+    ServiceActivation,
+)
+
+from service_control.services import (
+    CountryServiceActivationValidator,
+)
+
+from service_dashboard.models import (
+    ServiceActivationRequest,
+)
+
+
+class ActivationRequestValidator:
+
+    @staticmethod
+    def validate(request):
+
+        service = request.service
+        country = request.country
+
+        errors = []
+
+        request.certification_checked = False
+        request.health_insurance_checked = False
+        request.bank_partner_checked = False
+        request.financial_partner_checked = False
+        request.country_authorization_checked = False
+        request.admin_validated = False
+
+        # ----------------------------------------------------
+        # 1. PAYS PRINCIPAL
+        # ----------------------------------------------------
+
+        if not country.is_primary:
+
+            errors.append(
+                "Le pays n'est pas un pays principal."
+            )
+
+        else:
+
+            request.country_authorization_checked = True
+
+        # ----------------------------------------------------
+        # 2. RELATION SERVICE x PAYS
+        # ----------------------------------------------------
+
+        activation = (
+            ServiceActivation.objects
+            .filter(
+                service=service,
+                country=country,
+            )
+            .first()
+        )
+
+        if not activation:
+
+            errors.append(
+                "La relation Service × Pays n'existe pas."
+            )
+
+        # ----------------------------------------------------
+        # 3. VALIDATION CENTRALE
+        # ----------------------------------------------------
+
+        try:
+
+            result = (
+                CountryServiceActivationValidator.validate(
+                    service,
+                    country,
+                )
+            )
+
+            if hasattr(result, "allowed"):
+
+                allowed = bool(
+                    result.allowed
+                )
+
+                message = str(
+                    result.message
+                )
+
+            elif isinstance(result, tuple):
+
+                allowed = bool(result[0])
+                message = str(result[1])
+
+            else:
+
+                allowed = bool(result)
+
+                message = (
+                    "Validation réussie."
+                    if allowed
+                    else "Validation refusée."
+                )
+
+            if not allowed:
+
+                errors.append(
+                    message
+                )
+
+            else:
+
+                request.bank_partner_checked = True
+                request.financial_partner_checked = True
+
+        except Exception as exc:
+
+            errors.append(
+                f"Erreur du moteur de validation : {exc}"
+            )
+
+        # ----------------------------------------------------
+        # 4. REGLES DU SERVICE
+        # ----------------------------------------------------
+
+        rule = getattr(
+            service,
+            "rule",
+            None,
+        )
+
+        if rule:
+
+            # Certification
+            if rule.certification_required:
+
+                request.certification_checked = False
+
+                errors.append(
+                    "Une certification valide est requise "
+                    "avant activation."
+                )
+
+            else:
+
+                request.certification_checked = True
+
+            # Assurance santé
+            if rule.health_insurance_required:
+
+                request.health_insurance_checked = False
+
+                errors.append(
+                    "Une assurance santé valide est requise "
+                    "avant activation."
+                )
+
+            else:
+
+                request.health_insurance_checked = True
+
+        else:
+
+            errors.append(
+                "Aucune règle ServiceRule n'est définie "
+                "pour ce service."
+            )
+
+        # ----------------------------------------------------
+        # 5. RESULTAT
+        # ----------------------------------------------------
+
+        if errors:
+
+            request.status = "rejected"
+
+            request.admin_validated = False
+
+            request.rejection_reason = "\n".join(
+                errors
+            )
+
+            request.validation_message = (
+                "Demande refusée par le contrôle "
+                "préliminaire."
+            )
+
+            request.validated_at = timezone.now()
+
+            request.save()
+
+            return False, request.rejection_reason
+
+        request.status = "validated"
+
+        request.admin_validated = True
+
+        request.validation_message = (
+            "Toutes les conditions préliminaires "
+            "sont satisfaites."
+        )
+
+        request.rejection_reason = ""
+
+        request.validated_at = timezone.now()
+
+        request.save()
+
+        return True, request.validation_message
+
+
+class ActivationRequestManager:
+
+    @staticmethod
+    def create_request(
+        service,
+        country,
+        requested_by,
+    ):
+
+        existing = (
+            ServiceActivationRequest.objects
+            .filter(
+                service=service,
+                country=country,
+                requested_by=requested_by,
+                status__in=[
+                    "pending",
+                    "validated",
+                    "activated",
+                ],
+            )
+            .first()
+        )
+
+        if existing:
+
+            return existing
+
+        return ServiceActivationRequest.objects.create(
+            service=service,
+            country=country,
+            requested_by=requested_by,
+            status="pending",
+        )

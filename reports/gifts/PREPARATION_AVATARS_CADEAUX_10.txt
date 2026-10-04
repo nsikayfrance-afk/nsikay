@@ -1,0 +1,109 @@
+
+========================================================================
+NSIKAY - PREPARATION AVATARS CADEAUX 10
+========================================================================
+LECTURE SEULE - AUCUNE MODIFICATION DE BASE
+
+========================================================================
+MODELE VIRTUAL GIFT
+========================================================================
+TABLE : api_nsikay_virtualgift
+TOTAL : 0
+FIELD=id | TYPE=BigAutoField | NULL=False | BLANK=True | DEFAULT=<class 'django.db.models.fields.NOT_PROVIDED'>
+FIELD=name | TYPE=CharField | NULL=False | BLANK=False | DEFAULT=<class 'django.db.models.fields.NOT_PROVIDED'>
+FIELD=value | TYPE=DecimalField | NULL=False | BLANK=False | DEFAULT=<class 'django.db.models.fields.NOT_PROVIDED'>
+FIELD=currency | TYPE=CharField | NULL=False | BLANK=False | DEFAULT=USD
+
+========================================================================
+MODELE GIFT TRANSACTION
+========================================================================
+TABLE : api_nsikay_gifttransaction
+TOTAL : 0
+FIELD=id | TYPE=BigAutoField | NULL=False | BLANK=True
+FIELD=sender | TYPE=ForeignKey | NULL=False | BLANK=False
+FIELD=receiver | TYPE=ForeignKey | NULL=False | BLANK=False
+FIELD=gift | TYPE=ForeignKey | NULL=False | BLANK=False
+FIELD=created_at | TYPE=DateTimeField | NULL=False | BLANK=True
+
+========================================================================
+MODELE SOCIAL POST
+========================================================================
+TABLE : api_nsikay_socialpost
+TOTAL : 0
+FIELD=id | TYPE=BigAutoField
+FIELD=author | TYPE=ForeignKey
+FIELD=content | TYPE=TextField
+FIELD=image | TYPE=URLField
+FIELD=likes | TYPE=IntegerField
+FIELD=created_at | TYPE=DateTimeField
+
+========================================================================
+MODELE CREATOR PROFILE
+========================================================================
+TABLE : api_nsikay_creatorprofile
+TOTAL : 0
+FIELD=id | TYPE=BigAutoField
+FIELD=user | TYPE=OneToOneField
+FIELD=verified | TYPE=BooleanField
+FIELD=followers | TYPE=IntegerField
+FIELD=earnings | TYPE=DecimalField
+
+========================================================================
+CONFIGURATION MEDIA
+========================================================================
+MEDIA_ROOT=
+MEDIA_URL=/
+DEFAULT_FILE_STORAGE=None
+
+========================================================================
+DOSSIERS AVATARS PROPOSES
+========================================================================
+ROOT=C:\Users\DELL Technologies\Desktop\nsikay nante\backend\media\gift_avatars
+EXISTE=False
+AVATAR=quartz | FICHIER=C:\Users\DELL Technologies\Desktop\nsikay nante\backend\media\gift_avatars\quartz.png
+AVATAR=calcite | FICHIER=C:\Users\DELL Technologies\Desktop\nsikay nante\backend\media\gift_avatars\calcite.png
+AVATAR=fluorite | FICHIER=C:\Users\DELL Technologies\Desktop\nsikay nante\backend\media\gift_avatars\fluorite.png
+AVATAR=obsidienne | FICHIER=C:\Users\DELL Technologies\Desktop\nsikay nante\backend\media\gift_avatars\obsidienne.png
+AVATAR=amethyste | FICHIER=C:\Users\DELL Technologies\Desktop\nsikay nante\backend\media\gift_avatars\amethyste.png
+AVATAR=grenat | FICHIER=C:\Users\DELL Technologies\Desktop\nsikay nante\backend\media\gift_avatars\grenat.png
+AVATAR=topaze | FICHIER=C:\Users\DELL Technologies\Desktop\nsikay nante\backend\media\gift_avatars\topaze.png
+AVATAR=aigue_marine | FICHIER=C:\Users\DELL Technologies\Desktop\nsikay nante\backend\media\gift_avatars\aigue_marine.png
+AVATAR=emeraude | FICHIER=C:\Users\DELL Technologies\Desktop\nsikay nante\backend\media\gift_avatars\emeraude.png
+AVATAR=saphir | FICHIER=C:\Users\DELL Technologies\Desktop\nsikay nante\backend\media\gift_avatars\saphir.png
+AVATAR=rubis | FICHIER=C:\Users\DELL Technologies\Desktop\nsikay nante\backend\media\gift_avatars\rubis.png
+AVATAR=or | FICHIER=C:\Users\DELL Technologies\Desktop\nsikay nante\backend\media\gift_avatars\or.png
+AVATAR=platine | FICHIER=C:\Users\DELL Technologies\Desktop\nsikay nante\backend\media\gift_avatars\platine.png
+AVATAR=palladium | FICHIER=C:\Users\DELL Technologies\Desktop\nsikay nante\backend\media\gift_avatars\palladium.png
+AVATAR=diamant | FICHIER=C:\Users\DELL Technologies\Desktop\nsikay nante\backend\media\gift_avatars\diamant.png
+AVATAR=diamant_noir | FICHIER=C:\Users\DELL Technologies\Desktop\nsikay nante\backend\media\gift_avatars\diamant_noir.png
+AVATAR=diamant_bleu | FICHIER=C:\Users\DELL Technologies\Desktop\nsikay nante\backend\media\gift_avatars\diamant_bleu.png
+AVATAR=diamant_royal | FICHIER=C:\Users\DELL Technologies\Desktop\nsikay nante\backend\media\gift_avatars\diamant_royal.png
+AVATAR=diamant_imperial | FICHIER=C:\Users\DELL Technologies\Desktop\nsikay nante\backend\media\gift_avatars\diamant_imperial.png
+AVATAR=cristal_rare | FICHIER=C:\Users\DELL Technologies\Desktop\nsikay nante\backend\media\gift_avatars\cristal_rare.png
+
+========================================================================
+STRUCTURE CIBLE
+========================================================================
+VirtualGift
+  - name
+  - slug
+  - value_eur
+  - currency_reference
+  - avatar
+  - category
+  - active
+  - display_order
+  - metadata
+
+PRINCIPE :
+  valeur catalogue = EUR
+  affichage = devise principale utilisateur
+  avatar = fichier image du cadeau
+  aucun stock
+  catalogue permanent
+
+DEVISES PRINCIPALES : EUR / USD / CDF
+
+========================================================================
+FIN
+========================================================================

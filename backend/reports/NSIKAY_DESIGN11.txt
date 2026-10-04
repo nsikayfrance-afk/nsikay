@@ -1,0 +1,36 @@
+﻿============================================================
+NSIKAY - RAPPORT DESIGN 11
+============================================================
+
+DATE=2026-10-01 07:26:32
+
+PROJECT_PATH=C:\Users\DELL Technologies\Desktop\nsikay nante\backend
+
+ESPACE_UTILISATEUR=OK
+TABLEAU_BORD=OK
+PROFIL_PERSONNEL=OK
+ACTIVITES=OK
+ENGAGEMENT=OK
+LIBENGA=OK
+WENZE=OK
+EVENEMENTS=OK
+PUBLICITE=OK
+NOTIFICATIONS=OK
+PARAMETRES=OK
+
+DESKTOP=OK
+TABLETTE=OK
+MOBILE=OK
+
+CSS_DESIGN11=OK
+TEMPLATES=OK
+DJANGO_CHECK=OK
+
+AUCUNE_MIGRATION=MODIFIEE
+AUCUNE_DONNEE_PRODUCTION=MODIFIEE
+AUCUNE_ACTIVATION_SERVICE=EXECUTEE
+AUCUNE_DESACTIVATION_SERVICE=EXECUTEE
+
+============================================================
+BLOC DESIGN 11 PREPARE
+============================================================

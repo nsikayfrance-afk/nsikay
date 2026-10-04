@@ -1,0 +1,21 @@
+﻿from django.urls import re_path
+
+from api_nsikay.notification_consumer import NotificationConsumer
+
+
+
+websocket_urlpatterns=[
+
+
+re_path(
+
+    r"ws/notifications/$",
+
+    NotificationConsumer.as_asgi()
+
+),
+
+
+]
+
+

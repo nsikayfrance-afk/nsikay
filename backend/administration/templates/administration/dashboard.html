@@ -1,0 +1,75 @@
+﻿<h1>Administration Générale NSIKAY</h1>
+
+
+<h2>Certification des banques</h2>
+
+{% for bank in banks %}
+
+<p>{{bank.bank}}</p>
+
+<a href="/administration/bank/approve/{{bank.id}}/">
+Certifier banque
+</a>
+
+{% endfor %}
+
+
+
+<h2>Validation devises banques</h2>
+
+
+{% for currency in currencies %}
+
+<p>
+{{currency.currency.code}}
+-
+{{currency.bank}}
+</p>
+
+
+<a href="/administration/currency/approve/{{currency.id}}/">
+Approuver devise
+</a>
+
+
+{% endfor %}
+
+
+
+<h2>Partenaires financiers</h2>
+
+
+{% for partner in partners %}
+
+<p>{{partner.partner}}</p>
+
+
+<a href="/administration/partner/approve/{{partner.id}}/">
+Certifier partenaire
+</a>
+
+
+{% endfor %}
+
+
+
+<h2>Supervision mondiale</h2>
+
+
+{% for country in countries %}
+
+<p>
+
+{{country.country_name}}
+
+Banques :
+{{country.banks_count}}
+
+Partenaires :
+{{country.partners_count}}
+
+</p>
+
+
+{% endfor %}
+

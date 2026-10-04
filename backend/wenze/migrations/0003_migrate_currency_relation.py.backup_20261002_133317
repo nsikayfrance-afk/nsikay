@@ -1,0 +1,28 @@
+﻿from django.db import migrations
+
+
+def convert_currency(apps, schema_editor):
+    WenzeProduct = apps.get_model("wenze", "WenzeProduct")
+    WenzeOrder = apps.get_model("wenze", "WenzeOrder")
+    Currency = apps.get_model("finance", "Currency")
+
+    eur = Currency.objects.get(code="EUR")
+
+    # Anciennes valeurs texte EUR
+    WenzeProduct.objects.filter(currency="EUR").update(currency=eur.id)
+    WenzeOrder.objects.filter(currency="EUR").update(currency=eur.id)
+
+
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ("finance", "0008_alter_marketplacecommission_rate"),
+        ("wenze", "0002_wenzeorder_paid_at_wenzeorder_payment_fee_and_more"),
+    ]
+
+    operations = [
+        migrations.RunPython(
+            convert_currency,
+            migrations.RunPython.noop,
+        ),
+    ]

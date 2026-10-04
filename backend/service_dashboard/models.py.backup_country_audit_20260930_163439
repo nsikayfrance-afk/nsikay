@@ -1,0 +1,55 @@
+﻿from django.db import models
+from service_control.models import GlobalService, CountryServiceStatus
+
+
+class ServiceDashboardLog(models.Model):
+
+    ACTIONS = (
+
+        ("activate","Activation"),
+
+        ("disable","Désactivation"),
+
+        ("validation","Validation"),
+
+        ("rejection","Refus"),
+
+    )
+
+
+    service = models.ForeignKey(
+        GlobalService,
+        on_delete=models.CASCADE
+    )
+
+
+    country = models.ForeignKey(
+        CountryServiceStatus,
+        on_delete=models.CASCADE
+    )
+
+
+    action = models.CharField(
+        max_length=50,
+        choices=ACTIONS
+    )
+
+
+    admin_user = models.CharField(
+        max_length=150,
+        blank=True
+    )
+
+
+    comment = models.TextField(
+        blank=True
+    )
+
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+
+    def __str__(self):
+        return f"{self.service} - {self.country}"

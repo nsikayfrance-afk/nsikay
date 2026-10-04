@@ -1,0 +1,8 @@
+﻿NSIKAY IDENTITE VISUELLE
+
+Element :
+publicite_home_zone.txt
+
+Emplacement reserve pour integration graphique.
+
+

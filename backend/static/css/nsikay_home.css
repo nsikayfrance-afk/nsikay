@@ -1,0 +1,154 @@
+﻿
+body {
+
+margin:0;
+font-family:Arial, sans-serif;
+background:white;
+color:#111;
+
+}
+
+
+.empire-kuba-watermark {
+
+position:fixed;
+opacity:0.08;
+font-size:80px;
+font-weight:bold;
+transform:rotate(-25deg);
+top:40%;
+left:20%;
+z-index:-1;
+
+}
+
+
+
+header {
+
+display:flex;
+justify-content:space-between;
+padding:25px;
+background:#0b3d91;
+color:white;
+
+}
+
+
+nav a {
+
+color:white;
+margin:10px;
+text-decoration:none;
+
+}
+
+
+
+.hero {
+
+height:500px;
+background:
+linear-gradient(
+rgba(0,0,0,.5),
+rgba(0,0,0,.5)
+),
+url('/static/images/roi_africain.jpg');
+
+background-size:cover;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+color:white;
+text-align:center;
+
+}
+
+
+
+.identity {
+
+padding:40px;
+text-align:center;
+
+}
+
+
+
+.publicite {
+
+padding:40px;
+background:#f4f4f4;
+
+}
+
+
+
+.pub-box {
+
+border:2px solid #d4af37;
+padding:20px;
+
+}
+
+
+
+.modules {
+
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:20px;
+padding:40px;
+
+}
+
+
+
+.modules div {
+
+padding:20px;
+border-radius:10px;
+box-shadow:0 0 10px #ccc;
+
+}
+
+
+
+footer {
+
+background:#111;
+color:white;
+padding:30px;
+text-align:center;
+
+}
+
+
+
+@media(max-width:768px){
+
+header {
+
+display:block;
+
+}
+
+
+.modules {
+
+grid-template-columns:1fr;
+
+}
+
+
+.hero {
+
+height:350px;
+
+}
+
+}
+
+

@@ -1,0 +1,540 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NSIKAY - Pays opérationnels</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f6f8;
+            color: #17202a;
+        }
+
+        .container {
+            max-width: 1250px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .header {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,.08);
+        }
+
+        h1 {
+            margin: 0 0 8px 0;
+        }
+
+        .subtitle {
+            color: #667085;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 18px;
+            box-shadow: 0 2px 8px rgba(0,0,0,.06);
+        }
+
+        .stat strong {
+            display: block;
+            font-size: 28px;
+            margin-top: 6px;
+        }
+
+        .warning {
+            background: #fff4d6;
+            border-left: 5px solid #d99a00;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .success {
+            background: #e8f7ed;
+            border-left: 5px solid #2e8b57;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .error {
+            background: #fdecec;
+            border-left: 5px solid #c0392b;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .toolbar {
+            background: #ffffff;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,.06);
+        }
+
+        #countrySearch {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            border: 1px solid #ccd2d8;
+            border-radius: 7px;
+            font-size: 15px;
+            margin-bottom: 12px;
+        }
+
+        button {
+            border: 0;
+            border-radius: 7px;
+            padding: 10px 15px;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+
+        .btn-select {
+            background: #e5eef8;
+        }
+
+        .btn-clear {
+            background: #eeeeee;
+        }
+
+        .btn-save {
+            background: #17202a;
+            color: white;
+            font-weight: bold;
+        }
+
+        .selection {
+            margin-top: 12px;
+            font-weight: bold;
+        }
+
+        .table-wrapper {
+            background: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,.06);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #edf0f2;
+            text-align: left;
+        }
+
+        th {
+            background: #f8fafb;
+        }
+
+        tr.hidden {
+            display: none;
+        }
+
+        .status {
+            font-weight: bold;
+        }
+
+        .status-on {
+            color: #19733a;
+        }
+
+        .status-off {
+            color: #777777;
+        }
+
+        .save-area {
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 10px;
+            margin-top: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,.06);
+        }
+
+        @media (max-width: 850px) {
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 550px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            th:nth-child(2),
+            td:nth-child(2) {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>NSIKAY — Pays opérationnels</h1>
+        <div class="subtitle">
+            Administration officielle des pays dans lesquels NSIKAY
+            autorise l'exploitation de ses services.
+        </div>
+    </div>
+
+    {% for message in messages %}
+        {% if message.tags == "success" %}
+            <div class="success">{{ message }}</div>
+        {% else %}
+            <div class="error">{{ message }}</div>
+        {% endif %}
+    {% endfor %}
+
+    <div class="stats">
+
+        <div class="stat">
+            Pays principaux
+            <strong>249</strong>
+        </div>
+
+        <div class="stat">
+            Pays opérationnels
+            <strong id="operationalCount">
+                {{ operational_count }}
+            </strong>
+        </div>
+
+        <div class="stat">
+            Places restantes
+            <strong id="remainingCount">
+                {{ remaining_slots }}
+            </strong>
+        </div>
+
+        <div class="stat">
+            Limite NSIKAY
+            <strong>240</strong>
+        </div>
+
+    </div>
+
+    <div class="warning">
+        <strong>Règle NSIKAY :</strong>
+        exactement 240 pays doivent être sélectionnés.
+        L'enregistrement est refusé si le nombre est inférieur
+        ou supérieur à 240.
+    </div>
+
+    <form method="post" id="countryForm">
+
+        {% csrf_token %}
+
+        <div class="toolbar">
+
+            <input
+                type="text"
+                id="countrySearch"
+                placeholder="Rechercher un pays, ISO2 ou ISO3..."
+                autocomplete="off"
+            >
+
+            <button
+                type="button"
+                class="btn-select"
+                onclick="selectVisible()"
+            >
+                Sélectionner les résultats
+            </button>
+
+            <button
+                type="button"
+                class="btn-clear"
+                onclick="clearVisible()"
+            >
+                Désélectionner les résultats
+            </button>
+
+            <div class="selection">
+                Sélection actuelle :
+                <span id="selectionCount">0</span> / 240
+            </div>
+
+        </div>
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Sélection</th>
+                        <th>ISO3</th>
+                        <th>ISO2</th>
+                        <th>Pays</th>
+                        <th>Statut actuel</th>
+                    </tr>
+                </thead>
+
+                <tbody id="countryTable">
+
+                    {% for country in countries %}
+
+                    <tr
+                        data-country="{{ country.country_name|lower }}"
+                        data-iso3="{{ country.country_code|lower }}"
+                        data-iso2="{{ country.iso2_code|default:''|lower }}"
+                    >
+
+                        <td>
+                            <input
+                                type="checkbox"
+                                name="operational_countries"
+                                value="{{ country.country_code }}"
+                                {% if country.is_operational %}
+                                    checked
+                                {% endif %}
+                            >
+                        </td>
+
+                        <td>
+                            <strong>{{ country.country_code }}</strong>
+                        </td>
+
+                        <td>
+                            {{ country.iso2_code|default:"-" }}
+                        </td>
+
+                        <td>
+                            {{ country.country_name }}
+                        </td>
+
+                        <td>
+                            {% if country.is_operational %}
+                                <span class="status status-on">
+                                    OPÉRATIONNEL
+                                </span>
+                            {% else %}
+                                <span class="status status-off">
+                                    NON OPÉRATIONNEL
+                                </span>
+                            {% endif %}
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <div class="save-area">
+
+            <button
+                type="submit"
+                class="btn-save"
+                id="saveButton"
+            >
+                Enregistrer les 240 pays
+            </button>
+
+            <span id="saveMessage"></span>
+
+        </div>
+
+    </form>
+
+</div>
+
+<script>
+
+const MAX_COUNTRIES = 240;
+
+function checkboxes() {
+    return Array.from(
+        document.querySelectorAll(
+            'input[name="operational_countries"]'
+        )
+    );
+}
+
+function updateCounter() {
+
+    const count = checkboxes()
+        .filter(cb => cb.checked)
+        .length;
+
+    const remaining = Math.max(
+        0,
+        MAX_COUNTRIES - count
+    );
+
+    document.getElementById(
+        "selectionCount"
+    ).textContent = count;
+
+    document.getElementById(
+        "operationalCount"
+    ).textContent = count;
+
+    document.getElementById(
+        "remainingCount"
+    ).textContent = remaining;
+
+    const saveButton = document.getElementById(
+        "saveButton"
+    );
+
+    if (count === MAX_COUNTRIES) {
+        saveButton.disabled = false;
+        saveButton.textContent =
+            "Enregistrer les 240 pays";
+    } else {
+        saveButton.disabled = false;
+        saveButton.textContent =
+            "Enregistrer (" + count + "/240)";
+    }
+}
+
+function visibleRows() {
+
+    return Array.from(
+        document.querySelectorAll(
+            "#countryTable tr"
+        )
+    ).filter(row =>
+        !row.classList.contains("hidden")
+    );
+}
+
+function selectVisible() {
+
+    visibleRows().forEach(row => {
+
+        const checkbox = row.querySelector(
+            'input[name="operational_countries"]'
+        );
+
+        if (checkbox) {
+            checkbox.checked = true;
+        }
+
+    });
+
+    updateCounter();
+}
+
+function clearVisible() {
+
+    visibleRows().forEach(row => {
+
+        const checkbox = row.querySelector(
+            'input[name="operational_countries"]'
+        );
+
+        if (checkbox) {
+            checkbox.checked = false;
+        }
+
+    });
+
+    updateCounter();
+}
+
+document
+    .getElementById("countrySearch")
+    .addEventListener("input", function() {
+
+        const search = this.value
+            .trim()
+            .toLowerCase();
+
+        document
+            .querySelectorAll("#countryTable tr")
+            .forEach(row => {
+
+                const country =
+                    row.dataset.country || "";
+
+                const iso3 =
+                    row.dataset.iso3 || "";
+
+                const iso2 =
+                    row.dataset.iso2 || "";
+
+                const match =
+                    country.includes(search) ||
+                    iso3.includes(search) ||
+                    iso2.includes(search);
+
+                row.classList.toggle(
+                    "hidden",
+                    !match
+                );
+
+            });
+
+    });
+
+document
+    .getElementById("countryForm")
+    .addEventListener("submit", function(event) {
+
+        const count = checkboxes()
+            .filter(cb => cb.checked)
+            .length;
+
+        if (count !== MAX_COUNTRIES) {
+
+            event.preventDefault();
+
+            alert(
+                "Enregistrement impossible.\n\n" +
+                "Vous avez sélectionné " +
+                count +
+                " pays.\n\n" +
+                "NSIKAY exige exactement 240 pays."
+            );
+
+            return false;
+        }
+
+    });
+
+checkboxes().forEach(cb => {
+    cb.addEventListener(
+        "change",
+        updateCounter
+    );
+});
+
+updateCounter();
+
+</script>
+
+</body>
+</html>
+

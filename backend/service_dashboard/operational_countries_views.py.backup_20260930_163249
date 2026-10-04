@@ -1,0 +1,134 @@
+﻿from django.contrib import messages
+from django.contrib.auth.decorators import user_passes_test
+from django.shortcuts import redirect, render
+
+from service_control.models import CountryServiceStatus
+
+
+def _is_nsikay_admin(user):
+    if not user or not user.is_authenticated:
+        return False
+
+    username = str(user.username).strip().lower()
+
+    if username == "constantdoriskayembe":
+        return True
+
+    return (
+        user.is_superuser
+        or user.groups.filter(
+            name__in=[
+                "Super Administrateur",
+                "Administration Pays",
+            ]
+        ).exists()
+    )
+
+
+@user_passes_test(_is_nsikay_admin)
+def operational_countries(request):
+    """
+    Gestion administrative des 249 pays ISO principaux.
+
+    Regles :
+    - les lignes historiques/doublons ne sont jamais affichees ;
+    - seuls les pays is_primary=True sont geres ;
+    - maximum 240 pays operationnels ;
+    - aucun pays n'est active automatiquement ;
+    - aucun ServiceActivation n'est modifie ici.
+    """
+
+    countries = CountryServiceStatus.objects.filter(
+        is_primary=True
+    ).order_by("country_name")
+
+    if request.method == "POST":
+        selected_codes = {
+            str(code).strip().upper()
+            for code in request.POST.getlist("operational_countries")
+            if str(code).strip()
+        }
+
+        if len(selected_codes) > 240:
+            messages.error(
+                request,
+                (
+                    f"Selection refusee : {len(selected_codes)} pays "
+                    "selectionnes. La limite NSIKAY est de 240 pays."
+                )
+            )
+            return redirect("operational_countries")
+
+        valid_codes = set(
+            countries.values_list("country_code", flat=True)
+        )
+
+        invalid_codes = sorted(
+            selected_codes - valid_codes
+        )
+
+        if invalid_codes:
+            messages.error(
+                request,
+                (
+                    "Selection refusee : un ou plusieurs codes ISO3 "
+                    "ne correspondent pas a un pays principal NSIKAY."
+                )
+            )
+            return redirect("operational_countries")
+
+        # Aucun doublon historique n'est touche.
+        countries.update(is_operational=False)
+
+        if selected_codes:
+            countries.filter(
+                country_code__in=selected_codes
+            ).update(
+                is_operational=True
+            )
+
+        count = countries.filter(
+            is_operational=True
+        ).count()
+
+        if count > 240:
+            # Securite supplementaire.
+            countries.update(is_operational=False)
+
+            messages.error(
+                request,
+                "Operation annulee : la limite de 240 pays a ete depassee."
+            )
+
+            return redirect("operational_countries")
+
+        messages.success(
+            request,
+            (
+                f"Configuration enregistree : {count} pays "
+                "sont actuellement marques comme operationnels."
+            )
+        )
+
+        return redirect("operational_countries")
+
+    operational_count = countries.filter(
+        is_operational=True
+    ).count()
+
+    context = {
+        "countries": countries,
+        "operational_count": operational_count,
+        "non_operational_count": countries.count() - operational_count,
+        "maximum_operational": 240,
+        "remaining_slots": max(
+            0,
+            240 - operational_count
+        ),
+    }
+
+    return render(
+        request,
+        "service_dashboard/operational_countries.html",
+        context
+    )

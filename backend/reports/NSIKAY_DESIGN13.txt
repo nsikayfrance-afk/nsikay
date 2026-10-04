@@ -1,0 +1,67 @@
+﻿============================================================
+NSIKAY - RAPPORT DESIGN 13
+============================================================
+
+DATE : 2026-10-01 11:13:26
+
+PROJECT_PATH :
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend
+
+MODULES :
+- Tableau de bord administration
+- Pays & territoires
+- Services par pays
+- Certifications
+- Assurance santé
+- Banques partenaires
+- Partenaires financiers
+- Demandes d'activation
+- Journal administratif
+- Statistiques
+- WENZE
+- Événements
+- Publicité
+- Utilisateurs
+- Sécurité
+- Paramètres
+
+REFERENCE :
+PAYS_PRINCIPAUX=249
+PAYS_OPERATIONNELS=240
+PAYS_INACTIFS=9
+SERVICES=28
+RELATIONS_SERVICE_PAYS=10472
+ACTIVATIONS_ACTIVES=2
+DEMANDES_EN_ATTENTE=0
+
+CONTROLES :
+FICHIERS_DESIGN13=OK
+COMPOSANTS_ADMIN=OK
+RESPONSIVE_ADMIN=OK
+SECURITE_VISUELLE=OK
+DJANGO_CHECK=OK
+MIGRATIONS_STABLES=OK
+AUCUNE_ACTION_OPERATIONNELLE_DANS_DESIGN=OK
+
+DONNEES :
+AUCUNE DONNEE DE PRODUCTION MODIFIEE
+AUCUNE MIGRATION CREEE
+AUCUNE ACTIVATION EXECUTEE
+AUCUNE DESACTIVATION EXECUTEE
+AUCUNE DEMANDE CREEE
+
+IDENTITE :
+NSIKAY France
+Association déclarée en France
+Administration centrale
+
+PARTENAIRE :
+ANANSI SA
+
+STATUT :
+DESIGN 13 PRET POUR INTEGRATION DJANGO
+
+============================================================
+FIN RAPPORT DESIGN 13
+============================================================
+

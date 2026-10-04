@@ -1,0 +1,106 @@
+from django.contrib import messages
+from django.contrib.auth.decorators import user_passes_test
+from django.db import transaction
+from django.shortcuts import redirect
+
+from service_control.models import ServiceActivation
+from service_dashboard.models import ServiceDashboardLog
+
+
+def _is_nsikay_admin(user):
+    if not user or not user.is_authenticated:
+        return False
+
+    return (
+        user.is_superuser
+        or str(user.username).strip().lower()
+        == "constantdoriskayembe"
+        or user.groups.filter(
+            name__in=[
+                "Super Administrateur",
+                "Administration Pays",
+            ]
+        ).exists()
+    )
+
+
+@user_passes_test(_is_nsikay_admin)
+def final_deactivate_service(
+    request,
+    activation_id,
+):
+
+    if request.method != "POST":
+
+        messages.error(
+            request,
+            (
+                "La désactivation finale doit "
+                "obligatoirement être effectuée par POST."
+            ),
+        )
+
+        return redirect(
+            "service_country_control"
+        )
+
+    with transaction.atomic():
+
+        activation = (
+            ServiceActivation.objects
+            .select_for_update()
+            .select_related(
+                "service",
+                "country",
+            )
+            .get(
+                id=activation_id,
+            )
+        )
+
+        service = activation.service
+        country = activation.country
+
+        activation.active = False
+        activation.reason = (
+            "Désactivation effectuée par "
+            "administration NSIKAY."
+        )
+
+        activation.save(
+            update_fields=[
+                "active",
+                "reason",
+            ]
+        )
+
+        ServiceDashboardLog.objects.create(
+            action="deactivate",
+            admin_user=(
+                getattr(
+                    request.user,
+                    "username",
+                    None,
+                )
+                or "Administration NSIKAY"
+            ),
+            comment=(
+                f"Désactivation validée. "
+                f"Service={service.name}; "
+                f"Pays={country.country_name}"
+            ),
+            country=country,
+            service=service,
+        )
+
+    messages.success(
+        request,
+        (
+            f"Service {service.name} désactivé "
+            f"pour {country.country_name}."
+        ),
+    )
+
+    return redirect(
+        "service_country_control"
+    )

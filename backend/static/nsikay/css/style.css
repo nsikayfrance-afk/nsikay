@@ -1,0 +1,225 @@
+﻿
+body {
+
+margin:0;
+font-family:Arial, sans-serif;
+background:#ffffff;
+color:#111;
+
+}
+
+
+.hero-nsikay {
+
+min-height:650px;
+position:relative;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+
+background:
+linear-gradient(
+rgba(0,0,0,.55),
+rgba(0,0,0,.55)
+),
+url("/static/nsikay/images/globe-afrique.jpg");
+
+background-size:cover;
+background-position:center;
+
+color:white;
+
+}
+
+
+
+.watermark {
+
+position:absolute;
+font-size:90px;
+font-weight:bold;
+opacity:.08;
+color:#d4af37;
+transform:rotate(-20deg);
+
+}
+
+
+
+.hero-content {
+
+z-index:2;
+
+}
+
+
+
+.hero-content h1 {
+
+font-size:80px;
+color:#d4af37;
+
+}
+
+
+
+.hero-content button {
+
+padding:15px 40px;
+border:none;
+background:#d4af37;
+color:#000;
+font-weight:bold;
+border-radius:30px;
+
+}
+
+
+
+.official-nsikay {
+
+padding:50px;
+text-align:center;
+background:#f5f5f5;
+
+}
+
+
+
+.objectif {
+
+padding:50px;
+text-align:center;
+
+}
+
+
+
+.publicite {
+
+padding:50px;
+background:#111;
+color:white;
+text-align:center;
+
+}
+
+
+
+.pub-card {
+
+margin:auto;
+max-width:600px;
+padding:40px;
+border:2px solid #d4af37;
+border-radius:20px;
+
+}
+
+
+
+.categories {
+
+padding:50px;
+
+}
+
+
+
+.cards {
+
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:20px;
+
+}
+
+
+
+.cards div {
+
+padding:30px;
+background:#ffffff;
+border-radius:20px;
+box-shadow:0 5px 20px #ddd;
+text-align:center;
+font-weight:bold;
+
+}
+
+
+
+.wenze {
+
+padding:50px;
+background:#003399;
+color:white;
+text-align:center;
+
+}
+
+
+
+.events {
+
+padding:50px;
+text-align:center;
+
+}
+
+
+
+/* MOBILE */
+
+
+@media(max-width:768px){
+
+
+.hero-nsikay {
+
+min-height:500px;
+
+}
+
+
+.hero-content h1 {
+
+font-size:45px;
+
+}
+
+
+
+.watermark {
+
+font-size:45px;
+
+}
+
+
+
+.cards {
+
+grid-template-columns:1fr;
+
+}
+
+
+
+.official-nsikay,
+.objectif,
+.publicite {
+
+padding:25px;
+
+}
+
+
+
+}
+
+
+
+
+

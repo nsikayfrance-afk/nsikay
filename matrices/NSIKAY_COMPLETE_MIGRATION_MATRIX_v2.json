@@ -1,0 +1,132 @@
+﻿{
+  "NSIKAY_MIGRATION_MATRIX_VERSION": "v2.0",
+  "project": "NSIKAY",
+
+  "database": {
+    "engine": "PostgreSQL",
+    "schemas": [
+      "core",
+      "certification",
+      "business",
+      "finance",
+      "wenze",
+      "media",
+      "marketing",
+      "ai",
+      "audit"
+    ],
+
+    "migration_layers": [
+      "schemas",
+      "tables",
+      "foreign_keys",
+      "indexes",
+      "security_constraints",
+      "audit_trail"
+    ]
+  },
+
+  "backend": {
+    "apis": [
+      {
+        "name": "AuthAPI.js",
+        "domain": "authentication"
+      },
+      {
+        "name": "UsersAPI.js",
+        "domain": "users"
+      },
+      {
+        "name": "AdministrationAPI.js",
+        "domain": "administration"
+      },
+      {
+        "name": "GovernanceAPI.js",
+        "domain": "governance"
+      },
+      {
+        "name": "CertificationAPI.js",
+        "domain": "certification"
+      },
+      {
+        "name": "FinanceAPI.js",
+        "domain": "finance"
+      },
+      {
+        "name": "CompaniesAPI.js",
+        "domain": "business"
+      },
+      {
+        "name": "WenzeAPI.js",
+        "domain": "wenze"
+      },
+      {
+        "name": "MediaAPI.js",
+        "domain": "media"
+      },
+      {
+        "name": "AdvertisingAPI.js",
+        "domain": "marketing"
+      },
+      {
+        "name": "EventsAPI.js",
+        "domain": "events"
+      },
+      {
+        "name": "ArtificialIntelligenceAPI.js",
+        "domain": "ai"
+      },
+      {
+        "name": "DataAPI.js",
+        "domain": "data"
+      }
+    ]
+  },
+
+  "frontend": {
+    "modules": [
+      "authentication",
+      "dashboard",
+      "profiles",
+      "companies",
+      "agents",
+      "finance",
+      "wenze",
+      "media_tv",
+      "editorial_pages",
+      "events",
+      "advertising",
+      "ai",
+      "administration"
+    ]
+  },
+
+  "security": {
+    "authentication": true,
+    "authorization": true,
+    "roles": true,
+    "permissions": true,
+    "audit_logging": true,
+    "backup_required": true
+  },
+
+  "quality": {
+    "tests": [
+      "api_testing",
+      "database_testing",
+      "frontend_testing",
+      "security_testing",
+      "performance_testing",
+      "permissions_audit",
+      "monitoring",
+      "logging"
+    ]
+  },
+
+  "deployment": {
+    "central_administration": true,
+    "national_administrations": true,
+    "regional_administrations": true,
+    "country_activation": true
+  }
+}

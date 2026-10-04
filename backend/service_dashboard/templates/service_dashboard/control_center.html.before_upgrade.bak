@@ -1,0 +1,183 @@
+﻿{% extends "service_dashboard/home.html" %}
+
+{% block content %}
+
+<h1>🌍 Centre de contrôle NSIKAY</h1>
+
+<hr>
+
+<h2>🔎 Filtres administration</h2>
+
+<form method="get" action="{% url 'service_dashboard:control_center_filtered' %}">
+
+<label>Service :</label>
+<select name="service">
+<option value="">Tous les services</option>
+{% for service in all_services %}
+<option value="{{ service.id }}">
+{{ service.name }}
+</option>
+{% endfor %}
+</select>
+
+<label>Pays :</label>
+<select name="country">
+<option value="">Tous les pays</option>
+{% for country in all_countries %}
+<option value="{{ country.country__id }}">
+{{ country.country__country_name }}
+</option>
+{% endfor %}
+</select>
+
+<label>Activation :</label>
+<select name="status">
+<option value="">Tous</option>
+<option value="active">Actifs</option>
+<option value="inactive">Inactifs</option>
+</select>
+
+
+<label>Validation :</label>
+<select name="validation">
+<option value="">Tous</option>
+<option value="validated">Validés</option>
+<option value="pending">En attente</option>
+</select>
+
+
+<button type="submit">
+Filtrer
+</button>
+
+</form>
+
+<hr>
+
+<div>
+<h3>Statistiques générales</h3>
+
+<p>Total activations : {{ total }}</p>
+<p>Services actifs : {{ actifs }}</p>
+<p>Validations : {{ valides }}</p>
+<p>En attente : {{ attente }}</p>
+
+<p>Taux activation : {{ activation_rate }} %</p>
+<p>Taux validation : {{ validation_rate }} %</p>
+
+</div>
+
+
+<hr>
+
+<h2>📊 Activations par service</h2>
+
+<table border="1">
+<tr>
+<th>Service</th>
+<th>Total</th>
+<th>Actifs</th>
+</tr>
+
+{% for item in services_stats %}
+<tr>
+<td>{{ item.service__name }}</td>
+<td>{{ item.total }}</td>
+<td>{{ item.actifs }}</td>
+</tr>
+{% endfor %}
+
+</table>
+
+
+<hr>
+
+<h2>🌍 Activations par pays (20 premiers)</h2>
+
+<table border="1">
+
+<tr>
+<th>Pays</th>
+<th>Total</th>
+<th>Actifs</th>
+</tr>
+
+{% for item in pays_stats %}
+<tr>
+<td>{{ item.country__country_name }}</td>
+<td>{{ item.total }}</td>
+<td>{{ item.actifs }}</td>
+</tr>
+{% endfor %}
+
+</table>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<h2>📊 Graphique services</h2>
+
+<canvas id="serviceChart"></canvas>
+
+<h2>🌍 Graphique pays</h2>
+
+<canvas id="countryChart"></canvas>
+
+<canvas id="serviceChart"></canvas>
+
+
+<script>
+
+const serviceLabels = {{ service_chart_labels|safe }};
+const serviceValues = {{ service_chart_values|safe }};
+
+
+new Chart(
+document.getElementById('serviceChart'),
+{
+type:'bar',
+data:{
+labels:serviceLabels,
+datasets:[
+{
+label:'Services actifs',
+data:serviceValues
+}
+]
+}
+}
+);
+
+</script>
+
+
+{% endblock %}
+
+
+<script>
+
+const countryLabels = {{ country_chart_labels|safe }};
+const countryValues = {{ country_chart_values|safe }};
+
+
+new Chart(
+document.getElementById('countryChart'),
+{
+type:'bar',
+data:{
+labels:countryLabels,
+datasets:[
+{
+label:'Activations actives par pays',
+data:countryValues
+}
+]
+}
+}
+);
+
+</script>
+
+
+

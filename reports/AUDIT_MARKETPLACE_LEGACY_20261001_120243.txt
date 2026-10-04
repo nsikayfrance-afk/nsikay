@@ -1,0 +1,89 @@
+﻿============================================================
+ NSIKAY - AUDIT ANCIEN MARKETPLACE
+============================================================
+Date : 2026-10-01 12:02:43
+
+=== 1. MODELES LEGACY ===
+
+--- class SellerProfile ---
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py:684 : class SellerProfile(models.Model):
+
+--- class MarketplaceProduct ---
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py:727 : class MarketplaceProduct(models.Model):
+
+--- class MarketplaceOrder ---
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py:788 : class MarketplaceOrder(models.Model):
+
+--- class MarketplaceCommission ---
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py:859 : class MarketplaceCommission(models.Model):
+
+=== 2. REFERENCES AUX MODELES LEGACY ===
+
+--- REFERENCES : SellerProfile ---
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py:684 : class SellerProfile(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py:732 : SellerProfile,
+
+--- REFERENCES : MarketplaceProduct ---
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\marketplace_views.py:5 : from finance.models import MarketplaceProduct
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\marketplace_views.py:14 : products = MarketplaceProduct.objects.filter(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py:727 : class MarketplaceProduct(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py:817 : MarketplaceProduct,
+
+--- REFERENCES : MarketplaceOrder ---
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py:788 : class MarketplaceOrder(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py:864 : MarketplaceOrder,
+
+--- REFERENCES : MarketplaceCommission ---
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py:859 : class MarketplaceCommission(models.Model):
+
+=== 3. FICHIERS MARKETPLACE ===
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\marketplace_urls.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\marketplace_views.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\marketplace.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\migrations\0007_marketplaceproduct_marketplaceorder_and_more.py
+
+=== 4. ROUTES PUBLIQUES MARKETPLACE ===
+
+--- ROUTE/REFERENCE : marketplace/ ---
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\urls_backup.py:64 : "marketplace/",
+
+--- ROUTE/REFERENCE : marketplace_urls ---
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\urls_backup.py:65 : include("api_nsikay.marketplace_urls")
+
+--- ROUTE/REFERENCE : marketplace_views ---
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\marketplace_urls.py:3 : from api_nsikay.marketplace_views import (
+
+--- ROUTE/REFERENCE : include("marketplace ---
+AUCUNE OCCURRENCE
+
+--- ROUTE/REFERENCE : include('marketplace ---
+AUCUNE OCCURRENCE
+
+=== 5. WENZE ROUTES ===
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\create_dashboard_urls.py:16 : path("wenze/", views.wenze_dashboard),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\nsikay\urls.py:20 : path("wenze/", include("wenze.urls")),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\nsikay\urls.py:20 : path("wenze/", include("wenze.urls")),
+
+=== 6. MODELES + MIGRATIONS HISTORIQUES ===
+AUCUNE MIGRATION LEGACY DETECTEE
+
+=== 7. DJANGO CHECK ===
+=== ALIASES DASHBOARD NSIKAY FINALISES ===
+=== API NSIKAY VIEWS COMPATIBILITE CHARGEES ===
+System check identified no issues (0 silenced).
+
+DJANGO_CHECK=OK
+
+=== 8. MAKEMIGRATIONS CHECK ===
+=== ALIASES DASHBOARD NSIKAY FINALISES ===
+=== API NSIKAY VIEWS COMPATIBILITE CHARGEES ===
+No changes detected
+
+MAKEMIGRATIONS_CHECK=OK
+
+=== CONCLUSION AUDIT ===
+AUCUNE SUPPRESSION EFFECTUEE.
+AUCUNE MIGRATION HISTORIQUE MODIFIEE.
+AUCUNE DONNEE UTILISATEUR MODIFIEE.
+AUCUN WALLET MODIFIE.
+

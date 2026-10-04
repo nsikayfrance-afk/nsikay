@@ -1,0 +1,342 @@
+﻿============================================================
+ NSIKAY - AUDIT COMPLET FINANCE + WALLET + CREDIT + WENZE
+============================================================
+Date : 2026-10-01 11:47:41
+
+[1] MODELES WALLET
+----------------------------------------
+Wallet détecté : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py
+Wallet détecté : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\wallet_models.py
+Wallet détecté : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\models.py
+
+[2] REFERENCES wallet.Wallet / finance.Wallet
+----------------------------------------
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\migrations\0001_initial.py
+                  ('wallet', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='wallet.wallet')),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\migrations\0002_remove_bankservice_bank_remove_creditrequest_bank_and_more.py
+              field=models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='finance.wallet'),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py
+          "wallet.Wallet",
+          "wallet.Wallet",
+          "wallet.WalletBankAccount",
+          "wallet.Wallet",
+          "wallet.Wallet",
+          "wallet.Wallet",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\migrations\0001_initial.py
+              field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='finance.wallet'),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\migrations\0002_currency_remove_payment_transaction_and_more.py
+                  ('wallet', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='finance.wallet')),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\migrations\0003_alter_wallet_user_alter_wallettransaction_wallet.py
+              field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='finance_wallets', to='finance.wallet'),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\migrations\0004_exchangeratehistory_financialledger.py
+                  ('wallet', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='ledger_entries', to='wallet.wallet')),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\migrations\0005_bankreconciliation_merchantpayment_and_more.py
+                  ('bank_account', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='reconciliations', to='wallet.walletbankaccount')),
+                  ('wallet', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='merchant_payments', to='wallet.wallet')),
+                  ('wallet', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='platform_commissions', to='wallet.wallet')),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\migrations\0006_auditlog_frauddetectionevent_kyccompliance_and_more.py
+                  ('wallet', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='fraud_events', to='wallet.wallet')),
+                  ('wallet', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='security_status', to='wallet.wallet')),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\operations\services.py
+  from finance.wallet_service import (
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\models.py
+          "wallet.Wallet",
+          "wallet.Wallet",
+          "wallet.Wallet",
+          "wallet.Wallet",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\migrations\0001_initial.py
+                  ('wallet', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='security_events', to='wallet.wallet')),
+                  ('wallet', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='wallet_transactions', to='wallet.wallet')),
+                  ('wallet', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='balances', to='wallet.wallet')),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\migrations\0003_walletcommission_walletoperation.py
+                  ('destination_wallet', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='incoming_operations', to='wallet.wallet')),
+                  ('wallet', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='operations', to='wallet.wallet')),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\migrations\0004_walletauditlog.py
+                  ('wallet', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='audit_logs', to='wallet.wallet')),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\migrations\0005_walletkycprofile_walletcurrencybalance.py
+                  ('wallet', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='currency_balances', to='wallet.wallet')),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\migrations\0006_walletbankaccount.py
+                  ('wallet', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='bank_accounts', to='wallet.wallet')),
+
+[3] MODELES CREDIT
+----------------------------------------
+Fichier : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\models.py
+    6: class Bank(models.Model):
+   30: class BankAccount(models.Model):
+   32:     bank = models.ForeignKey(
+   33:         Bank,
+   66: class BankingOperation(models.Model):
+   76:         BankAccount,
+   85:     amount = models.DecimalField(
+   95:     status = models.CharField(
+  109: class BankCountry(models.Model):
+  111:     bank = models.ForeignKey(
+  112:         "Bank",
+  125: class BankCurrency(models.Model):
+  127:     bank = models.ForeignKey(
+  128:         "Bank",
+  142: class BankService(models.Model):
+  154:     bank = models.ForeignKey(
+  155:         "Bank",
+  169: class BankCredit(models.Model):
+  171:     bank = models.ForeignKey(
+  172:         "Bank",
+  180:     maximum_amount = models.DecimalField(
+  185:     duration_months = models.IntegerField()
+  192: class BankInsurance(models.Model):
+  194:     bank = models.ForeignKey(
+  195:         "Bank",
+  212: class BankReport(models.Model):
+  214:     bank = models.ForeignKey(
+  215:         "Bank",
+  235:     STATUS = (
+  248:     bank = models.ForeignKey(
+  249:         "Bank",
+  262:     status = models.CharField(
+  264:         choices=STATUS,
+  276:         "BankAccount",
+  280:     generated_number = models.CharField(
+  292: class BankUserProfile(models.Model):
+  297:         related_name="bank_profile"
+  300:     bank = models.ForeignKey(
+  301:         "Bank",
+  317: class BankTransaction(models.Model):
+  333:         "BankAccount",
+  345:     amount = models.DecimalField(
+  363:     status = models.CharField(
+  374: class BankBalance(models.Model):
+  377:         "BankAccount",
+  396: class PartnerApproval(models.Model):
+  398:     STATUS = [
+  409:     partner = models.ForeignKey(
+  410:         "partner_finance.PartnerApplication",
+  415:     bank = models.ForeignKey(
+  416:         "Bank",
+  421:     amount = models.DecimalField(
+  433:     status = models.CharField(
+  435:         choices=STATUS,
+  448:     STATUS = [
+  461:     partner = models.ForeignKey(
+  462:         "partner_finance.PartnerApplication",
+  467:     bank = models.ForeignKey(
+  468:         "Bank",
+  473:     amount = models.DecimalField(
+  491:     status = models.CharField(
+  493:         choices=STATUS,
+  510: class PartnerTransaction(models.Model):
+  525:     partner = models.ForeignKey(
+  526:         "partner_finance.PartnerApplication",
+  537:     amount = models.DecimalField(
+  562: class OnlineBankAccountRequest(models.Model):
+  564:     STATUS = [
+  583:     bank = models.ForeignKey(
+  584:         "Bank",
+  608:     status = models.CharField(
+  610:         choices=STATUS,
+  621: class BankCustomerService(models.Model):
+  624:         OnlineBankAccountRequest,
+  645: class BankCountryAccess(models.Model):
+  647:     bank = models.ForeignKey(
+  648:         "Bank",
+  669: class BankCurrencyAccess(models.Model):
+  671:     bank = models.ForeignKey(
+  672:         "Bank",
+Fichier : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\migrations\0001_initial.py
+    1: # Generated by Django 6.1.1 on 2026-09-29 12:58
+   18:             name='Bank',
+   29:             name='BankAccount',
+   35:                 ('bank', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='banking.bank')),
+   40:             name='BankCountry',
+   45:                 ('bank', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='banking.bank')),
+   49:             name='BankService',
+   54:                 ('bank', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='banking.bank')),
+   61:                 ('amount', models.DecimalField(decimal_places=2, max_digits=18)),
+   62:                 ('status', models.CharField(default='pending', max_length=50)),
+   63:                 ('bank', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='banking.bank')),
+   74:                 ('bank', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='banking.bank')),
+Fichier : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\migrations\0002_remove_bankservice_bank_remove_creditrequest_bank_and_more.py
+    1: # Generated by Django 6.1.1 on 2026-09-29 13:05
+   10:         ('banking', '0001_initial'),
+   16:             model_name='bankservice',
+   17:             name='bank',
+   21:             name='bank',
+   29:             name='bank',
+   32:             model_name='bankaccount',
+   36:             model_name='bankaccount',
+   41:             model_name='bankaccount',
+   46:             model_name='bankaccount',
+   51:             name='BankingOperation',
+   55:                 ('amount', models.DecimalField(decimal_places=2, max_digits=20)),
+   56:                 ('status', models.CharField(default='pending', max_length=50)),
+   58:                 ('account', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='banking.bankaccount')),
+   63:             name='BankCountry',
+   66:             name='BankService',
+Fichier : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\migrations\0003_bankcountry_bankcredit_bankcurrency_bankinsurance_and_more.py
+    1: # Generated by Django 6.1.1 on 2026-09-29 13:06
+   10:         ('banking', '0002_remove_bankservice_bank_remove_creditrequest_bank_and_more'),
+   16:             name='BankCountry',
+   21:                 ('bank', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='banking.bank')),
+   25:             name='BankCredit',
+   29:                 ('maximum_amount', models.DecimalField(decimal_places=2, max_digits=20)),
+   30:                 ('duration_months', models.IntegerField()),
+   32:                 ('bank', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='banking.bank')),
+   36:             name='BankCurrency',
+   40:                 ('bank', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='banking.bank')),
+   45:             name='BankInsurance',
+   51:                 ('bank', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='banking.bank')),
+   55:             name='BankReport',
+   61:                 ('bank', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='banking.bank')),
+   65:             name='BankService',
+   70:                 ('bank', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='banking.bank')),
+Fichier : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\migrations\0004_accountnumbergenerator_accountopeningrequest.py
+    1: # Generated by Django 6.1.1 on 2026-09-29 13:09
+   11:         ('banking', '0003_bankcountry_bankcredit_bankcurrency_bankinsurance_and_more'),
+   21:                 ('generated_number', models.CharField(max_length=100, unique=True)),
+   23:                 ('account', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='banking.bankaccount')),
+   31:                 ('status', models.CharField(choices=[('pending', 'En attente'), ('verification', 'VÃ©rification'), ('approved', 'AcceptÃ©'), ('rejected', 'RefusÃ©'), ('activated', 'ActivÃ©')], default='pending', max_length=50)),
+   33:                 ('bank', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='banking.bank')),
+
+[4] WENZE / MARKETPLACE / COMMISSION
+----------------------------------------
+Fichier : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\add_wenze_dashboard.py
+  def wenze_stats(request):
+              "Gestion WENZE NSIKAY",
+  if "def wenze_stats" not in content:
+  print("=== DASHBOARD WENZE AJOUTE ===")
+Fichier : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\connect_dashboards.py
+  # WENZE
+  def wenze_dashboard(request):
+          "WENZE",
+Fichier : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\create_dashboards.py
+  def wenze_dashboard(request):
+      return dashboard_response(request, "Gestionnaire WENZE")
+Fichier : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\create_dashboard_urls.py
+      path("wenze/", views.wenze_dashboard),
+Fichier : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\marketplace_urls.py
+  from api_nsikay.marketplace_views import (
+      marketplace_products
+      marketplace_products
+Fichier : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\marketplace_views.py
+  from finance.models import MarketplaceProduct
+  def marketplace_products(request):
+      products = MarketplaceProduct.objects.filter(
+Fichier : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models.py
+          ("MARKETPLACE","Marketplace"),
+Fichier : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup.py
+          ("MARKETPLACE","Marketplace"),
+Fichier : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup_encoding.py
+          ("MARKETPLACE","Marketplace"),
+Fichier : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\urls.py
+      "marketplace/",
+      include("api_nsikay.marketplace_urls")
+Fichier : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\urls_backup.py
+      "marketplace/",
+      include("api_nsikay.marketplace_urls")
+Fichier : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\migrations\0005_adminanalytics_contentanalytics_adcampaigncenter_and_more.py
+                  ('page_type', models.CharField(choices=[('HOME', 'Accueil'), ('PROFILE', 'Profil'), ('TV', 'TV'), ('EVENT', 'Ã‰vÃ©nement'), ('MARKETPLACE', 'Marketplace')], max_length=50)),
+Fichier : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\marketplace.py
+  MARKETPLACE_COMMISSION = Decimal("0.025")
+  def calculate_marketplace_fee(amount):
+          MARKETPLACE_COMMISSION
+Fichier : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py
+  class MarketplaceProduct(models.Model):
+  class MarketplaceOrder(models.Model):
+          MarketplaceProduct,
+  class MarketplaceCommission(models.Model):
+          MarketplaceOrder,
+          default=0.025
+Fichier : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\migrations\0007_marketplaceproduct_marketplaceorder_and_more.py
+              name='MarketplaceProduct',
+              name='MarketplaceOrder',
+                  ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='finance.marketplaceproduct')),
+              name='MarketplaceCommission',
+                  ('rate', models.DecimalField(decimal_places=4, default=0.025, max_digits=5)),
+                  ('order', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='commission', to='finance.marketplaceorder')),
+              model_name='marketplaceproduct',
+Fichier : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\nsikay\settings.py
+        "wenze",
+Fichier : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\nsikay\urls.py
+      path("wenze/", include("wenze.urls")),
+Fichier : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_services.py
+  ("WENZE", "Commerce"),
+Fichier : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py
+          "WENZE": {
+Fichier : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\apps.py
+  class WenzeConfig(AppConfig):
+      name = 'wenze'
+
+[5] REGLES FINANCIERES NSIKAY
+----------------------------------------
+[TROUVE] 0.50% -> 2 fichier(s)
+[TROUVE] 0.50 -> 2 fichier(s)
+[TROUVE] 1.2 -> 3 fichier(s)
+
+[6] SECURITE FINANCIERE
+----------------------------------------
+[OK] FinancialLedger
+[OK] FraudDetectionEvent
+[OK] WalletSecurityStatus
+[OK] KYCCompliance
+[OK] AuditLog
+[OK] MAX_TRANSACTION_RISK
+[OK] transaction.atomic
+
+[7] PARTNER FINANCE
+----------------------------------------
+[OK] PartnerApplication
+[OK] PartnerCertification
+[OK] PartnerSupply
+[OK] PartnerWallet
+[OK] PartnerDeposit
+[OK] SupplyTransaction
+
+[8] MIGRATIONS FINANCE
+----------------------------------------
+__init__.py
+0001_initial.py
+0002_currency_remove_payment_transaction_and_more.py
+0003_alter_wallet_user_alter_wallettransaction_wallet.py
+0004_exchangeratehistory_financialledger.py
+0005_bankreconciliation_merchantpayment_and_more.py
+0006_auditlog_frauddetectionevent_kyccompliance_and_more.py
+0007_marketplaceproduct_marketplaceorder_and_more.py
+
+[9] MIGRATIONS BANKING
+----------------------------------------
+__init__.py
+0001_initial.py
+0002_remove_bankservice_bank_remove_creditrequest_bank_and_more.py
+0003_bankcountry_bankcredit_bankcurrency_bankinsurance_and_more.py
+0004_accountnumbergenerator_accountopeningrequest.py
+0005_bankuserprofile.py
+0006_bankbalance_banktransaction.py
+0007_partnerapproval.py
+0008_cashdeposit_partnertransaction.py
+0009_onlinebankaccountrequest_bankcustomerservice.py
+0010_bankcountryaccess_bankcurrencyaccess.py
+
+[10] MIGRATIONS WALLET
+----------------------------------------
+__init__.py
+0001_initial.py
+0002_alter_wallet_user.py
+0003_walletcommission_walletoperation.py
+0004_walletauditlog.py
+0005_walletkycprofile_walletcurrencybalance.py
+0006_walletbankaccount.py
+
+[11] MAKEMIGRATIONS CHECK
+----------------------------------------
+=== ALIASES DASHBOARD NSIKAY FINALISES ===
+=== API NSIKAY VIEWS COMPATIBILITE CHARGEES ===
+No changes detected
+
+[12] DJANGO CHECK
+----------------------------------------
+=== ALIASES DASHBOARD NSIKAY FINALISES ===
+=== API NSIKAY VIEWS COMPATIBILITE CHARGEES ===
+System check identified no issues (0 silenced).
+
+============================================================
+ FIN DE L'AUDIT COMPLET
+============================================================

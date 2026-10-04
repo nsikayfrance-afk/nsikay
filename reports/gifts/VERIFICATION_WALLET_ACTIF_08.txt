@@ -1,0 +1,101 @@
+======================================================================
+NSIKAY - VERIFICATION WALLET ACTIF 08
+======================================================================
+LECTURE SEULE - AUCUNE MODIFICATION
+
+
+----------------------------------------------------------------------
+FICHIER : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\payment.py
+----------------------------------------------------------------------
+    7 | from finance.models import Wallet
+    8 | from finance.wallet_service import debit_wallet, credit_wallet
+   30 |     - enregistre les écritures WalletTransaction ;
+  118 |             Wallet.objects
+  140 |             Wallet.objects
+  186 |         if buyer_wallet_locked.balance < amount:
+  226 |         debit_wallet(
+  236 |         credit_wallet(
+
+----------------------------------------------------------------------
+FICHIER : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\views.py
+----------------------------------------------------------------------
+   88 |         Wallet.objects
+  155 |     from finance.models import Wallet
+  159 |         Wallet.objects
+
+----------------------------------------------------------------------
+FICHIER : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\wallet_service.py
+----------------------------------------------------------------------
+    3 | from .models import WalletTransaction
+    7 | def credit_wallet(wallet, amount, reference):
+    9 |     wallet.balance += Decimal(amount)
+   14 |     WalletTransaction.objects.create(
+   29 |     return wallet.balance
+   34 | def debit_wallet(wallet, amount, reference):
+   39 |     if wallet.balance < amount:
+   46 |     wallet.balance -= amount
+   51 |     WalletTransaction.objects.create(
+   66 |     return wallet.balance
+   71 | def transfer_wallet(sender, receiver, amount, reference):
+   76 |     if sender.balance < amount:
+   83 |     sender.balance -= amount
+   85 |     receiver.balance += amount
+   93 |     WalletTransaction.objects.create(
+  108 |     WalletTransaction.objects.create(
+
+----------------------------------------------------------------------
+FICHIER : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\models.py
+----------------------------------------------------------------------
+   34 | class WalletBalance(models.Model):
+   38 |         related_name='balances', on_delete=models.CASCADE
+   45 |     available_balance = models.DecimalField(
+   51 |     locked_balance = models.DecimalField(
+   69 | class WalletTransaction(models.Model):
+
+----------------------------------------------------------------------
+FICHIER : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\services.py
+----------------------------------------------------------------------
+
+----------------------------------------------------------------------
+FICHIER : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\views.py
+----------------------------------------------------------------------
+    3 | from .models import WalletBalance, WalletTransaction
+    6 | class WalletBalanceView(APIView):
+   10 |         balances = WalletBalance.objects.all()
+   14 |         for item in balances:
+   17 |                 "balance": item.available_balance
+   28 |         transactions = WalletTransaction.objects.all()
+
+----------------------------------------------------------------------
+FICHIER : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\views_secure.py
+----------------------------------------------------------------------
+    5 | from .models import Wallet, WalletBalance, WalletTransaction
+   18 |         wallet, created = Wallet.objects.get_or_create(
+   22 |         balances = WalletBalance.objects.filter(
+   30 |                 "available": b.available_balance,
+   31 |                 "locked": b.locked_balance
+   33 |             for b in balances
+   65 |         transaction = WalletTransaction.objects.create(
+   67 |             wallet=Wallet.objects.get(
+
+----------------------------------------------------------------------
+FICHIER : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\signals.py
+----------------------------------------------------------------------
+    6 | from wallet.models import Wallet
+    7 | from wallet.currency_models import WalletCurrencyBalance
+   19 |         wallet, created_wallet = Wallet.objects.get_or_create(
+   33 |             WalletCurrencyBalance.objects.get_or_create(
+   37 |                     "balance":0
+
+----------------------------------------------------------------------
+FICHIER : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\financial_accounts\models.py
+----------------------------------------------------------------------
+    6 | class FinancialAccount(models.Model):
+   58 |     current_balance = models.DecimalField(
+  103 |         FinancialAccount,
+  175 | class GiftFinancialLedger(models.Model):
+  224 |         FinancialAccount,
+
+======================================================================
+FIN
+======================================================================

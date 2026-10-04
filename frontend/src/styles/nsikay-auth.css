@@ -1,0 +1,269 @@
+/* ============================================================
+   NSIKAY - AUTHENTIFICATION
+   Connexion + Création de compte
+   ============================================================ */
+
+:root {
+  --nsk-auth-blue: #061a38;
+  --nsk-auth-blue-2: #0b2d5c;
+  --nsk-auth-gold: #d4aa45;
+  --nsk-auth-gold-light: #f4dc8b;
+  --nsk-auth-white: #ffffff;
+  --nsk-auth-muted: #748196;
+  --nsk-auth-border: #dfe5ed;
+  --nsk-auth-bg: #f4f7fb;
+}
+
+/* ------------------------------------------------------------
+   FOND GENERAL
+   ------------------------------------------------------------ */
+
+body:has(input[type="password"]) {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      circle at 82% 18%,
+      rgba(212, 170, 69, .15),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 15% 85%,
+      rgba(11, 45, 92, .12),
+      transparent 30%
+    ),
+    var(--nsk-auth-bg);
+}
+
+/* ------------------------------------------------------------
+   CONTENEURS
+   ------------------------------------------------------------ */
+
+body:has(input[type="password"]) main,
+body:has(input[type="password"]) #root {
+  min-height: 100vh;
+}
+
+/* Les blocs de formulaire deviennent des cartes premium */
+
+body:has(input[type="password"]) form {
+  position: relative;
+  background: rgba(255,255,255,.97);
+  border: 1px solid rgba(6,26,56,.08);
+  border-radius: 20px;
+  padding: 35px;
+  box-shadow:
+    0 30px 80px rgba(3,17,38,.13),
+    0 3px 10px rgba(3,17,38,.04);
+}
+
+/* ------------------------------------------------------------
+   TITRES
+   ------------------------------------------------------------ */
+
+body:has(input[type="password"]) h1 {
+  color: var(--nsk-auth-blue);
+  font-weight: 800;
+  letter-spacing: -1.5px;
+}
+
+body:has(input[type="password"]) h2 {
+  color: var(--nsk-auth-blue);
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+body:has(input[type="password"]) h3 {
+  color: var(--nsk-auth-blue);
+}
+
+/* ------------------------------------------------------------
+   LABELS
+   ------------------------------------------------------------ */
+
+body:has(input[type="password"]) label {
+  color: var(--nsk-auth-blue);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* ------------------------------------------------------------
+   CHAMPS
+   ------------------------------------------------------------ */
+
+body:has(input[type="password"]) input,
+body:has(input[type="password"]) select,
+body:has(input[type="password"]) textarea {
+  min-height: 48px;
+  border: 1px solid var(--nsk-auth-border);
+  border-radius: 10px;
+  background: #fbfcfe;
+  color: var(--nsk-auth-blue);
+  font-size: 14px;
+  outline: none;
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease,
+    background .2s ease;
+}
+
+body:has(input[type="password"]) input:focus,
+body:has(input[type="password"]) select:focus,
+body:has(input[type="password"]) textarea:focus {
+  border-color: var(--nsk-auth-gold);
+  background: #ffffff;
+  box-shadow:
+    0 0 0 3px rgba(212,170,69,.13);
+}
+
+body:has(input[type="password"]) input::placeholder,
+body:has(input[type="password"]) textarea::placeholder {
+  color: #a3adbb;
+}
+
+/* ------------------------------------------------------------
+   BOUTONS
+   ------------------------------------------------------------ */
+
+body:has(input[type="password"]) button[type="submit"] {
+  min-height: 50px;
+  border: 0;
+  border-radius: 10px;
+  background:
+    linear-gradient(
+      135deg,
+      var(--nsk-auth-gold),
+      #b88b2d
+    );
+  color: var(--nsk-auth-blue);
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow:
+    0 12px 25px rgba(212,170,69,.18);
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease;
+}
+
+body:has(input[type="password"]) button[type="submit"]:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 17px 32px rgba(212,170,69,.25);
+}
+
+body:has(input[type="password"]) button[type="submit"]:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ------------------------------------------------------------
+   LIENS
+   ------------------------------------------------------------ */
+
+body:has(input[type="password"]) a {
+  color: var(--nsk-auth-blue-2);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+body:has(input[type="password"]) a:hover {
+  color: #a67b24;
+}
+
+/* ------------------------------------------------------------
+   LOGO / MARQUE NSIKAY
+   ------------------------------------------------------------ */
+
+body:has(input[type="password"]) form::before {
+  content: "N";
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 18px;
+  border-radius: 15px 5px 15px 5px;
+  border: 1px solid var(--nsk-auth-gold);
+  background: var(--nsk-auth-blue);
+  color: var(--nsk-auth-gold-light);
+  font-size: 23px;
+  font-weight: 900;
+  box-shadow:
+    0 10px 25px rgba(6,26,56,.18);
+}
+
+/* ------------------------------------------------------------
+   TEXTE D'INFORMATION
+   ------------------------------------------------------------ */
+
+body:has(input[type="password"]) p {
+  color: var(--nsk-auth-muted);
+  line-height: 1.65;
+}
+
+/* ------------------------------------------------------------
+   MESSAGES / ERREURS
+   ------------------------------------------------------------ */
+
+body:has(input[type="password"]) [role="alert"] {
+  border-radius: 9px;
+  padding: 10px 12px;
+  background: #fff4f4;
+  border: 1px solid #f0caca;
+  color: #9b252b;
+  font-size: 12px;
+}
+
+/* ------------------------------------------------------------
+   CHECKBOXES
+   ------------------------------------------------------------ */
+
+body:has(input[type="password"]) input[type="checkbox"] {
+  min-height: auto;
+  accent-color: var(--nsk-auth-gold);
+}
+
+/* ------------------------------------------------------------
+   ELEMENTS DE NAVIGATION AUTH
+   ------------------------------------------------------------ */
+
+.nsikay-auth-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nsikay-auth-brand-mark {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px 4px 12px 4px;
+  background: var(--nsk-auth-blue);
+  border: 1px solid var(--nsk-auth-gold);
+  color: var(--nsk-auth-gold-light);
+  font-weight: 900;
+}
+
+/* ------------------------------------------------------------
+   MOBILE
+   ------------------------------------------------------------ */
+
+@media (max-width: 700px) {
+
+  body:has(input[type="password"]) form {
+    margin: 15px;
+    padding: 25px 20px;
+    border-radius: 16px;
+  }
+
+  body:has(input[type="password"]) input,
+  body:has(input[type="password"]) select,
+  body:has(input[type="password"]) textarea {
+    font-size: 16px;
+  }
+
+  body:has(input[type="password"]) button[type="submit"] {
+    width: 100%;
+  }
+}

@@ -1,0 +1,100 @@
+﻿============================================================
+ NSIKAY - AUDIT PARTENAIRES FINANCIERS
+============================================================
+
+DATE=2026-10-01 12:25:28
+
+OBJECTIF:
+Identifier les modèles bancaires et partenaires existants
+avant toute création de nouveau registre.
+
+AUCUNE MODIFICATION DE DONNEES.
+AUCUN PARTENAIRE CREE.
+AUCUNE TRANSACTION CREEE.
+AUCUN SOLDE MODIFIE.
+
+DJANGO_CHECK=OK
+
+=== MODELES ===
+156 objects imported automatically (use -v 2 for details).
+
+
+[banking]
+Bank table=banking_bank
+BankAccount table=banking_bankaccount
+BankingOperation table=banking_bankingoperation
+BankCountry table=banking_bankcountry
+BankCurrency table=banking_bankcurrency
+BankService table=banking_bankservice
+BankCredit table=banking_bankcredit
+BankInsurance table=banking_bankinsurance
+BankReport table=banking_bankreport
+AccountOpeningRequest table=banking_accountopeningrequest
+AccountNumberGenerator table=banking_accountnumbergenerator
+BankUserProfile table=banking_bankuserprofile
+BankTransaction table=banking_banktransaction
+BankBalance table=banking_bankbalance
+PartnerApproval table=banking_partnerapproval
+CashDeposit table=banking_cashdeposit
+PartnerTransaction table=banking_partnertransaction
+OnlineBankAccountRequest table=banking_onlinebankaccountrequest
+BankCustomerService table=banking_bankcustomerservice
+BankCountryAccess table=banking_bankcountryaccess
+BankCurrencyAccess table=banking_bankcurrencyaccess
+
+[financial_routing]
+FinancialRoutingRule table=financial_routing_financialroutingrule
+FinancialRoutingLog table=financial_routing_financialroutinglog
+FinancialFeeRule table=financial_routing_financialfeerule
+
+[partner_finance]
+PartnerApplication table=partner_finance_partnerapplication
+PartnerCertification table=partner_finance_partnercertification
+PartnerSupply table=partner_finance_partnersupply
+PartnerWallet table=partner_finance_partnerwallet
+PartnerDeposit table=partner_finance_partnerdeposit
+SupplyTransaction table=partner_finance_supplytransaction
+
+=== COMPTAGES ===
+156 objects imported automatically (use -v 2 for details).
+
+
+[banking]
+Bank=1
+BankAccount=0
+BankingOperation=0
+BankCountry=0
+BankCurrency=0
+BankService=0
+BankCredit=0
+BankInsurance=0
+BankReport=0
+AccountOpeningRequest=0
+AccountNumberGenerator=0
+BankUserProfile=0
+BankTransaction=0
+BankBalance=0
+PartnerApproval=0
+CashDeposit=0
+PartnerTransaction=0
+OnlineBankAccountRequest=0
+BankCustomerService=0
+BankCountryAccess=2
+BankCurrencyAccess=3
+
+[financial_routing]
+FinancialRoutingRule=0
+FinancialRoutingLog=0
+FinancialFeeRule=4
+
+[partner_finance]
+PartnerApplication=0
+PartnerCertification=0
+PartnerSupply=0
+PartnerWallet=0
+PartnerDeposit=0
+SupplyTransaction=0
+
+=== DECISION ===
+Le registre partenaire ne sera créé qu'après identification
+d'un modèle existant réutilisable ou d'un besoin réellement absent.

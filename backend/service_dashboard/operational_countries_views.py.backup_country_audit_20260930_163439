@@ -1,0 +1,196 @@
+﻿from django.contrib import messages
+from django.contrib.auth.decorators import user_passes_test
+from django.shortcuts import redirect, render
+
+from service_control.models import CountryServiceStatus
+
+
+MAX_OPERATIONAL_COUNTRIES = 240
+
+
+def _is_nsikay_admin(user):
+    if not user or not user.is_authenticated:
+        return False
+
+    username = str(user.username).strip().lower()
+
+    if username == "constantdoriskayembe":
+        return True
+
+    return (
+        user.is_superuser
+        or user.groups.filter(
+            name__in=[
+                "Super Administrateur",
+                "Administration Pays",
+            ]
+        ).exists()
+    )
+
+
+@user_passes_test(_is_nsikay_admin)
+def operational_countries(request):
+
+    countries = (
+        CountryServiceStatus.objects
+        .filter(is_primary=True)
+        .order_by("country_name")
+    )
+
+    if request.method == "POST":
+
+        selected_codes = {
+            str(code).strip().upper()
+            for code in request.POST.getlist("operational_countries")
+            if str(code).strip()
+        }
+
+        selected_count = len(selected_codes)
+
+        # ----------------------------------------------------
+        # REGLE ABSOLUE : EXACTEMENT 240
+        # ----------------------------------------------------
+
+        if selected_count != MAX_OPERATIONAL_COUNTRIES:
+
+            messages.error(
+                request,
+                (
+                    f"Enregistrement refuse : {selected_count} pays "
+                    f"selectionnes. NSIKAY exige exactement "
+                    f"{MAX_OPERATIONAL_COUNTRIES} pays operationnels."
+                )
+            )
+
+            return redirect("service_dashboard:operational_countries")
+
+        # ----------------------------------------------------
+        # VERIFICATION ISO3
+        # ----------------------------------------------------
+
+        valid_codes = set(
+            countries.values_list(
+                "country_code",
+                flat=True
+            )
+        )
+
+        invalid_codes = sorted(
+            selected_codes - valid_codes
+        )
+
+        if invalid_codes:
+
+            messages.error(
+                request,
+                (
+                    "Enregistrement refuse : un ou plusieurs "
+                    "codes ISO3 ne correspondent pas aux pays "
+                    "principaux NSIKAY."
+                )
+            )
+
+            return redirect("service_dashboard:operational_countries")
+
+        # ----------------------------------------------------
+        # CONTROLE DES 249 PAYS PRINCIPAUX
+        # ----------------------------------------------------
+
+        primary_count = countries.count()
+
+        if primary_count != 249:
+
+            messages.error(
+                request,
+                (
+                    f"Structure inattendue : {primary_count} pays "
+                    "principaux trouves au lieu de 249. "
+                    "Aucune modification effectuee."
+                )
+            )
+
+            return redirect("service_dashboard:operational_countries")
+
+        # ----------------------------------------------------
+        # MISE A JOUR EXCLUSIVE DE is_operational
+        # ----------------------------------------------------
+
+        countries.update(
+            is_operational=False
+        )
+
+        countries.filter(
+            country_code__in=selected_codes
+        ).update(
+            is_operational=True
+        )
+
+        # ----------------------------------------------------
+        # VERIFICATION POST-ECRITURE
+        # ----------------------------------------------------
+
+        operational_count = countries.filter(
+            is_operational=True
+        ).count()
+
+        if operational_count != MAX_OPERATIONAL_COUNTRIES:
+
+            # Annulation de securite.
+            countries.update(
+                is_operational=False
+            )
+
+            messages.error(
+                request,
+                (
+                    "Erreur de verification : le nombre final "
+                    "de pays operationnels n'est pas egal a 240. "
+                    "La modification a ete annulee."
+                )
+            )
+
+            return redirect("service_dashboard:operational_countries")
+
+        messages.success(
+            request,
+            (
+                "Configuration enregistree avec succes : "
+                "240 pays sont maintenant operationnels pour NSIKAY."
+            )
+        )
+
+        return redirect(
+            "service_dashboard:operational_countries"
+        )
+
+    # --------------------------------------------------------
+    # AFFICHAGE
+    # --------------------------------------------------------
+
+    operational_count = countries.filter(
+        is_operational=True
+    ).count()
+
+    non_operational_count = (
+        countries.count() - operational_count
+    )
+
+    context = {
+        "countries": countries,
+        "operational_count": operational_count,
+        "non_operational_count": non_operational_count,
+        "maximum_operational": MAX_OPERATIONAL_COUNTRIES,
+        "selection_complete": (
+            operational_count == MAX_OPERATIONAL_COUNTRIES
+        ),
+        "remaining_slots": max(
+            0,
+            MAX_OPERATIONAL_COUNTRIES - operational_count
+        ),
+    }
+
+    return render(
+        request,
+        "service_dashboard/operational_countries.html",
+        context
+    )

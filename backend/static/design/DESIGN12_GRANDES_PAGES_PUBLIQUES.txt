@@ -1,0 +1,82 @@
+﻿============================================================
+NSIKAY - DESIGN 12
+GRANDES PAGES PUBLIQUES
+============================================================
+
+PAGES PREPAREES
+---------------
+
+1. Economie
+2. Sport & Loisirs
+3. Culture & Art
+4. Technologie & Innovation
+5. Agriculture & Agronomie
+6. Social
+7. Religion & Histoire
+8. +18
+9. NSIKAY TV
+10. WENZE
+11. Evenements
+12. Publicite
+13. Pays & Economies
+14. Presentation institutionnelle
+
+ELEMENTS TRANSVERSAUX
+---------------------
+
+- Header public
+- Connexion
+- Creation de compte
+- Navigation
+- Fil d'Ariane
+- Publicite
+- Evenements
+- Footer
+- Identite officielle
+- Collaboration avec ANANSI SA
+
+WENZE
+-----
+
+WENZE est presente comme espace permanent
+de commerce NSIKAY.
+
+BUKA PRIX
+---------
+
+BUKA PRIX est mentionne comme campagne commerciale
+programmee par l'administration et non comme service
+permanent.
+
+PAYS
+----
+
+La maquette distingue :
+- pays principaux
+- pays operationnels
+- services configures
+
+Aucune activation n'est effectuee par cette maquette.
+
+IDENTITE
+--------
+
+Les identifiants officiels deja valides du projet sont
+affiches sans afficher l'adresse du siege.
+
+MOBILE
+------
+
+Toutes les pages disposent d'une structure responsive
+desktop / tablette / smartphone.
+
+DONNEES
+-------
+
+Aucune migration.
+Aucune activation.
+Aucune desactivation.
+Aucune transaction.
+Aucune modification de donnees de production.
+
+============================================================

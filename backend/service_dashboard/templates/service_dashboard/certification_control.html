@@ -1,0 +1,179 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Contrôle Certification - NSIKAY</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 25px;
+    background: #f4f6f8;
+}
+
+.panel {
+    background: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.08);
+}
+
+select,
+button {
+    padding: 9px;
+    margin: 6px;
+}
+
+.ok {
+    background: #e8f5e9;
+    border: 1px solid #66bb6a;
+    padding: 15px;
+}
+
+.warning {
+    background: #fff3cd;
+    border: 1px solid #e0b400;
+    padding: 15px;
+}
+
+a {
+    display: inline-block;
+    padding: 8px 12px;
+    margin-right: 8px;
+    background: #1f2937;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Contrôle Certification NSIKAY</h1>
+
+<p>
+La certification est obligatoire lorsqu'elle est définie
+dans la règle du service.
+</p>
+
+<div class="panel">
+
+<a href="{% url 'service_dashboard:activation_validation' %}">
+Validation activation
+</a>
+
+<a href="{% url 'service_dashboard:service_country_control' %}">
+Services × Pays
+</a>
+
+</div>
+
+<div class="panel">
+
+<form method="post">
+
+{% csrf_token %}
+
+<select name="country" required>
+
+<option value="">
+Sélectionner un pays
+</option>
+
+{% for country in countries %}
+
+<option
+value="{{ country.country_code }}"
+{% if selected_country and selected_country.id == country.id %}
+selected
+{% endif %}
+>
+{{ country.country_name }}
+({{ country.country_code }})
+</option>
+
+{% endfor %}
+
+</select>
+
+<select name="service" required>
+
+<option value="">
+Sélectionner un service
+</option>
+
+{% for service in services %}
+
+<option
+value="{{ service.id }}"
+{% if selected_service and selected_service.id == service.id %}
+selected
+{% endif %}
+>
+{{ service.name }}
+</option>
+
+{% endfor %}
+
+</select>
+
+<button type="submit">
+Contrôler la certification
+</button>
+
+</form>
+
+</div>
+
+{% if result %}
+
+<div class="panel">
+
+{% if result.required %}
+
+<div class="warning">
+
+<h2>CERTIFICATION REQUISE</h2>
+
+<p>
+Pays :
+<strong>{{ result.country.country_name }}</strong>
+</p>
+
+<p>
+Service :
+<strong>{{ result.service.name }}</strong>
+</p>
+
+<p>
+Le service ne peut pas être considéré comme conforme
+sans certification applicable.
+</p>
+
+</div>
+
+{% else %}
+
+<div class="ok">
+
+<h2>CERTIFICATION NON REQUISE</h2>
+
+<p>
+La règle actuelle de ce service ne demande pas
+de certification obligatoire supplémentaire.
+</p>
+
+</div>
+
+{% endif %}
+
+</div>
+
+{% endif %}
+
+</body>
+</html>
+

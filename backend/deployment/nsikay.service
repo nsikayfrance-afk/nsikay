@@ -1,0 +1,18 @@
+﻿[Unit]
+
+Description=NSIKAY Django Application
+
+
+[Service]
+
+WorkingDirectory=/var/www/nsikay/backend
+
+ExecStart=/var/www/nsikay/venv/bin/gunicorn nsikay.wsgi:application
+
+Restart=always
+
+
+[Install]
+
+WantedBy=multi-user.target
+

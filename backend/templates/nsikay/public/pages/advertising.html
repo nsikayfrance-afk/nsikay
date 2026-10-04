@@ -1,0 +1,64 @@
+﻿{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>NSIKAY â€” MaÃ®tre des PublicitÃ©s</title>
+
+    <meta
+        name="description"
+        content="MaÃ®tre des PublicitÃ©s NSIKAY : visibilitÃ©, campagnes et annonces."
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/nsikay_design12_public.css' %}"
+    >
+
+</head>
+
+<body class="ns-public-page page-advertising">
+
+    {% include "nsikay/public/components/header_public.html" %}
+
+    <main>
+
+        {% include "nsikay/public/components/breadcrumb.html" %}
+
+        <section class="ns-page-title-block">
+
+            <span class="ns-public-kicker">
+                VISIBILITÃ‰
+            </span>
+
+            <h1>
+                MaÃ®tre des PublicitÃ©s
+            </h1>
+
+            <p>
+                PrÃ©sentez vos produits, services,
+                Ã©vÃ©nements et activitÃ©s sur NSIKAY.
+            </p>
+
+        </section>
+
+        {% include "nsikay/public/components/advertising_master.html" %}
+
+        {% include "nsikay/public/components/events_public.html" %}
+
+    </main>
+
+    {% include "nsikay/public/components/footer_public.html" %}
+
+</body>
+
+</html>

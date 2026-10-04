@@ -1,0 +1,15 @@
+﻿from django.urls import path
+
+from . import views
+
+app_name = "wenze"
+
+urlpatterns = [
+    path("", views.index, name="index"),
+    path(
+        "commande/<int:product_id>/",
+        views.create_order,
+        name="create_order",
+    ),
+    path("commande/<int:order_id>/payer/", views.pay_order, name="pay_order"),
+]

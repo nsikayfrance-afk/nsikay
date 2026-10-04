@@ -1,0 +1,92 @@
+﻿<section class="admin-section-block">
+
+    <div class="panel-heading">
+        <div>
+            <span class="panel-kicker">CONFIGURATION</span>
+            <h2>Services par pays</h2>
+        </div>
+
+        <button type="button" class="admin-btn secondary">
+            Ouvrir le contrôle
+        </button>
+    </div>
+
+    <div class="admin-filter-bar">
+
+        <input
+            type="search"
+            placeholder="Rechercher un pays..."
+            aria-label="Rechercher un pays"
+        />
+
+        <select aria-label="Service">
+            <option>Tous les services</option>
+            <option>Entreprise</option>
+            <option>Banque</option>
+            <option>WENZE</option>
+            <option>Éducation</option>
+            <option>Santé</option>
+            <option>Telecom</option>
+        </select>
+
+        <select aria-label="État">
+            <option>Tous les états</option>
+            <option>Opérationnel</option>
+            <option>Inactif</option>
+            <option>En attente</option>
+        </select>
+
+    </div>
+
+    <div class="admin-table-wrapper">
+
+        <table class="admin-table">
+
+            <thead>
+                <tr>
+                    <th>Pays</th>
+                    <th>Service</th>
+                    <th>Pays</th>
+                    <th>Certification</th>
+                    <th>Partenaire</th>
+                    <th>État</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td><strong>France</strong></td>
+                    <td>Entreprise</td>
+                    <td><span class="country-active">Opérationnel</span></td>
+                    <td>Requise</td>
+                    <td>Selon service</td>
+                    <td><span class="status neutral">Configuré</span></td>
+                </tr>
+
+                <tr>
+                    <td><strong>Congo</strong></td>
+                    <td>WENZE</td>
+                    <td><span class="country-active">Opérationnel</span></td>
+                    <td>Requise</td>
+                    <td>Non requis</td>
+                    <td><span class="status active">Actif</span></td>
+                </tr>
+
+                <tr>
+                    <td><strong>Afghanistan</strong></td>
+                    <td>WENZE</td>
+                    <td><span class="country-active">Opérationnel</span></td>
+                    <td>Requise</td>
+                    <td>Non requis</td>
+                    <td><span class="status inactive">Inactif</span></td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+

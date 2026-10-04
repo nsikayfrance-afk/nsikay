@@ -1,0 +1,465 @@
+============================================================
+NSIKAY - INSPECTION WALLET FINAL
+============================================================
+DATE : 2026-10-01 15:51:44
+MODE : LECTURE SEULE - AUCUNE MODIFICATION
+
+============================================================
+MODULE wallet/models.py
+============================================================
+    5 | class Wallet(models.Model):
+   14 |     user = models.OneToOneField(
+   34 | class WalletBalance(models.Model):
+   36 |     wallet = models.ForeignKey(
+   38 |         related_name='balances', on_delete=models.CASCADE
+   45 |     available_balance = models.DecimalField(
+   51 |     locked_balance = models.DecimalField(
+   69 | class WalletTransaction(models.Model):
+   81 |     wallet = models.ForeignKey(
+   86 |     transaction_type = models.CharField(
+  115 | class ExchangeRate(models.Model):
+  140 | class WalletSecurityEvent(models.Model):
+  142 |     wallet = models.ForeignKey(
+  170 | class WalletOperation(models.Model):
+  178 |     wallet = models.ForeignKey(
+  205 |     destination_wallet = models.ForeignKey(
+  223 | class WalletCommission(models.Model):
+  244 | class WalletAuditLog(models.Model):
+  255 |     wallet = models.ForeignKey(
+  290 | class WalletKYCProfile(models.Model):
+  299 |     user = models.OneToOneField(
+  352 | class WalletBankAccount(models.Model):
+  365 |     wallet = models.ForeignKey(
+
+============================================================
+REFERENCES wallet.Wallet
+============================================================
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\add_dashboard_stats.py:22 | Wallet.objects.count(),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\add_finance_dashboard.py:36 | Wallet.objects.count(),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\add_wenze_dashboard.py:19 | Wallet.objects.count(),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\add_wenze_dashboard.py:27 | Wallet.objects.values(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\update_finance_dashboard_real.py:69 | for wallet in Wallet.objects.all():
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\update_real_dashboards.py:145 | "portefeuilles": Wallet.objects.count(),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\update_real_dashboards.py:147 | "transactions_wallet": WalletTransaction.objects.count()
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\finance_admin_views.py:19 | wallets = Wallet.objects.count()
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\signals.py:19 | Wallet.objects.create(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\wallet_api_views.py:16 | queryset = Wallet.objects.all()
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\wallet_api_views.py:24 | queryset = WalletTransaction.objects.all()
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\wallet_dashboard_views.py:17 | wallet = Wallet.objects.filter(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\finance_migration_0008_20261001_131432\models.py:151 | "wallet.Wallet",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\finance_migration_0008_20261001_131432\models.py:273 | "wallet.Wallet",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\finance_migration_0008_20261001_131432\models.py:350 | "wallet.WalletBankAccount",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\finance_migration_0008_20261001_131432\models.py:406 | "wallet.Wallet",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\finance_migration_0008_20261001_131432\models.py:526 | "wallet.Wallet",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\finance_migration_0008_20261001_131432\models.py:566 | "wallet.Wallet",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\financial_clean_20261001_130349\models.py:151 | "wallet.Wallet",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\financial_clean_20261001_130349\models.py:273 | "wallet.Wallet",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\financial_clean_20261001_130349\models.py:350 | "wallet.WalletBankAccount",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\financial_clean_20261001_130349\models.py:406 | "wallet.Wallet",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\financial_clean_20261001_130349\models.py:526 | "wallet.Wallet",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\financial_clean_20261001_130349\models.py:566 | "wallet.Wallet",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\financial_full_check_20261001_131156\services.py:24 | wallet = Wallet.objects.get(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\financial_full_check_20261001_131156\services.py:76 | wallet = Wallet.objects.get(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\financial_full_check_20261001_131156\wallet_service.py:14 | WalletTransaction.objects.create(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\financial_full_check_20261001_131156\wallet_service.py:51 | WalletTransaction.objects.create(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\financial_full_check_20261001_131156\wallet_service.py:93 | WalletTransaction.objects.create(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\financial_full_check_20261001_131156\wallet_service.py:108 | WalletTransaction.objects.create(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\wenze_stock_20261001_135627\payment.py:84 | Wallet.objects
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\wenze_stock_20261001_135627\payment.py:106 | Wallet.objects
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\wenze_stock_20261001_135627\views.py:87 | Wallet.objects
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\wenze_stock_20261001_135627\views.py:158 | Wallet.objects
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\wenze_stock_final_20261001_135828\payment.py:84 | Wallet.objects
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\wenze_stock_final_20261001_135828\payment.py:106 | Wallet.objects
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\dashboard\views.py:206 | "portefeuilles": Wallet.objects.count(),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\dashboard\views.py:208 | "transactions_wallet": WalletTransaction.objects.count()
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\dashboard\views.py:410 | for wallet in Wallet.objects.all():
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py:151 | "wallet.Wallet",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py:273 | "wallet.Wallet",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py:350 | "wallet.WalletBankAccount",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py:406 | "wallet.Wallet",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py:526 | "wallet.Wallet",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py:566 | "wallet.Wallet",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\wallet_service.py:14 | WalletTransaction.objects.create(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\wallet_service.py:51 | WalletTransaction.objects.create(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\wallet_service.py:93 | WalletTransaction.objects.create(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\wallet_service.py:108 | WalletTransaction.objects.create(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\operations\services.py:24 | wallet = Wallet.objects.get(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\operations\services.py:76 | wallet = Wallet.objects.get(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\tests\test_wenze_concurrent_payment.py:42 | buyer1_wallet = Wallet.objects.get(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\tests\test_wenze_concurrent_payment.py:48 | buyer2_wallet = Wallet.objects.filter(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\tests\test_wenze_concurrent_payment.py:58 | seller_wallet = Wallet.objects.filter(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\tests\test_wenze_concurrent_payment.py:177 | wallet = Wallet.objects.get(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\tests\test_wenze_concurrent_payment.py:349 | out_count = WalletTransaction.objects.filter(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\tests\test_wenze_concurrent_payment.py:354 | in_count = WalletTransaction.objects.filter(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\tests\test_wenze_concurrent_payment.py:466 | WalletTransaction.objects.count(),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\tests\test_wenze_insufficient_stock.py:26 | buyer_wallet = Wallet.objects.get(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\tests\test_wenze_insufficient_stock.py:32 | seller_wallet = Wallet.objects.filter(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\tests\test_wenze_insufficient_stock.py:212 | out_count = WalletTransaction.objects.filter(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\tests\test_wenze_insufficient_stock.py:218 | in_count = WalletTransaction.objects.filter(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\tests\test_wenze_insufficient_stock.py:290 | WalletTransaction.objects.count(),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\tests\test_wenze_payment_errors.py:21 | buyer_wallet = Wallet.objects.get(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\tests\test_wenze_payment_errors.py:27 | seller_wallet = Wallet.objects.filter(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\tests\test_wenze_payment_errors.py:124 | eur_wallet = Wallet.objects.filter(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\tests\test_wenze_payment_errors.py:211 | Wallet.objects.filter(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\tests\test_wenze_payment_errors.py:284 | print("WalletTransactions :", WalletTransaction.objects.count())
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\tests\test_wenze_stock_payment.py:26 | buyer_wallet = Wallet.objects.get(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\tests\test_wenze_stock_payment.py:35 | seller_wallet = Wallet.objects.filter(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\tests\test_wenze_stock_payment.py:217 | out_count = WalletTransaction.objects.filter(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\tests\test_wenze_stock_payment.py:223 | in_count = WalletTransaction.objects.filter(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\tests\test_wenze_stock_payment.py:295 | WalletTransaction.objects.count(),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\models.py:179 | "wallet.Wallet",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\models.py:206 | "wallet.Wallet",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\models.py:256 | "wallet.Wallet",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\models.py:367 | "wallet.Wallet",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\signals.py:19 | wallet, created_wallet = Wallet.objects.get_or_create(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\views.py:28 | transactions = WalletTransaction.objects.all()
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\views_secure.py:18 | wallet, created = Wallet.objects.get_or_create(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\views_secure.py:65 | transaction = WalletTransaction.objects.create(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\views_secure.py:67 | wallet=Wallet.objects.get(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\payment.py:118 | Wallet.objects
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\payment.py:140 | Wallet.objects
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\views.py:88 | Wallet.objects
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\views.py:159 | Wallet.objects
+
+============================================================
+FINANCE/models.py - WALLET
+============================================================
+   34 | class Wallet(models.Model):
+   35 | 
+   36 |     user = models.ForeignKey(
+   37 |         User,
+   38 |         related_name='finance_wallets', on_delete=models.CASCADE
+   39 |     )
+   40 | 
+   41 |     currency = models.ForeignKey(
+   42 |         Currency,
+   43 |         on_delete=models.PROTECT
+   44 |     )
+   45 | 
+   46 |     balance = models.DecimalField(
+   47 |         max_digits=20,
+   48 |         decimal_places=2,
+   49 |         default=0
+   50 |     )
+   51 | 
+   52 |     active = models.BooleanField(
+   53 |         default=True
+   54 |     )
+   55 | 
+   56 |     created_at = models.DateTimeField(
+   57 |         auto_now_add=True
+   58 |     )
+   59 | 
+   60 | 
+   61 | class WalletTransaction(models.Model):
+   62 | 
+   63 |     TYPES = (
+   64 |         ("deposit","Dépôt"),
+   65 |         ("withdraw","Retrait"),
+   66 |         ("transfer","Transfert"),
+   67 |         ("purchase","Achat"),
+   68 |         ("reward","Récompense"),
+   61 | class WalletTransaction(models.Model):
+   62 | 
+   63 |     TYPES = (
+   64 |         ("deposit","Dépôt"),
+   65 |         ("withdraw","Retrait"),
+   66 |         ("transfer","Transfert"),
+   67 |         ("purchase","Achat"),
+   68 |         ("reward","Récompense"),
+   69 |     )
+   70 | 
+   71 |     wallet = models.ForeignKey(
+   72 |         Wallet,
+   73 |         related_name='finance_wallets', on_delete=models.CASCADE
+   74 |     )
+   75 | 
+   76 |     transaction_type = models.CharField(
+   77 |         max_length=50,
+   78 |         choices=TYPES
+   79 |     )
+   80 | 
+   81 |     amount = models.DecimalField(
+   82 |         max_digits=20,
+   83 |         decimal_places=2
+   84 |     )
+   85 | 
+   86 |     reference = models.CharField(
+   87 |         max_length=255,
+   88 |         unique=True
+   89 |     )
+   90 | 
+   91 |     status = models.CharField(
+   92 |         max_length=50,
+   93 |         default="pending"
+   94 |     )
+   95 | 
+   96 |     created_at = models.DateTimeField(
+   97 |         auto_now_add=True
+   98 |     )
+   99 | 
+  100 | 
+  101 | class ExchangeRate(models.Model):
+  102 | 
+  103 |     from_currency = models.ForeignKey(
+  104 |         Currency,
+  105 |         related_name='exchange_from', on_delete=models.CASCADE
+
+============================================================
+SERVICES WALLET
+============================================================
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\financial_full_check_20261001_131156\services.py:4 | from finance.wallet_service import (
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\financial_full_check_20261001_131156\services.py:5 | credit_wallet,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\financial_full_check_20261001_131156\services.py:6 | debit_wallet
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\financial_full_check_20261001_131156\services.py:33 | credit_wallet(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\financial_full_check_20261001_131156\services.py:85 | debit_wallet(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\financial_full_check_20261001_131156\wallet_service.py:7 | def credit_wallet(wallet, amount, reference):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\financial_full_check_20261001_131156\wallet_service.py:34 | def debit_wallet(wallet, amount, reference):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\financial_full_check_20261001_131156\wallet_service.py:71 | def transfer_wallet(sender, receiver, amount, reference):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\wenze_stock_20261001_135627\payment.py:8 | from finance.wallet_service import debit_wallet, credit_wallet
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\wenze_stock_20261001_135627\payment.py:192 | debit_wallet(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\wenze_stock_20261001_135627\payment.py:202 | credit_wallet(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\wenze_stock_final_20261001_135828\payment.py:8 | from finance.wallet_service import debit_wallet, credit_wallet
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\wenze_stock_final_20261001_135828\payment.py:192 | debit_wallet(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\wenze_stock_final_20261001_135828\payment.py:202 | credit_wallet(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\wallet_service.py:7 | def credit_wallet(wallet, amount, reference):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\wallet_service.py:34 | def debit_wallet(wallet, amount, reference):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\wallet_service.py:71 | def transfer_wallet(sender, receiver, amount, reference):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\operations\services.py:4 | from finance.wallet_service import (
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\operations\services.py:5 | credit_wallet,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\operations\services.py:6 | debit_wallet
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\operations\services.py:33 | credit_wallet(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\operations\services.py:85 | debit_wallet(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\payment.py:8 | from finance.wallet_service import debit_wallet, credit_wallet
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\payment.py:226 | debit_wallet(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\payment.py:236 | credit_wallet(
+
+============================================================
+GIFTTRANSACTION / VIRTUALGIFT
+============================================================
+
+------ class VirtualGift ------
+  364 | class VirtualGift(models.Model):
+  365 | 
+  366 |     name = models.CharField(
+  367 | 
+  368 |         max_length=255
+  369 | 
+  370 |     )
+  371 | 
+  372 |     value = models.DecimalField(
+  373 | 
+  374 |         max_digits=20,
+  375 | 
+  376 |         decimal_places=2
+  377 | 
+  378 |     )
+  379 | 
+  380 |     currency = models.CharField(
+  381 | 
+  382 |         max_length=10,
+  383 | 
+  384 |         default="USD"
+  385 | 
+  386 |     )
+  387 | 
+  388 | 
+  389 | 
+  390 | class GiftTransaction(models.Model):
+  391 | 
+  392 |     sender = models.ForeignKey(
+  393 | 
+  394 |         User,
+  395 | 
+  396 |         on_delete=models.CASCADE,
+  397 | 
+  398 |         related_name="sent_gifts"
+  399 | 
+  400 |     )
+  401 | 
+  402 |     receiver = models.ForeignKey(
+  403 | 
+  404 |         User,
+  405 | 
+  406 |         on_delete=models.CASCADE,
+  407 | 
+  408 |         related_name="received_gifts"
+
+------ class GiftTransaction ------
+  390 | class GiftTransaction(models.Model):
+  391 | 
+  392 |     sender = models.ForeignKey(
+  393 | 
+  394 |         User,
+  395 | 
+  396 |         on_delete=models.CASCADE,
+  397 | 
+  398 |         related_name="sent_gifts"
+  399 | 
+  400 |     )
+  401 | 
+  402 |     receiver = models.ForeignKey(
+  403 | 
+  404 |         User,
+  405 | 
+  406 |         on_delete=models.CASCADE,
+  407 | 
+  408 |         related_name="received_gifts"
+  409 | 
+  410 |     )
+  411 | 
+  412 |     gift = models.ForeignKey(
+  413 | 
+  414 |         VirtualGift,
+  415 | 
+  416 |         on_delete=models.CASCADE
+  417 | 
+  418 |     )
+  419 | 
+  420 |     created_at = models.DateTimeField(
+  421 | 
+  422 |         auto_now_add=True
+  423 | 
+  424 |     )
+  425 | 
+  426 | 
+  427 | 
+  428 | class CreatorSubscription(models.Model):
+  429 | 
+  430 |     creator = models.ForeignKey(
+  431 | 
+  432 |         CreatorProfile,
+  433 | 
+  434 |         on_delete=models.CASCADE
+
+------ class CreatorProfile ------
+  121 | class CreatorProfile(models.Model):
+  122 | 
+  123 |     user = models.OneToOneField(
+  124 | 
+  125 |         User,
+  126 | 
+  127 |         on_delete=models.CASCADE,
+  128 | 
+  129 |         related_name="creator_profile"
+  130 | 
+  131 |     )
+  132 | 
+  133 |     verified = models.BooleanField(
+  134 | 
+  135 |         default=False
+  136 | 
+  137 |     )
+  138 | 
+  139 |     followers = models.IntegerField(
+  140 | 
+  141 |         default=0
+  142 | 
+  143 |     )
+  144 | 
+  145 |     earnings = models.DecimalField(
+  146 | 
+  147 |         max_digits=20,
+  148 | 
+  149 |         decimal_places=2,
+  150 | 
+  151 |         default=0
+  152 | 
+  153 |     )
+  154 | 
+  155 | 
+  156 | 
+  157 | class SocialPost(models.Model):
+  158 | 
+  159 |     author = models.ForeignKey(
+  160 | 
+  161 |         User,
+  162 | 
+  163 |         on_delete=models.CASCADE,
+  164 | 
+  165 |         related_name="posts"
+
+------ class SocialPost ------
+  157 | class SocialPost(models.Model):
+  158 | 
+  159 |     author = models.ForeignKey(
+  160 | 
+  161 |         User,
+  162 | 
+  163 |         on_delete=models.CASCADE,
+  164 | 
+  165 |         related_name="posts"
+  166 | 
+  167 |     )
+  168 | 
+  169 |     content = models.TextField()
+  170 | 
+  171 |     image = models.URLField(
+  172 | 
+  173 |         blank=True
+  174 | 
+  175 |     )
+  176 | 
+  177 |     likes = models.IntegerField(
+  178 | 
+  179 |         default=0
+  180 | 
+  181 |     )
+  182 | 
+  183 |     created_at = models.DateTimeField(
+  184 | 
+  185 |         auto_now_add=True
+  186 | 
+  187 |     )
+  188 | 
+  189 | 
+  190 | 
+  191 | class SocialComment(models.Model):
+  192 | 
+  193 |     post = models.ForeignKey(
+  194 | 
+  195 |         SocialPost,
+  196 | 
+  197 |         on_delete=models.CASCADE,
+  198 | 
+  199 |         related_name="comments"
+  200 | 
+  201 |     )
+
+============================================================
+MODELES DJANGO WALLET / FINANCE
+============================================================
+
+CODE RETOUR MODELES : 0
+159 objects imported automatically (use -v 2 for details).
+
+=== MODELES WALLET ===
+financial_accounts.GiftFinancialLedger
+wallet.Wallet
+wallet.WalletBalance
+wallet.WalletTransaction
+wallet.ExchangeRate
+wallet.WalletSecurityEvent
+wallet.WalletOperation
+wallet.WalletCommission
+wallet.WalletAuditLog
+wallet.WalletKYCProfile
+wallet.WalletBankAccount
+wallet.WalletCurrencyBalance
+finance.Wallet
+finance.WalletTransaction
+finance.FinancialLedger
+finance.WalletSecurityStatus
+partner_finance.PartnerWallet
+api_nsikay.SocialPost
+api_nsikay.VirtualGift
+api_nsikay.GiftTransaction
+=== FIN ===
+
+============================================================
+DJANGO CHECK
+============================================================
+CODE RETOUR : 0
+=== ALIASES DASHBOARD NSIKAY FINALISES ===
+=== API NSIKAY VIEWS COMPATIBILITE CHARGEES ===
+System check identified no issues (0 silenced).

@@ -1,0 +1,135 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Demandes d'activation - NSIKAY</title>
+
+<style>
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    padding: 25px;
+}
+
+.panel {
+    background: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.08);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+a {
+    color: #1565c0;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Demandes d'activation Service × Pays</h1>
+
+<div class="panel">
+
+<p>
+Cette page permet de suivre les demandes avant
+activation définitive.
+</p>
+
+<a href="{% url 'service_dashboard:service_country_control' %}">
+Gestion Service × Pays
+</a>
+
+</div>
+
+<div class="panel">
+
+<table>
+
+<thead>
+
+<tr>
+<th>ID</th>
+<th>Service</th>
+<th>Pays</th>
+<th>Demandeur</th>
+<th>Statut</th>
+<th>Date</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for item in requests %}
+
+<tr>
+
+<td>
+<a href="{% url 'service_dashboard:activation_request_detail' item.id %}">
+#{{ item.id }}
+</a>
+</td>
+
+<td>
+{{ item.service.name }}
+</td>
+
+<td>
+{{ item.country.country_name }}
+</td>
+
+<td>
+{{ item.requested_by.username }}
+</td>
+
+<td>
+{{ item.get_status_display }}
+</td>
+
+<td>
+{{ item.created_at }}
+</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+
+<td colspan="6">
+Aucune demande d'activation.
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</body>
+
+</html>
+

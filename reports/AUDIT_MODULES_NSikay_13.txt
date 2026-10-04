@@ -1,0 +1,377 @@
+﻿============================================================
+ NSIKAY - AUDIT MODULES DESIGN 13
+============================================================
+
+Date : 2026-10-01 11:19:21
+Racine : C:\Users\DELL Technologies\Desktop\nsikay nante
+
+------------------------------------------------------------
+MODULE : Accueil
+------------------------------------------------------------
+[OK] Module détecté
+Occurrences fichiers : 1
+  -> 
+
+------------------------------------------------------------
+MODULE : Profil
+------------------------------------------------------------
+[OK] Module détecté
+Occurrences fichiers : 1
+  -> 
+
+------------------------------------------------------------
+MODULE : Activités
+------------------------------------------------------------
+[OK] Module détecté
+Occurrences fichiers : 1
+  -> 
+
+------------------------------------------------------------
+MODULE : Engagement
+------------------------------------------------------------
+[OK] Module détecté
+Occurrences fichiers : 1
+  -> 
+
+------------------------------------------------------------
+MODULE : WENZE
+------------------------------------------------------------
+[OK] Module détecté
+Occurrences fichiers : 1
+  -> 
+
+------------------------------------------------------------
+MODULE : BUKA PRIX
+------------------------------------------------------------
+[OK] Module détecté
+Occurrences fichiers : 1
+  -> 
+
+------------------------------------------------------------
+MODULE : Événements
+------------------------------------------------------------
+[OK] Module détecté
+Occurrences fichiers : 1
+  -> 
+
+------------------------------------------------------------
+MODULE : Publicité
+------------------------------------------------------------
+[OK] Module détecté
+Occurrences fichiers : 1
+  -> 
+
+------------------------------------------------------------
+MODULE : NSIKAY TV
+------------------------------------------------------------
+[OK] Module détecté
+Occurrences fichiers : 1
+  -> 
+
+------------------------------------------------------------
+MODULE : Économie
+------------------------------------------------------------
+[OK] Module détecté
+Occurrences fichiers : 1
+  -> 
+
+------------------------------------------------------------
+MODULE : Sport
+------------------------------------------------------------
+[OK] Module détecté
+Occurrences fichiers : 1
+  -> 
+
+------------------------------------------------------------
+MODULE : Loisirs
+------------------------------------------------------------
+[OK] Module détecté
+Occurrences fichiers : 1
+  -> 
+
+------------------------------------------------------------
+MODULE : Culture
+------------------------------------------------------------
+[OK] Module détecté
+Occurrences fichiers : 1
+  -> 
+
+------------------------------------------------------------
+MODULE : Art
+------------------------------------------------------------
+[OK] Module détecté
+Occurrences fichiers : 1
+  -> 
+
+------------------------------------------------------------
+MODULE : Technologie
+------------------------------------------------------------
+[OK] Module détecté
+Occurrences fichiers : 1
+  -> 
+
+------------------------------------------------------------
+MODULE : Innovation
+------------------------------------------------------------
+[OK] Module détecté
+Occurrences fichiers : 1
+  -> 
+
+------------------------------------------------------------
+MODULE : Agriculture
+------------------------------------------------------------
+[OK] Module détecté
+Occurrences fichiers : 1
+  -> 
+
+------------------------------------------------------------
+MODULE : Agronomie
+------------------------------------------------------------
+[OK] Module détecté
+Occurrences fichiers : 1
+  -> 
+
+------------------------------------------------------------
+MODULE : Social
+------------------------------------------------------------
+[OK] Module détecté
+Occurrences fichiers : 1
+  -> 
+
+------------------------------------------------------------
+MODULE : Religion
+------------------------------------------------------------
+[OK] Module détecté
+Occurrences fichiers : 1
+  -> 
+
+------------------------------------------------------------
+MODULE : Histoire
+------------------------------------------------------------
+[OK] Module détecté
+Occurrences fichiers : 1
+  -> 
+
+------------------------------------------------------------
+MODULE : +18
+------------------------------------------------------------
+[OK] Module détecté
+Occurrences fichiers : 1
+  -> 
+
+------------------------------------------------------------
+MODULE : Wallet
+------------------------------------------------------------
+[OK] Module détecté
+Occurrences fichiers : 1
+  -> 
+
+------------------------------------------------------------
+MODULE : Paiements
+------------------------------------------------------------
+[OK] Module détecté
+Occurrences fichiers : 1
+  -> 
+
+------------------------------------------------------------
+MODULE : Transactions
+------------------------------------------------------------
+[OK] Module détecté
+Occurrences fichiers : 1
+  -> 
+
+------------------------------------------------------------
+MODULE : Banque
+------------------------------------------------------------
+[OK] Module détecté
+Occurrences fichiers : 1
+  -> 
+
+------------------------------------------------------------
+MODULE : Crédit
+------------------------------------------------------------
+[OK] Module détecté
+Occurrences fichiers : 1
+  -> 
+
+------------------------------------------------------------
+MODULE : Assurance
+------------------------------------------------------------
+[OK] Module détecté
+Occurrences fichiers : 1
+  -> 
+
+------------------------------------------------------------
+MODULE : Certification
+------------------------------------------------------------
+[OK] Module détecté
+Occurrences fichiers : 1
+  -> 
+
+------------------------------------------------------------
+MODULE : Administration
+------------------------------------------------------------
+[OK] Module détecté
+Occurrences fichiers : 1
+  -> 
+
+------------------------------------------------------------
+MODULE : Administration Pays
+------------------------------------------------------------
+[OK] Module détecté
+Occurrences fichiers : 1
+  -> 
+
+------------------------------------------------------------
+MODULE : Partenaires
+------------------------------------------------------------
+[OK] Module détecté
+Occurrences fichiers : 1
+  -> 
+
+------------------------------------------------------------
+MODULE : Entreprises
+------------------------------------------------------------
+[OK] Module détecté
+Occurrences fichiers : 1
+  -> 
+
+------------------------------------------------------------
+MODULE : Employés
+------------------------------------------------------------
+[OK] Module détecté
+Occurrences fichiers : 1
+  -> 
+
+------------------------------------------------------------
+MODULE : Devises
+------------------------------------------------------------
+[OK] Module détecté
+Occurrences fichiers : 1
+  -> 
+
+------------------------------------------------------------
+MODULE : Taux de change
+------------------------------------------------------------
+[OK] Module détecté
+Occurrences fichiers : 1
+  -> 
+
+------------------------------------------------------------
+MODULE : Notifications
+------------------------------------------------------------
+[OK] Module détecté
+Occurrences fichiers : 1
+  -> 
+
+------------------------------------------------------------
+MODULE : Paramètres
+------------------------------------------------------------
+[OK] Module détecté
+Occurrences fichiers : 1
+  -> 
+
+------------------------------------------------------------
+MODULE : Stockage
+------------------------------------------------------------
+[OK] Module détecté
+Occurrences fichiers : 1
+  -> 
+
+
+============================================================
+ CONTROLE ROUTES PRINCIPALES
+============================================================
+[ROUTES] backend\administration\urls.py : 4
+[ROUTES] backend\ai\urls.py : 1
+[ROUTES] backend\api\urls.py : 6
+[ROUTES] backend\api_nsikay\urls.py : 30
+[ROUTES] backend\api_nsikay\tv\urls.py : 1
+[ROUTES] backend\app_center\urls.py : 1
+[ROUTES] backend\association\urls.py : 1
+[ROUTES] backend\banking\urls.py : 4
+[ROUTES] backend\bank_dashboard\urls.py : 1
+[ROUTES] backend\business\urls.py : 1
+[ROUTES] backend\certification\urls.py : 3
+[ROUTES] backend\dashboard\urls.py : 7
+[ROUTES] backend\finance\urls.py : 1
+[ROUTES] backend\marketing\urls.py : 2
+[ROUTES] backend\media\urls.py : 2
+[ROUTES] backend\nsikay\urls.py : 45
+[ROUTES] backend\operations\urls.py : 1
+[ROUTES] backend\partner_finance\urls.py : 3
+[ROUTES] backend\service_control\urls.py : 3
+[ROUTES] backend\service_dashboard\urls.py : 23
+[ROUTES] backend\transactions\urls.py : 1
+[ROUTES] backend\wallet\urls.py : 3
+[ROUTES] backend\wenze\urls.py : 1
+
+Total approximatif routes/includes : 145
+
+============================================================
+ CONTROLE TRANSVERSAL
+============================================================
+
+Événements : 77 fichiers concernés
+  -> backend\connect_dashboards.py
+  -> backend\create_dashboards.py
+  -> backend\create_dashboard_urls.py
+  -> backend\api_nsikay\dashboard_views.py
+  -> backend\api_nsikay\models.py
+  -> backend\api_nsikay\models_backup.py
+  -> backend\api_nsikay\models_backup_encoding.py
+  -> backend\api_nsikay\wallet_api_views.py
+  -> backend\api_nsikay\migrations\0004_tvchannel_virtualgift_advertisingcampaign_and_more.py
+  -> backend\api_nsikay\migrations\0005_adminanalytics_contentanalytics_adcampaigncenter_and_more.py
+  -> backend\api_nsikay\serializers\wallet_serializers.py
+  -> backend\finance\models.py
+  -> backend\finance\security_engine.py
+  -> backend\finance\migrations\0006_auditlog_frauddetectionevent_kyccompliance_and_more.py
+  -> backend\finance\migrations\0007_marketplaceproduct_marketplaceorder_and_more.py
+  -> backend\media\admin.py
+  -> backend\media\models.py
+  -> backend\media\serializers.py
+  -> backend\media\urls.py
+  -> backend\media\views.py
+
+Publicité : 48 fichiers concernés
+  -> backend\connect_dashboards.py
+  -> backend\create_dashboards.py
+  -> backend\create_dashboard_urls.py
+  -> backend\api_nsikay\dashboard_views.py
+  -> backend\api_nsikay\models.py
+  -> backend\api_nsikay\models_backup.py
+  -> backend\api_nsikay\models_backup_encoding.py
+  -> backend\api_nsikay\migrations\0004_tvchannel_virtualgift_advertisingcampaign_and_more.py
+  -> backend\api_nsikay\migrations\0005_adminanalytics_contentanalytics_adcampaigncenter_and_more.py
+  -> backend\api_nsikay\migrations\0007_rename_active_tvchannel_is_active_and_more.py
+  -> backend\marketing\admin.py
+  -> backend\marketing\models.py
+  -> backend\marketing\serializers.py
+  -> backend\marketing\urls.py
+  -> backend\marketing\views.py
+  -> backend\marketing\migrations\0001_initial.py
+  -> backend\service_control\management\commands\load_services.py
+  -> backend\service_control\management\commands\load_service_rules.py
+  -> backend\static\css\nsikay_design10.css
+  -> backend\static\css\nsikay_design11_user.css
+
+============================================================
+ CONTROLE ANCIENNE ENTITE SECAS
+============================================================
+[OK] SECAS absent du code actif
+
+============================================================
+ CONTROLE REGLES NSIKAY ACTUELLES
+============================================================
+[OK] Commission transfert 0.50% -> 2 fichier(s)
+[OK] WENZE gratuit -> 33 fichier(s)
+[A VERIFIER] Stockage 2 GB
+[A VERIFIER] Stockage 100 GB = 50
+[A VERIFIER] Stockage 10 GB = 10
+[A VERIFIER] Retrait 1.2%
+[A VERIFIER] Mobile Money 0.55%
+
+============================================================
+ FIN AUDIT DESIGN 13
+============================================================

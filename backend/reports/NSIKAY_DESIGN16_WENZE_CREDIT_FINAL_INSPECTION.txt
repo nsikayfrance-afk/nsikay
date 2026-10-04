@@ -1,0 +1,291 @@
+﻿============================================================
+ NSIKAY - INSPECTION FINALE WENZE + FINANCE
+============================================================
+Date : 2026-10-01 11:49:51
+
+[FICHIER] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\marketplace.py
+--- contexte autour de la ligne 5 ---
+    2: 
+    3: 
+    4: 
+    5: MARKETPLACE_COMMISSION = Decimal("0.025")
+    6: 
+    7: 
+    8: 
+
+--- contexte autour de la ligne 9 ---
+    6: 
+    7: 
+    8: 
+    9: def calculate_marketplace_fee(amount):
+   10: 
+   11:     return (
+   12: 
+
+--- contexte autour de la ligne 17 ---
+   14: 
+   15:         *
+   16: 
+   17:         MARKETPLACE_COMMISSION
+   18: 
+   19:     )
+   20: 
+
+
+[FICHIER] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py
+--- contexte autour de la ligne 401 ---
+  398: 
+  399: 
+  400: 
+  401: class PlatformCommission(models.Model):
+  402: 
+  403: 
+  404:     wallet = models.ForeignKey(
+
+--- contexte autour de la ligne 410 ---
+  407: 
+  408:         on_delete=models.CASCADE,
+  409: 
+  410:         related_name="platform_commissions"
+  411: 
+  412:     )
+  413: 
+
+--- contexte autour de la ligne 727 ---
+  724: 
+  725: 
+  726: 
+  727: class MarketplaceProduct(models.Model):
+  728: 
+  729: 
+  730:     seller = models.ForeignKey(
+
+--- contexte autour de la ligne 788 ---
+  785: 
+  786: 
+  787: 
+  788: class MarketplaceOrder(models.Model):
+  789: 
+  790: 
+  791:     STATUS = (
+
+--- contexte autour de la ligne 817 ---
+  814: 
+  815:     product = models.ForeignKey(
+  816: 
+  817:         MarketplaceProduct,
+  818: 
+  819:         on_delete=models.CASCADE
+  820: 
+
+--- contexte autour de la ligne 859 ---
+  856: 
+  857: 
+  858: 
+  859: class MarketplaceCommission(models.Model):
+  860: 
+  861: 
+  862:     order = models.OneToOneField(
+
+--- contexte autour de la ligne 864 ---
+  861: 
+  862:     order = models.OneToOneField(
+  863: 
+  864:         MarketplaceOrder,
+  865: 
+  866:         on_delete=models.CASCADE,
+  867: 
+
+--- contexte autour de la ligne 868 ---
+  865: 
+  866:         on_delete=models.CASCADE,
+  867: 
+  868:         related_name="commission"
+  869: 
+  870:     )
+  871: 
+
+--- contexte autour de la ligne 879 ---
+  876: 
+  877:         decimal_places=4,
+  878: 
+  879:         default=0.025
+  880: 
+  881:     )
+  882: 
+
+
+[FICHIER] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models.py
+--- contexte autour de la ligne 697 ---
+  694: 
+  695:         ("EVENT","Événement"),
+  696: 
+  697:         ("MARKETPLACE","Marketplace"),
+  698: 
+  699:     )
+  700: 
+
+
+[FICHIER] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\urls.py
+--- contexte autour de la ligne 64 ---
+   61: 
+   62: 
+   63: path(
+   64:     "marketplace/",
+   65:     include("api_nsikay.marketplace_urls")
+   66: ),
+   67: 
+
+--- contexte autour de la ligne 65 ---
+   62: 
+   63: path(
+   64:     "marketplace/",
+   65:     include("api_nsikay.marketplace_urls")
+   66: ),
+   67: 
+   68: 
+
+
+[ARCHIVES / BACKUPS]
+----------------------------------------
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backup_nsikay.bat
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup_encoding.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\urls_backup.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\deployment\backup_postgresql.sh
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\models.py.backup_before_country_normalization
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\activation_request_services.py.backup_20260930_175802
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\activation_request_views.py.backup_20260930_175802
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc6_manager_20260930_183021.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\dashboard_views.py.backup_before_final_activation
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\final_activation_views.py.backup_before_hardening
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\final_activation_views.py.backup_before_http405
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\final_activation_views.py.backup_before_namespace_fix
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\final_deactivation_views.py.backup_before_hardening
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\final_deactivation_views.py.backup_before_http405
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\final_deactivation_views.py.backup_before_namespace_fix
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\models.py.backup_bloc3_fix_20260930_175221
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\models.py.backup_bloc3_reparation_20260930_175333
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\models.py.backup_bloc3_reparation_20260930_175400
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\models.py.backup_country_audit_20260930_163439
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\models.py.backup_fix_bloc3_20260930_174859
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\operational_countries_views.py.backup_20260930_163249
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\operational_countries_views.py.backup_before_snapshot_hardening
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\operational_countries_views.py.backup_country_audit_20260930_163439
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\urls.py.backup_before_bloc3_routes_20260930_175903
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\urls.py.backup_before_bloc5_route_fix
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\urls.py.backup_before_clean_bloc3_20260930_180001
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\urls.py.backup_before_final_bloc5_fix
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\urls.py.backup_before_service_country_control
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\urls.py.backup_bloc3_fix_20260930_175221
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\urls.py.backup_bloc3_reparation_20260930_175333
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\urls.py.backup_bloc3_reparation_20260930_175400
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\urls.py.backup_countries_20260930_162701
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\urls.py.backup_country_audit_20260930_163439
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\urls.py.backup_fix_bloc3_20260930_174859
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\urls.py.backup_route_fix_20260930_162851
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\views.py.backup_countries_20260930_162701
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups\models_before_bloc3_20260930_174733.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups\urls_before_bloc3_20260930_174733.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc10\activation_workflow_service.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc10\models.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc10\urls.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc10_audit\workflow_admin_urls.py.audit_backup
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc10_audit\workflow_admin_views.py.audit_backup
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc10_audit\workflow_admin_views.py.before_post_fix.bak
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc10_correction\urls.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc10_correction\workflow_admin_urls.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc10_correction\workflow_admin_views.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc10_route_fix\urls.py.before_route_fix
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc6_20260930_182627\activation_request_admin_views.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc6_20260930_182627\activation_request_views.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc6_20260930_182627\models.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc6_correction_20260930_182914\activation_request_admin_views.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc6_correction_20260930_182914\activation_request_services.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc6_correction_20260930_182914\activation_request_views.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc6_interface_20260930_183602\activation_request_admin_detail.html
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc6_interface_20260930_183602\activation_request_admin_history.html
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc6_interface_20260930_183602\activation_request_admin_list.html
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc6_interface_20260930_183654\activation_request_admin_detail.html
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc6_interface_20260930_183654\activation_request_admin_history.html
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc6_interface_20260930_183654\activation_request_admin_list.html
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc7_4_20260930_184705\urls.py.before_7_4.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc8\activation_patch.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc8\activation_request_admin_views.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc8\activation_request_views.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc8\dashboard_actions.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc8\final_activation_views.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc8\final_deactivation_views.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc8\models.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc8\service_country_control_views.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc8\urls.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc9\activation_request_admin_views.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc9\activation_request_views.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc9\final_activation_views.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc9\final_deactivation_views.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc9\models.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc9\operational_validation_service.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc9\urls.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__administration__models.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__manage.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__nsikay__settings.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__nsikay__urls.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__service_control__models.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__service_control__services.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__service_dashboard__activation_workflow_service.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__service_dashboard__models.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__service_dashboard__operational_validation_service.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__service_dashboard__urls.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__service_dashboard__workflow_admin_urls.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__service_dashboard__workflow_admin_views.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\settings_before_production_20260930_193231.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\templates\service_dashboard\operational_countries.html.backup_20260930_163249
+
+[MODULE WENZE]
+----------------------------------------
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\admin.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\apps.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\models.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\tests.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\urls.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\views.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\__init__.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\migrations\__init__.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\migrations\__pycache__\__init__.cpython-314.pyc
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\__pycache__\admin.cpython-314.pyc
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\__pycache__\apps.cpython-314.pyc
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\__pycache__\models.cpython-314.pyc
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\__pycache__\urls.cpython-314.pyc
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\__pycache__\views.cpython-314.pyc
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\__pycache__\__init__.cpython-314.pyc
+
+[ROUTES WENZE]
+----------------------------------------
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\add_wenze_dashboard.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\connect_dashboards.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\create_dashboards.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\create_dashboard_urls.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\nsikay\settings.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\nsikay\urls.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_services.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__nsikay__settings.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__nsikay__urls.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\settings_before_production_20260930_193231.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\apps.py
+
+[VERIFICATION MIGRATIONS]
+----------------------------------------
+MAKEMIGRATIONS CHECK :
+=== ALIASES DASHBOARD NSIKAY FINALISES ===
+=== API NSIKAY VIEWS COMPATIBILITE CHARGEES ===
+No changes detected
+
+DJANGO CHECK :
+=== ALIASES DASHBOARD NSIKAY FINALISES ===
+=== API NSIKAY VIEWS COMPATIBILITE CHARGEES ===
+System check identified no issues (0 silenced).
+
+============================================================
+ FIN DE L'INSPECTION
+============================================================

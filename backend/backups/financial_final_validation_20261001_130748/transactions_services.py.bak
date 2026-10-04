@@ -1,0 +1,81 @@
+﻿from decimal import Decimal
+from django.db import transaction
+
+from financial_routing.services import calculate_fee
+from .models import Transaction
+
+
+FEE_TYPE_MAP = {
+    "transfer": "TRANSFER_INTERNAL",
+    "withdrawal": "WITHDRAWAL",
+}
+
+
+def calculate_fees(amount, transaction_type):
+    """
+    Calcule les frais à partir du moteur financier central NSIKAY.
+
+    Retourne :
+        fee_amount, net_amount
+
+    Le moteur central retourne cinq valeurs :
+        amount, fee_type, percentage, fee_amount, net_amount
+    """
+    fee_type = FEE_TYPE_MAP.get(transaction_type)
+
+    if not fee_type:
+        return Decimal("0.00"), Decimal(str(amount))
+
+    result = calculate_fee(
+        amount=amount,
+        fee_type=fee_type,
+    )
+
+    if not isinstance(result, (tuple, list)) or len(result) != 5:
+        raise RuntimeError(
+            "Le moteur financier central doit retourner exactement 5 valeurs."
+        )
+
+    _, _, _, fee_amount, net_amount = result
+
+    return Decimal(str(fee_amount)), Decimal(str(net_amount))
+
+
+@transaction.atomic
+def process_transaction(sender, receiver, amount, currency,
+                        transaction_type="transfer",
+                        reference=None,
+                        partner=None):
+    """
+    Création d'une transaction réelle.
+
+    Cette fonction n'est appelée que par le flux applicatif réel.
+    Les tests de validation utilisent uniquement calculate_fees().
+    """
+    amount = Decimal(str(amount))
+
+    if amount <= 0:
+        raise ValueError("Le montant doit être supérieur à zéro.")
+
+    fee, net_amount = calculate_fees(
+        amount,
+        transaction_type,
+    )
+
+    transaction_obj = Transaction.objects.create(
+        sender=sender,
+        receiver=receiver,
+        partner=partner,
+        amount=net_amount,
+        currency=currency,
+        transaction_type=transaction_type,
+        status="completed",
+        reference=reference,
+    )
+
+    return {
+        "transaction": transaction_obj,
+        "amount": amount,
+        "fee": fee,
+        "net_amount": net_amount,
+    }

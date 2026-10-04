@@ -1,0 +1,177 @@
+﻿from django.db.models import Q
+from django.utils import timezone
+from .models import FinancialRoutingRule
+
+# ============================================================
+# NSIKAY - GESTION ADMINISTRATIVE DU ROUTAGE FINANCIER
+# ============================================================
+
+from django.db import transaction
+
+
+@transaction.atomic
+def approve_routing_rule(rule, user=None, details=None):
+    """
+    Approuve une règle de routage et journalise l'opération.
+    """
+    rule.status = "APPROVED"
+    rule.active = True
+    rule.approved_by = user
+    rule.save(
+        update_fields=[
+            "status",
+            "active",
+            "approved_by",
+            "updated_at",
+        ]
+    )
+
+    from .models import FinancialRoutingLog
+
+    FinancialRoutingLog.objects.create(
+        rule=rule,
+        action="APPROVED",
+        performed_by=user,
+        details=details or {
+            "source": "admin",
+            "message": "Règle de routage approuvée.",
+        },
+    )
+
+    return rule
+
+
+@transaction.atomic
+def suspend_routing_rule(rule, user=None, details=None):
+    """
+    Suspend une règle de routage.
+    """
+    rule.status = "SUSPENDED"
+    rule.active = False
+    rule.save(
+        update_fields=[
+            "status",
+            "active",
+            "updated_at",
+        ]
+    )
+
+    from .models import FinancialRoutingLog
+
+    FinancialRoutingLog.objects.create(
+        rule=rule,
+        action="SUSPENDED",
+        performed_by=user,
+        details=details or {
+            "source": "admin",
+            "message": "Règle de routage suspendue.",
+        },
+    )
+
+    return rule
+
+
+@transaction.atomic
+def activate_routing_rule(rule, user=None, details=None):
+    """
+    Réactive une règle précédemment suspendue.
+    Une règle réactivée reste APPROVED.
+    """
+    rule.status = "APPROVED"
+    rule.active = True
+    rule.save(
+        update_fields=[
+            "status",
+            "active",
+            "updated_at",
+        ]
+    )
+
+    from .models import FinancialRoutingLog
+
+    FinancialRoutingLog.objects.create(
+        rule=rule,
+        action="ACTIVATED",
+        performed_by=user,
+        details=details or {
+            "source": "admin",
+            "message": "Règle de routage réactivée.",
+        },
+    )
+
+    return rule
+
+
+def resolve_financial_route(
+    source_type,
+    country_code="",
+    currency_code="",
+    operation_type="REVENUE",
+):
+    """
+    Recherche la règle active la plus précise.
+
+    Une règle doit être :
+        - active=True
+        - status=APPROVED
+        - dans sa période de validité
+
+    Priorité fonctionnelle :
+        1. pays + devise
+        2. pays seul
+        3. international + devise
+        4. international général
+
+    La priorité administrative (priority) départage les règles
+    de même niveau de précision.
+    """
+    now = timezone.now()
+
+    queryset = FinancialRoutingRule.objects.filter(
+        source_type=source_type,
+        operation_type=operation_type,
+        active=True,
+        status="APPROVED",
+    ).filter(
+        Q(valid_from__isnull=True) | Q(valid_from__lte=now),
+        Q(valid_until__isnull=True) | Q(valid_until__gte=now),
+    )
+
+    candidates = list(queryset)
+
+    country = (country_code or "").upper()
+    currency = (currency_code or "").upper()
+
+    def score(rule):
+        rule_country = (rule.country_code or "").upper()
+        rule_currency = (rule.currency_code or "").upper()
+
+        if country and rule_country == country and currency and rule_currency == currency:
+            specificity = 400
+        elif country and rule_country == country and not rule_currency:
+            specificity = 300
+        elif not rule_country and currency and rule_currency == currency:
+            specificity = 200
+        elif not rule_country and not rule_currency:
+            specificity = 100
+        else:
+            return -100000
+
+        return specificity - int(rule.priority)
+
+    candidates = [
+        rule
+        for rule in candidates
+        if score(rule) > -100000
+    ]
+
+    candidates.sort(
+        key=lambda rule: (
+            score(rule),
+            -int(rule.priority),
+            -int(rule.id),
+        ),
+        reverse=True,
+    )
+
+    return candidates[0] if candidates else None

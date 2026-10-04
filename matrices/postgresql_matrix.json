@@ -1,0 +1,50 @@
+﻿{
+    "NSIKAY_POSTGRESQL_MATRIX_VERSION":  "v2.0",
+    "database":  "PostgreSQL",
+    "project":  "NSIKAY",
+    "schemas":  [
+                    {
+                        "schema":  "core",
+                        "description":  "Données centrales utilisateurs, organisations et gouvernance"
+                    },
+                    {
+                        "schema":  "certification",
+                        "description":  "Certification obligatoire NSIKAY"
+                    },
+                    {
+                        "schema":  "business",
+                        "description":  "Entreprises agents et services"
+                    },
+                    {
+                        "schema":  "finance",
+                        "description":  "Système financier NSIKAY"
+                    },
+                    {
+                        "schema":  "wenze",
+                        "description":  "Espace WENZE"
+                    },
+                    {
+                        "schema":  "media",
+                        "description":  "Média TV éditorial"
+                    },
+                    {
+                        "schema":  "marketing",
+                        "description":  "Publicité et événements"
+                    },
+                    {
+                        "schema":  "ai",
+                        "description":  "Intelligence artificielle et données"
+                    },
+                    {
+                        "schema":  "audit",
+                        "description":  "Qualité sécurité conformité"
+                    }
+                ],
+    "migration_control":  {
+                              "sql_migration_required":  true,
+                              "foreign_keys_required":  true,
+                              "indexes_required":  true,
+                              "audit_trail_required":  true,
+                              "backup_required":  true
+                          }
+}

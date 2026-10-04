@@ -1,0 +1,841 @@
+﻿============================================================
+ NSIKAY - AUDIT ROUTAGE FINANCIER MULTI-BANQUES
+============================================================
+Date : 2026-10-01 12:18:15
+
+=== 1. MODELES BANKING ===
+3: from finance.models import Wallet, Currency
+6: class Bank(models.Model):
+17:     country = models.CharField(
+30: class BankAccount(models.Model):
+32:     bank = models.ForeignKey(
+33:         Bank,
+42:     account_number = models.CharField(
+49:     currency = models.ForeignKey(
+50:         Currency,
+66: class BankingOperation(models.Model):
+75:     account = models.ForeignKey(
+76:         BankAccount,
+90:     currency = models.ForeignKey(
+91:         Currency,
+106: from finance.models import Currency
+109: class BankCountry(models.Model):
+111:     bank = models.ForeignKey(
+112:         "Bank",
+116:     country = models.CharField(
+125: class BankCurrency(models.Model):
+127:     bank = models.ForeignKey(
+128:         "Bank",
+132:     currency = models.ForeignKey(
+133:         Currency,
+142: class BankService(models.Model):
+144:     SERVICE_TYPES = (
+145:         ("account", "Création de compte"),
+149:         ("credit", "Crédit"),
+150:         ("insurance", "Assurance"),
+154:     bank = models.ForeignKey(
+155:         "Bank",
+159:     service_type = models.CharField(
+161:         choices=SERVICE_TYPES
+169: class BankCredit(models.Model):
+171:     bank = models.ForeignKey(
+172:         "Bank",
+192: class BankInsurance(models.Model):
+194:     bank = models.ForeignKey(
+195:         "Bank",
+212: class BankReport(models.Model):
+214:     bank = models.ForeignKey(
+215:         "Bank",
+230: from finance.models import Currency
+233: class AccountOpeningRequest(models.Model):
+248:     bank = models.ForeignKey(
+249:         "Bank",
+253:     country = models.CharField(
+257:     currency = models.ForeignKey(
+258:         Currency,
+273: class AccountNumberGenerator(models.Model):
+275:     account = models.OneToOneField(
+276:         "BankAccount",
+292: class BankUserProfile(models.Model):
+297:         related_name="bank_profile"
+300:     bank = models.ForeignKey(
+301:         "Bank",
+317: class BankTransaction(models.Model):
+332:     account = models.ForeignKey(
+333:         "BankAccount",
+351:     currency = models.ForeignKey(
+352:         "finance.Currency",
+374: class BankBalance(models.Model):
+376:     account = models.ForeignKey(
+377:         "BankAccount",
+382:     currency = models.ForeignKey(
+383:         "finance.Currency",
+396: class PartnerApproval(models.Model):
+409:     partner = models.ForeignKey(
+410:         "partner_finance.PartnerApplication",
+415:     bank = models.ForeignKey(
+416:         "Bank",
+427:     currency = models.ForeignKey(
+428:         "finance.Currency",
+446: class CashDeposit(models.Model):
+461:     partner = models.ForeignKey(
+462:         "partner_finance.PartnerApplication",
+467:     bank = models.ForeignKey(
+468:         "Bank",
+479:     currency = models.ForeignKey(
+480:         "finance.Currency",
+510: class PartnerTransaction(models.Model):
+525:     partner = models.ForeignKey(
+526:         "partner_finance.PartnerApplication",
+543:     currency = models.ForeignKey(
+544:         "finance.Currency",
+562: class OnlineBankAccountRequest(models.Model):
+583:     bank = models.ForeignKey(
+584:         "Bank",
+589:     country = models.CharField(
+594:     currency = models.ForeignKey(
+595:         "finance.Currency",
+600:     account_number = models.CharField(
+621: class BankCustomerService(models.Model):
+623:     account = models.ForeignKey(
+624:         OnlineBankAccountRequest,
+629:     service_name = models.CharField(
+645: class BankCountryAccess(models.Model):
+647:     bank = models.ForeignKey(
+648:         "Bank",
+653:     country_name = models.CharField(
+669: class BankCurrencyAccess(models.Model):
+671:     bank = models.ForeignKey(
+672:         "Bank",
+677:     currency = models.ForeignKey(
+678:         "finance.Currency",
+
+=== 2. MODELES ADMINISTRATION ===
+5: class BankCertification(models.Model):
+18:     bank = models.ForeignKey(
+20:         "banking.Bank",
+23:         related_name="bank_certification_relation"
+50: class CurrencyApproval(models.Model):
+53:     currency = models.ForeignKey(
+55:         "finance.Currency",
+58:         related_name="currency_approval_relation"
+62:     bank = models.ForeignKey(
+64:         "banking.Bank",
+67:         related_name="currency_approval_relation"
+89: class PartnerCertification(models.Model):
+92:     partner = models.ForeignKey(
+94:         "partner_finance.PartnerApplication",
+97:         related_name="currency_approval_relation"
+119: class CountrySupervision(models.Model):
+122:     country_name = models.CharField(
+143:     banks_count = models.IntegerField(
+150:     partners_count = models.IntegerField(
+165: class ValidationRequest(models.Model):
+168:         ("bank", "Certification Banque"),
+169:         ("currency", "Validation Devise"),
+170:         ("partner", "Validation Partenaire Financier"),
+171:         ("country", "Supervision Pays"),
+202: class BankCountryAccess(models.Model):
+204:     bank_name = models.CharField(
+208:     country_name = models.CharField(
+228:         return f"{self.bank_name} - {self.country_name}"
+233: class BankCurrencyAccess(models.Model):
+235:     bank_name = models.CharField(
+239:     currency = models.CharField(
+259:         return f"{self.bank_name} - {self.currency}"
+263: class BankServiceAuthorization(models.Model):
+265:     bank_name = models.CharField(
+284:         return f"{self.bank_name} - {self.service_name}"
+288: class CountryBankAuthorization(models.Model):
+290:     country_name = models.CharField(
+294:     bank_name = models.CharField(
+309:         return f"{self.country_name} - {self.bank_name}"
+320: class BankPartner(models.Model):
+327:     country = models.CharField(
+365: class BankPartnerCurrency(models.Model):
+367:     bank = models.ForeignKey(
+368:         BankPartner,
+372:     currency = models.CharField(
+382:         return f"{self.bank} - {self.currency}"
+386: class BankPartnerService(models.Model):
+397:     bank = models.ForeignKey(
+398:         BankPartner,
+413:         return f"{self.bank} - {self.service}"
+418: # SUPERVISION PAYS NSIKAY
+422: class CountryCurrencyAccess(models.Model):
+424:     country = models.ForeignKey(
+425:         CountrySupervision,
+429:     currency = models.CharField(
+439:         return f"{self.country} - {self.currency}"
+444: class CountryRegulation(models.Model):
+446:     country = models.OneToOneField(
+447:         CountrySupervision,
+464:         return str(self.country)
+468: class CountryBankAccess(models.Model):
+470:     country = models.ForeignKey(
+471:         CountrySupervision,
+475:     bank = models.ForeignKey(
+476:         "BankPartner",
+486:         return f"{self.country} - {self.bank}"
+491: # SUPERVISION PAYS NSIKAY
+494: class CountrySupervisionDetail(models.Model):
+508:         "BankPartner",
+536: class NSIKAYAdminRole(models.Model):
+542:         ("BANK_ADMIN", "Administrateur Banque"),
+544:         ("COUNTRY_ADMIN", "Administrateur Pays"),
+581: class NSIKAYPermission(models.Model):
+619: class HealthInsurance(models.Model):
+634:     country = models.CharField(max_length=100)
+645:     class Meta:
+649:             models.Index(fields=["country", "status"]),
+
+=== 3. PARTNER_FINANCE ===
+6: class PartnerApplication(models.Model):
+24:         related_name="partner_finance_relation"
+64: class PartnerCertification(models.Model):
+66:     partner = models.OneToOneField(
+67:         PartnerApplication,
+69:         related_name="partner_certification_relation"
+95: class PartnerSupply(models.Model):
+97:     partner = models.ForeignKey(
+98:         PartnerApplication,
+100:         related_name="partner_supply_relation"
+104:     bank = models.ForeignKey(
+105:         "banking.Bank",
+110:     currency = models.ForeignKey(
+111:         "finance.Currency",
+134: class PartnerWallet(models.Model):
+136:     partner = models.ForeignKey(
+137:         PartnerApplication,
+139:         related_name="partner_wallet_relation"
+143:     currency = models.ForeignKey(
+144:         "finance.Currency",
+157: class PartnerDeposit(models.Model):
+172:     partner = models.ForeignKey(
+173:         "partner_finance.PartnerWallet",
+175:         related_name="partner_deposit_relation"
+179:     bank = models.ForeignKey(
+180:         "banking.Bank",
+182:         related_name="bank_partner_deposit_relation"
+192:     currency = models.ForeignKey(
+193:         "finance.Currency",
+217: class SupplyTransaction(models.Model):
+219:     partner = models.ForeignKey(
+220:         "partner_finance.PartnerWallet",
+222:         related_name="supply_transaction_relation"
+226:     deposit = models.OneToOneField(
+227:         PartnerDeposit,
+229:         related_name="deposit_supply_transaction_relation"
+239:     approved_by_bank = models.BooleanField(
+
+=== 4. RECHERCHE ROUTAGE EXISTANT ===
+--- PATTERN : routing ---
+--- PATTERN : route ---
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\marketing\urls.py:2 : from rest_framework.routers import DefaultRouter
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\marketing\urls.py:12 : router = DefaultRouter()
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\marketing\urls.py:14 : router.register('advertisers', AdvertiserViewSet)
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\marketing\urls.py:15 : router.register('campaigns', AdvertisingCampaignViewSet)
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\marketing\urls.py:16 : router.register('placements', AdvertisementPlacementViewSet)
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\marketing\urls.py:17 : router.register('advertisements', AdvertisementViewSet)
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\marketing\urls.py:18 : router.register('statistics', AdvertisementStatisticViewSet)
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\marketing\urls.py:21 : path('', include(router.urls)),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\media\urls.py:2 : from rest_framework.routers import DefaultRouter
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\media\urls.py:12 : router = DefaultRouter()
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\media\urls.py:14 : router.register('contents', MediaContentViewSet)
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\media\urls.py:15 : router.register('channels', TVChannelViewSet)
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\media\urls.py:16 : router.register('programs', TVProgramViewSet)
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\media\urls.py:17 : router.register('events', EventViewSet)
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\media\urls.py:18 : router.register('registrations', EventRegistrationViewSet)
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\media\urls.py:21 : path('', include(router.urls)),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\scripts\verify_country_routes_final.py:23 : routes = {
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\scripts\verify_country_routes_final.py:33 : print(" VERIFICATION ROUTES PAYS NSIKAY")
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\scripts\verify_country_routes_final.py:36 : for label, route_name in routes.items():
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\scripts\verify_country_routes_final.py:38 : url = reverse(route_name)
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\scripts\verify_operational_countries_url.py:18 : print(" VERIFICATION ROUTE PAYS OPERATIONNELS")
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\scripts\verify_operational_countries_url.py:23 : print("NOM ROUTE      =", "operational_countries")
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\scripts\verify_operational_countries_url.py:37 : print("ROUTE_OPERATIONAL_COUNTRIES = True")
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\scripts\verify_operational_route_final.py:27 : print("ROUTE =", url)
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\scripts\verify_operational_route_final.py:28 : print("ROUTE_OPERATIONAL_COUNTRIES = True")
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\tv_regie\urls.py:1 : from rest_framework.routers import DefaultRouter
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\tv_regie\urls.py:13 : router = DefaultRouter()
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\tv_regie\urls.py:15 : router.register("cameras", CameraSystemViewSet)
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\tv_regie\urls.py:16 : router.register("streams", LiveStreamViewSet)
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\tv_regie\urls.py:17 : router.register("effects", VideoEffectViewSet)
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\tv_regie\urls.py:18 : router.register("animations", TextAnimationViewSet)
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\tv_regie\urls.py:19 : router.register("audio", AudioControlViewSet)
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\tv_regie\urls.py:20 : router.register("scenes", RegieSceneViewSet)
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\tv_regie\urls.py:21 : router.register("schedules", BroadcastScheduleViewSet)
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\tv_regie\urls.py:24 : urlpatterns = router.urls
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\add_dashboard_route.py:7 : route = '''
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\add_dashboard_route.py:14 : 'urlpatterns = [\n' + route
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\add_dashboard_route.py:19 : print("=== ROUTE STATS DASHBOARD AJOUTEE ===")
+--- PATTERN : destination ---
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\serializers\wallet_operation_serializer.py:18 : destination_wallet_id = serializers.IntegerField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\models.py:205 : destination_wallet = models.ForeignKey(
+--- PATTERN : partner_bank ---
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:12 : "partner_bank_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:20 : "partner_bank_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:28 : "partner_bank_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:36 : "partner_bank_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:44 : "partner_bank_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:52 : "partner_bank_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:60 : "partner_bank_required": True,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:68 : "partner_bank_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:76 : "partner_bank_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:84 : "partner_bank_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:92 : "partner_bank_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:100 : "partner_bank_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:108 : "partner_bank_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:116 : "partner_bank_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:124 : "partner_bank_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:132 : "partner_bank_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:140 : "partner_bank_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:148 : "partner_bank_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:156 : "partner_bank_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:164 : "partner_bank_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:172 : "partner_bank_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:180 : "partner_bank_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:188 : "partner_bank_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:196 : "partner_bank_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:204 : "partner_bank_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:212 : "partner_bank_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:220 : "partner_bank_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:228 : "partner_bank_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\admin.py:72 : "partner_bank_required",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\admin.py:82 : "partner_bank_required",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management_helpers.py:69 : if rule.partner_bank_required or rule.financial_partner_required:
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\models.py:102 : partner_bank_required = models.BooleanField(default=False)
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\services.py:307 : if rule.partner_bank_required:
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\services.py:403 : if not rule.partner_bank_required and not rule.financial_partner_required:
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\services.py:492 : if rule.partner_bank_required or rule.financial_partner_required:
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc6_correction_20260930_182914\activation_request_services.py:254 : if rule.partner_bank_required:
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__service_control__models.py:102 : partner_bank_required = models.BooleanField(default=False)
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__service_control__services.py:307 : if rule.partner_bank_required:
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__service_control__services.py:403 : if not rule.partner_bank_required and not rule.financial_partner_required:
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__service_control__services.py:492 : if rule.partner_bank_required or rule.financial_partner_required:
+--- PATTERN : bank_partner ---
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\partner_finance\models.py:182 : related_name="bank_partner_deposit_relation"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc10\activation_workflow_service.py:214 : bank_partner_checked=False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc10\models.py:161 : bank_partner_checked = models.BooleanField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc6_20260930_182627\activation_request_views.py:149 : activation_request.bank_partner_checked = (
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc6_20260930_182627\activation_request_views.py:150 : result.bank_partner_checked
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc6_20260930_182627\activation_request_views.py:185 : activation_request.bank_partner_checked = True
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc6_20260930_182627\models.py:152 : bank_partner_checked = models.BooleanField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc6_correction_20260930_182914\activation_request_services.py:24 : bank_partner_checked: bool = False
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc6_correction_20260930_182914\activation_request_services.py:262 : result.bank_partner_checked = True
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc6_correction_20260930_182914\activation_request_services.py:265 : result.bank_partner_checked = True
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc6_correction_20260930_182914\activation_request_services.py:326 : bank_partner_checked=result.bank_partner_checked,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc6_correction_20260930_182914\activation_request_views.py:149 : activation_request.bank_partner_checked = (
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc6_correction_20260930_182914\activation_request_views.py:150 : result.bank_partner_checked
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc6_correction_20260930_182914\activation_request_views.py:185 : activation_request.bank_partner_checked = True
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc8\activation_request_views.py:174 : activation_request.bank_partner_checked = (
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc8\activation_request_views.py:175 : result.bank_partner_checked
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc8\activation_request_views.py:210 : activation_request.bank_partner_checked = True
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc8\models.py:161 : bank_partner_checked = models.BooleanField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc9\activation_request_views.py:174 : activation_request.bank_partner_checked = (
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc9\activation_request_views.py:175 : result.bank_partner_checked
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc9\activation_request_views.py:210 : activation_request.bank_partner_checked = True
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc9\models.py:161 : bank_partner_checked = models.BooleanField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__service_dashboard__activation_workflow_service.py:214 : bank_partner_checked=False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__service_dashboard__models.py:161 : bank_partner_checked = models.BooleanField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\activation_request_services.py:24 : bank_partner_checked: bool = False
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\activation_request_services.py:262 : result.bank_partner_checked = True
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\activation_request_services.py:265 : result.bank_partner_checked = True
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\activation_request_services.py:329 : bank_partner_checked=result.bank_partner_checked,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\activation_request_views.py:174 : activation_request.bank_partner_checked = (
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\activation_request_views.py:175 : result.bank_partner_checked
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\activation_request_views.py:210 : activation_request.bank_partner_checked = True
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\activation_workflow_service.py:214 : bank_partner_checked=False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc6_manager_20260930_183021.py:24 : bank_partner_checked: bool = False
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc6_manager_20260930_183021.py:262 : result.bank_partner_checked = True
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc6_manager_20260930_183021.py:265 : result.bank_partner_checked = True
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc6_manager_20260930_183021.py:329 : bank_partner_checked=result.bank_partner_checked,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\models.py:161 : bank_partner_checked = models.BooleanField(
+--- PATTERN : bank_account ---
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\wallet_bank_urls.py:5 : add_bank_account,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\wallet_bank_urls.py:19 : add_bank_account
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\wallet_bank_views.py:12 : def add_bank_account(request):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\wallet_bank_views.py:38 : "bank_account_id":bank.id,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\services.py:143 : def activate_bank_account(request_id):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py:348 : bank_account = models.ForeignKey(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\models.py:371 : related_name="bank_accounts"
+--- PATTERN : country ---
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\admin.py:6 : CountrySupervision
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\admin.py:12 : admin.site.register(CountrySupervision)
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\admin.py:28 : CountryCurrencyAccess,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\admin.py:29 : CountryRegulation,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\admin.py:30 : CountryBankAccess
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\admin.py:33 : admin.site.register(CountryCurrencyAccess)
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\admin.py:34 : admin.site.register(CountryRegulation)
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\admin.py:35 : admin.site.register(CountryBankAccess)
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:119 : class CountrySupervision(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:122 : country_name = models.CharField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:171 : ("country", "Supervision Pays"),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:202 : class BankCountryAccess(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:208 : country_name = models.CharField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:228 : return f"{self.bank_name} - {self.country_name}"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:288 : class CountryBankAuthorization(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:290 : country_name = models.CharField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:309 : return f"{self.country_name} - {self.bank_name}"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:327 : country = models.CharField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:422 : class CountryCurrencyAccess(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:424 : country = models.ForeignKey(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:425 : CountrySupervision,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:439 : return f"{self.country} - {self.currency}"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:444 : class CountryRegulation(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:446 : country = models.OneToOneField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:447 : CountrySupervision,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:464 : return str(self.country)
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:468 : class CountryBankAccess(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:470 : country = models.ForeignKey(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:471 : CountrySupervision,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:486 : return f"{self.country} - {self.bank}"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:494 : class CountrySupervisionDetail(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:544 : ("COUNTRY_ADMIN", "Administrateur Pays"),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:634 : country = models.CharField(max_length=100)
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:649 : models.Index(fields=["country", "status"]),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\views.py:7 : CountrySupervision
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\views.py:32 : CountrySupervision.objects.all(),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\bank_models.py:20 : country = models.CharField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\bank_views.py:27 : "country":b.country
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models.py:639 : target_country = models.CharField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models.py:787 : class CountryConfiguration(models.Model):
+--- PATTERN : currency ---
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\admin.py:4 : CurrencyApproval,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\admin.py:10 : admin.site.register(CurrencyApproval)
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\admin.py:17 : BankPartnerCurrency,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\admin.py:22 : admin.site.register(BankPartnerCurrency)
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\admin.py:28 : CountryCurrencyAccess,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\admin.py:33 : admin.site.register(CountryCurrencyAccess)
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:50 : class CurrencyApproval(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:53 : currency = models.ForeignKey(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:55 : "finance.Currency",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:58 : related_name="currency_approval_relation"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:67 : related_name="currency_approval_relation"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:97 : related_name="currency_approval_relation"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:169 : ("currency", "Validation Devise"),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:233 : class BankCurrencyAccess(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:239 : currency = models.CharField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:259 : return f"{self.bank_name} - {self.currency}"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:365 : class BankPartnerCurrency(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:372 : currency = models.CharField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:382 : return f"{self.bank} - {self.currency}"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:422 : class CountryCurrencyAccess(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:429 : currency = models.CharField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:439 : return f"{self.country} - {self.currency}"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\urls.py:22 : "currency/approve/<int:id>/",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\urls.py:23 : views.approve_currency
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\views.py:5 : CurrencyApproval,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\views.py:26 : CurrencyApproval.objects.all(),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\views.py:54 : def approve_currency(request,id):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\views.py:56 : item = CurrencyApproval.objects.get(id=id)
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\views.py:60 : item.currency.approved=True
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\views.py:62 : item.currency.save()
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\serializers\currency_wallet_serializer.py:2 : from wallet.currency_models import WalletCurrencyBalance
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\serializers\currency_wallet_serializer.py:5 : class WalletCurrencyBalanceSerializer(serializers.ModelSerializer):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\serializers\currency_wallet_serializer.py:9 : model = WalletCurrencyBalance
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\serializers\wallet_operation_serializer.py:13 : currency = serializers.CharField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\bank_models.py:57 : currency = models.CharField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\bank_models.py:104 : currency = models.CharField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\finance_admin_views.py:43 : currencies[item.currency] = (
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\finance_admin_views.py:45 : currencies.get(item.currency,0)
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\finance_admin_views.py:72 : "currency":
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\finance_admin_views.py:73 : entry.currency,
+--- PATTERN : beneficiary ---
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc10\activation_workflow_service.py:170 : beneficiary_user=None,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc10\activation_workflow_service.py:174 : beneficiary_user = beneficiary_user or requested_by
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc10\activation_workflow_service.py:179 : beneficiary_user=beneficiary_user,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc10\activation_workflow_service.py:210 : beneficiary_user=beneficiary_user,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc10\activation_workflow_service.py:247 : "beneficiary_user",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc10\models.py:137 : beneficiary_user = models.ForeignKey(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc10\models.py:140 : related_name="nsikay_activation_beneficiary_requests",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc10_correction\workflow_admin_views.py:53 : "beneficiary_user",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc10_correction\workflow_admin_views.py:156 : beneficiary_user=request.user,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc10_correction\workflow_admin_views.py:203 : "beneficiary_user",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc8\activation_request_views.py:77 : beneficiary_id = request.POST.get("beneficiary_user_id")
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc8\activation_request_views.py:79 : beneficiary = request.user
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc8\activation_request_views.py:81 : if beneficiary_id:
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc8\activation_request_views.py:83 : beneficiary = get_user_model().objects.get(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc8\activation_request_views.py:84 : pk=beneficiary_id
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc8\activation_request_views.py:98 : beneficiary,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc8\activation_request_views.py:107 : beneficiary_user=beneficiary,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc8\activation_request_views.py:151 : beneficiary = (
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc8\activation_request_views.py:152 : activation_request.beneficiary_user
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc8\activation_request_views.py:159 : beneficiary,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc8\models.py:137 : beneficiary_user = models.ForeignKey(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc8\models.py:140 : related_name="nsikay_activation_beneficiary_requests",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc9\activation_request_views.py:77 : beneficiary_id = request.POST.get("beneficiary_user_id")
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc9\activation_request_views.py:79 : beneficiary = request.user
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc9\activation_request_views.py:81 : if beneficiary_id:
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc9\activation_request_views.py:83 : beneficiary = get_user_model().objects.get(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc9\activation_request_views.py:84 : pk=beneficiary_id
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc9\activation_request_views.py:98 : beneficiary,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc9\activation_request_views.py:107 : beneficiary_user=beneficiary,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc9\activation_request_views.py:151 : beneficiary = (
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc9\activation_request_views.py:152 : activation_request.beneficiary_user
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc9\activation_request_views.py:159 : beneficiary,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc9\models.py:137 : beneficiary_user = models.ForeignKey(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc9\models.py:140 : related_name="nsikay_activation_beneficiary_requests",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc9\operational_validation_service.py:112 : "beneficiary_user",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc9\operational_validation_service.py:138 : "beneficiary_user",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__service_dashboard__activation_workflow_service.py:170 : beneficiary_user=None,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__service_dashboard__activation_workflow_service.py:174 : beneficiary_user = beneficiary_user or requested_by
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__service_dashboard__activation_workflow_service.py:179 : beneficiary_user=beneficiary_user,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__service_dashboard__activation_workflow_service.py:210 : beneficiary_user=beneficiary_user,
+--- PATTERN : financial_partner ---
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:15 : "financial_partner_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:23 : "financial_partner_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:31 : "financial_partner_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:39 : "financial_partner_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:47 : "financial_partner_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:55 : "financial_partner_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:63 : "financial_partner_required": True,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:71 : "financial_partner_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:79 : "financial_partner_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:87 : "financial_partner_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:95 : "financial_partner_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:103 : "financial_partner_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:111 : "financial_partner_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:119 : "financial_partner_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:127 : "financial_partner_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:135 : "financial_partner_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:143 : "financial_partner_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:151 : "financial_partner_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:159 : "financial_partner_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:167 : "financial_partner_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:175 : "financial_partner_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:183 : "financial_partner_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:191 : "financial_partner_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:199 : "financial_partner_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:207 : "financial_partner_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:215 : "financial_partner_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:223 : "financial_partner_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\load_service_rules.py:231 : "financial_partner_required": False,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\admin.py:73 : "financial_partner_required",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\admin.py:83 : "financial_partner_required",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management_helpers.py:69 : if rule.partner_bank_required or rule.financial_partner_required:
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management_helpers.py:77 : if rule.financial_partner_required:
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management_helpers.py:79 : ServiceActivationValidator.check_financial_partner(country)
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\models.py:112 : financial_partner_required = models.BooleanField(default=False)
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\services.py:186 : def check_financial_partner(country):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\services.py:320 : if rule.financial_partner_required:
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\services.py:321 : valid, message = ServiceActivationValidator.check_financial_partner(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\services.py:403 : if not rule.partner_bank_required and not rule.financial_partner_required:
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\services.py:436 : if rule.financial_partner_required:
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\services.py:492 : if rule.partner_bank_required or rule.financial_partner_required:
+--- PATTERN : partner_finance ---
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:94 : "partner_finance.PartnerApplication",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\models.py:410 : "partner_finance.PartnerApplication",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\models.py:462 : "partner_finance.PartnerApplication",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\models.py:526 : "partner_finance.PartnerApplication",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\nsikay\settings.py:49 : "partner_finance",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\nsikay\urls.py:16 : path("partners/", include("partner_finance.urls")),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\operations\models.py:31 : "partner_finance.PartnerWallet",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\operations\models.py:113 : "partner_finance.PartnerWallet",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\partner_finance\apps.py:5 : name = 'partner_finance'
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\partner_finance\models.py:24 : related_name="partner_finance_relation"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\partner_finance\models.py:173 : "partner_finance.PartnerWallet",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\partner_finance\models.py:220 : "partner_finance.PartnerWallet",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\services.py:22 : from partner_finance.models import (
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc6_correction_20260930_182914\activation_request_services.py:14 : from partner_finance.models import PartnerApplication, PartnerCertification
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__administration__models.py:94 : "partner_finance.PartnerApplication",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__nsikay__settings.py:45 : "partner_finance",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__nsikay__urls.py:16 : path("partners/", include("partner_finance.urls")),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__service_control__services.py:22 : from partner_finance.models import (
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\settings_before_production_20260930_193231.py:45 : "partner_finance",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\activation_request_services.py:14 : from partner_finance.models import PartnerApplication, PartnerCertification
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc6_manager_20260930_183021.py:14 : from partner_finance.models import PartnerApplication, PartnerCertification
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\financial_health_control_views.py:14 : from partner_finance.models import (
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\transactions\models.py:48 : "partner_finance.PartnerWallet",
+--- PATTERN : BankCountry ---
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:202 : class BankCountryAccess(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\models.py:109 : class BankCountry(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\models.py:645 : class BankCountryAccess(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\dashboard\views.py:9 : BankCountryAccess,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\services.py:18 : BankCountry,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\services.py:19 : BankCountryAccess,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\services.py:163 : bankcountryaccess__country_name__iexact=country_name,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\services.py:164 : bankcountryaccess__approved=True,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\services.py:171 : bankcountry__country__iexact=country_name,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\services.py:172 : bankcountry__approved=True,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\services.py:212 : bankcountryaccess__country_name__iexact=country_name,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\services.py:213 : bankcountryaccess__approved=True,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\services.py:418 : bankcountryaccess__country_name__iexact=country_name,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\services.py:419 : bankcountryaccess__approved=True,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\services.py:426 : bankcountry__country__iexact=country_name,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\services.py:427 : bankcountry__approved=True,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc6_correction_20260930_182914\activation_request_services.py:13 : from banking.models import Bank, BankCountry, BankCountryAccess
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc6_correction_20260930_182914\activation_request_services.py:113 : bankcountryaccess__country_name__iexact=country_name,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc6_correction_20260930_182914\activation_request_services.py:114 : bankcountryaccess__approved=True,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc6_correction_20260930_182914\activation_request_services.py:123 : bankcountry__country__iexact=country_name,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc6_correction_20260930_182914\activation_request_services.py:124 : bankcountry__approved=True,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__administration__models.py:202 : class BankCountryAccess(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__service_control__services.py:18 : BankCountry,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__service_control__services.py:19 : BankCountryAccess,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__service_control__services.py:163 : bankcountryaccess__country_name__iexact=country_name,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__service_control__services.py:164 : bankcountryaccess__approved=True,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__service_control__services.py:171 : bankcountry__country__iexact=country_name,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__service_control__services.py:172 : bankcountry__approved=True,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__service_control__services.py:212 : bankcountryaccess__country_name__iexact=country_name,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__service_control__services.py:213 : bankcountryaccess__approved=True,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__service_control__services.py:418 : bankcountryaccess__country_name__iexact=country_name,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__service_control__services.py:419 : bankcountryaccess__approved=True,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__service_control__services.py:426 : bankcountry__country__iexact=country_name,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__service_control__services.py:427 : bankcountry__approved=True,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\activation_request_services.py:13 : from banking.models import Bank, BankCountry, BankCountryAccess
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\activation_request_services.py:113 : bankcountryaccess__country_name__iexact=country_name,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\activation_request_services.py:114 : bankcountryaccess__approved=True,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\activation_request_services.py:123 : bankcountry__country__iexact=country_name,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\activation_request_services.py:124 : bankcountry__approved=True,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc6_manager_20260930_183021.py:13 : from banking.models import Bank, BankCountry, BankCountryAccess
+--- PATTERN : BankCurrency ---
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:233 : class BankCurrencyAccess(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\models.py:125 : class BankCurrency(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\models.py:669 : class BankCurrencyAccess(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\dashboard\views.py:10 : BankCurrencyAccess,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__administration__models.py:233 : class BankCurrencyAccess(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\add_bank_models.py:11 : class BankCurrencyAccess(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\add_bank_models.py:92 : "BankCurrencyAccess",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\add_pays_dashboard.py:12 : BankCurrencyAccess,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\add_pays_dashboard.py:30 : BankCurrencyAccess.objects.count(),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\connect_dashboards.py:28 : BankCurrencyAccess,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\connect_dashboards.py:107 : data["acces_devises"] = BankCurrencyAccess.objects.count()
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\update_real_dashboards.py:13 : BankCurrencyAccess,
+--- PATTERN : BankAccount ---
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\serializers\wallet_bank_serializer.py:3 : from wallet.models import WalletBankAccount
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\serializers\wallet_bank_serializer.py:12 : model = WalletBankAccount
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\wallet_bank_views.py:6 : from wallet.models import WalletBankAccount
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\wallet_bank_views.py:14 : bank = WalletBankAccount.objects.create(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\wallet_bank_views.py:51 : banks = WalletBankAccount.objects.filter(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\models.py:30 : class BankAccount(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\models.py:76 : BankAccount,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\models.py:276 : "BankAccount",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\models.py:333 : "BankAccount",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\models.py:377 : "BankAccount",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\models.py:562 : class OnlineBankAccountRequest(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\models.py:624 : OnlineBankAccountRequest,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\services.py:139 : BankAccount
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\services.py:154 : account = BankAccount.objects.create(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\views.py:4 : from .models import OnlineBankAccountRequest
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\views.py:12 : OnlineBankAccountRequest.objects.filter(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\views.py:17 : OnlineBankAccountRequest.objects.filter(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\views.py:40 : OnlineBankAccountRequest,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\views.py:62 : OnlineBankAccountRequest,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\views.py:84 : OnlineBankAccountRequest,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\bank_dashboard\views.py:4 : OnlineBankAccountRequest,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\bank_dashboard\views.py:17 : accounts = OnlineBankAccountRequest.objects.all()
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\bank_dashboard\views.py:51 : account = OnlineBankAccountRequest.objects.get(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\bank_dashboard\views.py:70 : account = OnlineBankAccountRequest.objects.get(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\bank_dashboard\views.py:89 : account = OnlineBankAccountRequest.objects.get(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py:350 : "wallet.WalletBankAccount",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\models.py:352 : class WalletBankAccount(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\add_banque_dashboard.py:11 : BankAccount,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\add_banque_dashboard.py:28 : BankAccount.objects.count(),
+--- PATTERN : PartnerCertification ---
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\models.py:89 : class PartnerCertification(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\views.py:6 : PartnerCertification,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\views.py:29 : PartnerCertification.objects.all(),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\views.py:73 : item = PartnerCertification.objects.get(id=id)
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\partner_finance\models.py:64 : class PartnerCertification(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\partner_finance\views.py:6 : PartnerCertification,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\partner_finance\views.py:60 : PartnerCertification.objects.get_or_create(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\services.py:24 : PartnerCertification,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc6_correction_20260930_182914\activation_request_services.py:14 : from partner_finance.models import PartnerApplication, PartnerCertification
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__administration__models.py:89 : class PartnerCertification(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_pre_hebergement\20260930_192835__service_control__services.py:24 : PartnerCertification,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\activation_request_services.py:14 : from partner_finance.models import PartnerApplication, PartnerCertification
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\backups_bloc6_manager_20260930_183021.py:14 : from partner_finance.models import PartnerApplication, PartnerCertification
+
+=== 5. MIGRATIONS BANKING ===
+__init__.py
+0001_initial.py
+0002_remove_bankservice_bank_remove_creditrequest_bank_and_more.py
+0003_bankcountry_bankcredit_bankcurrency_bankinsurance_and_more.py
+0004_accountnumbergenerator_accountopeningrequest.py
+0005_bankuserprofile.py
+0006_bankbalance_banktransaction.py
+0007_partnerapproval.py
+0008_cashdeposit_partnertransaction.py
+0009_onlinebankaccountrequest_bankcustomerservice.py
+0010_bankcountryaccess_bankcurrencyaccess.py
+
+=== 6. MIGRATIONS ADMINISTRATION ===
+__init__.py
+0001_initial.py
+0002_countrysupervision_and_more.py
+0003_bankcountryaccess_bankcurrencyaccess_and_more.py
+0004_bankpartner_bankpartnercurrency_bankpartnerservice.py
+0005_countrybankaccess_countrycurrencyaccess_and_more.py
+0006_countrysupervisiondetail.py
+0007_nsikayadminrole_nsikaypermission.py
+0008_healthinsurance.py
+
+=== 7. ROUTES BANCAIRES ET ADMINISTRATION ===
+--- C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\urls.py ---
+7:     path(
+13:     path(
+19:     path(
+25:     path(
+--- C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\urls.py ---
+8:     path(
+15:     path(
+21:     path(
+27:     path(
+--- C:\Users\DELL Technologies\Desktop\nsikay nante\backend\partner_finance\urls.py ---
+8:     path(
+13:     path(
+18:     path(
+--- C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\tv\urls.py ---
+8:     path(
+--- C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\analytics_urls.py ---
+10: path(
+--- C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\banks_urls.py ---
+7:     path("", views.banks_list, name="banks-list"),
+--- C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\bank_api_urls.py ---
+8:     path(
+--- C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\certifications_urls.py ---
+6:  path("",CertificationAPI.as_view()),
+--- C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\certification_urls.py ---
+7:     path("", views.certification_list, name="certification-list"),
+--- C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\countries_urls.py ---
+8:     path("", views.countries_list, name="countries-list"),
+--- C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\enterprise_urls.py ---
+10: path(
+--- C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\finance_admin_urls.py ---
+10:     path(
+--- C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\finance_api_urls.py ---
+8:     path(
+--- C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\finance_urls.py ---
+7:     path("", views.finance_dashboard, name="finance-dashboard"),
+--- C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\kyc_urls.py ---
+7:     path("", views.kyc_status, name="kyc-status"),
+--- C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\marketplace_urls.py ---
+10:     path(
+--- C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\security_urls.py ---
+19: path(
+28: path(
+37: path(
+--- C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\superapp_urls.py ---
+9:     path(
+--- C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\transactions_urls.py ---
+7:     path("", views.transactions_list, name="transactions-list"),
+--- C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\urls.py ---
+6:     path(
+8:         include("api_nsikay.banks_urls")
+11:     path(
+13:         include("api_nsikay.countries_urls")
+16:     path(
+18:         include("api_nsikay.transactions_urls")
+21:     path(
+23:         include("api_nsikay.finance_urls")
+26:     path(
+28:         include("api_nsikay.wallet_api_urls")
+33: path(
+35:     include("api_nsikay.wallet_operations_urls")
+39: path(
+41:     include("api_nsikay.wallet_dashboard_urls")
+45: path(
+47:     include("api_nsikay.wallet_bank_urls")
+51: path(
+53:     include("api_nsikay.finance_admin_urls")
+57: path(
+59:     include("api_nsikay.security_urls")
+63: path(
+65:     include("api_nsikay.superapp_urls")
+69: path(
+71:     include("api_nsikay.analytics_urls")
+75: path(
+77:     include("api_nsikay.enterprise_urls")
+82: path("tv/", include("api_nsikay.tv.urls")),
+--- C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\users_urls.py ---
+6:  path("",UsersAPI.as_view()),
+--- C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\wallet_api_urls.py ---
+6:     path(
+--- C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\wallet_bank_urls.py ---
+15: path(
+24: path(
+--- C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\wallet_dashboard_urls.py ---
+10:     path(
+--- C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\wallet_operations_urls.py ---
+12:     path(
+18:     path(
+24:     path(
+--- C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\wallet_urls.py ---
+7:     path("", views.wallet_dashboard, name="wallet-dashboard"),
+
+=== 8. REGLES FINANCIERES ACTUELLES ===
+--- C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\fees.py ---
+4: TRANSFER_COMMISSION = Decimal("0.0025")
+6: WITHDRAW_FEE = Decimal("0.005")
+10: def calculate_platform_commission(amount):
+12:     return Decimal(amount) * TRANSFER_COMMISSION
+16: def calculate_withdraw_cost(amount):
+18:     return Decimal(amount) * WITHDRAW_FEE
+--- C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\ledger.py ---
+5: WITHDRAW_FEE_RATE = Decimal("0.005")
+7: TRANSFER_FEE_RATE = Decimal("0.0025")
+12: def calculate_withdraw_fee(amount):
+17:         WITHDRAW_FEE_RATE
+23: def calculate_transfer_fee(amount):
+28:         TRANSFER_FEE_RATE
+--- C:\Users\DELL Technologies\Desktop\nsikay nante\backend\transactions\services.py ---
+4: def calculate_fees(transaction_type, amount):
+9:     if transaction_type == "transfer":
+11:         return amount * Decimal("0.0025")
+14:     if transaction_type == "withdrawal":
+16:         return amount * Decimal("0.0050")
+26:     fees = calculate_fees(
+54:         "fees":
+55:         str(fees),
+--- C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\services.py ---
+5: TRANSFER_FEE = Decimal("0.25")
+6: WITHDRAW_FEE = Decimal("1.20")
+9: def calculate_transfer_fee(amount):
+12:         amount * TRANSFER_FEE / Decimal("100")
+17: def calculate_withdraw_fee(amount):
+20:         amount * WITHDRAW_FEE / Decimal("100")
+25: def execute_transfer(sender, receiver, amount):
+27:     fee = calculate_transfer_fee(amount)
+33:         "commission": fee,
+39: def execute_withdraw(wallet, amount):
+41:     fee = calculate_withdraw_fee(amount)
+46:         "fee": fee,
+47:         "received": amount-fee,
+
+=== 9. DJANGO CHECK ===
+=== ALIASES DASHBOARD NSIKAY FINALISES ===
+=== API NSIKAY VIEWS COMPATIBILITE CHARGEES ===
+System check identified no issues (0 silenced).
+DJANGO_CHECK=OK
+
+=== 10. MAKEMIGRATIONS CHECK ===
+=== ALIASES DASHBOARD NSIKAY FINALISES ===
+=== API NSIKAY VIEWS COMPATIBILITE CHARGEES ===
+No changes detected
+MAKEMIGRATIONS_CHECK=OK
+
+=== CONCLUSION ===
+Audit lecture seule.
+Aucun solde modifie.
+Aucune transaction creee.
+Aucune migration creee.
+Aucune banque modifiee.
+
+REGLES NSIKAY A PREPARER :
+TRANSFERT_INTERNE_NSikay=0.50%
+TRANSFERT_EXTERNE_BANQUE=0.85%
+TRANSFERT_MOBILE_MONEY=0.85%
+TRANSFERT_VISA=0.85%
+TRANSFERT_AUTRE_PARTENAIRE_FINANCIER=0.85%
+RETRAIT=1.20%
+WENZE_COMMISSION_COMMERCIALE=0%
+
+MODELES DE ROUTAGE A PREVOIR :
+BANQUE_UNIQUE_CENTRALISEE
+BANQUES_PAR_PAYS
+MODELE_MIXTE
+ROUTAGE_PAR_SOURCE_REVENU
+ROUTAGE_PAR_PAYS
+ROUTAGE_PAR_DEVISE
+ROUTAGE_PAR_TYPE_OPERATION
+ROUTAGE_PAR_PARTENAIRE

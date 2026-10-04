@@ -1,0 +1,339 @@
+﻿from django.contrib import messages
+from django.contrib.auth.decorators import user_passes_test
+from django.db import transaction
+from django.shortcuts import redirect
+
+from service_control.models import ServiceActivation
+from service_control.services import CountryServiceActivationValidator
+from service_dashboard.models import ServiceDashboardLog
+
+
+def _is_nsikay_admin(user):
+    if not user or not user.is_authenticated:
+        return False
+
+    return (
+        user.is_superuser
+        or str(user.username).strip().lower()
+        == "constantdoriskayembe"
+        or user.groups.filter(
+            name__in=[
+                "Super Administrateur",
+                "Administration Pays",
+            ]
+        ).exists()
+    )
+
+
+def _create_service_log(
+    activation,
+    admin_user,
+    action,
+    comment,
+):
+    """
+    Journal NSIKAY utilisant le vrai modele ServiceDashboardLog.
+
+    country et service sont des ForeignKey.
+    admin_user est un CharField.
+    comment est un TextField.
+    """
+
+    return ServiceDashboardLog.objects.create(
+        action=action,
+        admin_user=(
+            getattr(
+                admin_user,
+                "username",
+                None,
+            )
+            or "Administration NSIKAY"
+        ),
+        comment=comment,
+        country=activation.country,
+        service=activation.service,
+    )
+
+
+def _extract_validation_result(result):
+    """
+    Le moteur NSIKAY peut retourner un ActivationResult.
+
+    On lit explicitement :
+    - allowed
+    - message
+    - activation
+
+    Compatibilite egalement avec un tuple
+    (allowed, message).
+    """
+
+    if hasattr(result, "allowed"):
+
+        allowed = bool(
+            getattr(
+                result,
+                "allowed",
+                False,
+            )
+        )
+
+        message = str(
+            getattr(
+                result,
+                "message",
+                "",
+            )
+            or (
+                "Validation réussie."
+                if allowed
+                else "Validation refusée."
+            )
+        )
+
+        activation = getattr(
+            result,
+            "activation",
+            None,
+        )
+
+        return (
+            allowed,
+            message,
+            activation,
+        )
+
+    if isinstance(result, tuple):
+
+        if len(result) >= 2:
+
+            allowed = bool(result[0])
+            message = str(result[1])
+
+            activation = (
+                result[2]
+                if len(result) >= 3
+                else None
+            )
+
+            return (
+                allowed,
+                message,
+                activation,
+            )
+
+    allowed = bool(result)
+
+    return (
+        allowed,
+        (
+            "Validation réussie."
+            if allowed
+            else "Validation refusée."
+        ),
+        None,
+    )
+
+
+@user_passes_test(_is_nsikay_admin)
+def final_activate_service(
+    request,
+    activation_id,
+):
+
+    # --------------------------------------------------------
+    # SECURITE HTTP
+    # --------------------------------------------------------
+
+    if request.method != "POST":
+
+        messages.error(
+            request,
+            (
+                "L'activation finale doit obligatoirement "
+                "être effectuée par POST."
+            ),
+        )
+
+        return redirect(
+            "service_dashboard:service_country_control"
+        )
+
+    # --------------------------------------------------------
+    # TRANSACTION ATOMIQUE
+    # --------------------------------------------------------
+
+    with transaction.atomic():
+
+        activation = (
+            ServiceActivation.objects
+            .select_for_update()
+            .select_related(
+                "service",
+                "country",
+            )
+            .get(
+                id=activation_id,
+            )
+        )
+
+        service = activation.service
+        country = activation.country
+
+        # ----------------------------------------------------
+        # VERIFICATION RELATION
+        # ----------------------------------------------------
+
+        if not country.is_primary:
+
+            activation.active = False
+            activation.validated_by_admin = False
+            activation.reason = (
+                "Activation refusée : pays non principal."
+            )
+
+            activation.save(
+                update_fields=[
+                    "active",
+                    "validated_by_admin",
+                    "reason",
+                ]
+            )
+
+            _create_service_log(
+                activation=activation,
+                admin_user=request.user,
+                action="activate_refused",
+                comment=(
+                    "Activation refusée : "
+                    "le pays n'est pas un pays principal."
+                ),
+            )
+
+            messages.error(
+                request,
+                "Activation refusée : pays non principal.",
+            )
+
+            return redirect(
+                "service_dashboard:service_country_control"
+            )
+
+        # ----------------------------------------------------
+        # VALIDATION CENTRALE
+        # ----------------------------------------------------
+
+        validation = (
+            CountryServiceActivationValidator.validate(
+                service,
+                country,
+            )
+        )
+
+        allowed, message, validated_activation = (
+            _extract_validation_result(
+                validation
+            )
+        )
+
+        # ----------------------------------------------------
+        # VERIFICATION DE COHERENCE
+        # ----------------------------------------------------
+
+        if (
+            validated_activation is not None
+            and validated_activation.id
+            != activation.id
+        ):
+
+            allowed = False
+
+            message = (
+                "Refus de sécurité : "
+                "la validation concerne une autre "
+                "relation Service × Pays."
+            )
+
+        # ----------------------------------------------------
+        # REFUS
+        # ----------------------------------------------------
+
+        if not allowed:
+
+            activation.active = False
+            activation.validated_by_admin = False
+            activation.reason = (
+                f"Activation refusée : {message}"
+            )
+
+            activation.save(
+                update_fields=[
+                    "active",
+                    "validated_by_admin",
+                    "reason",
+                ]
+            )
+
+            _create_service_log(
+                activation=activation,
+                admin_user=request.user,
+                action="activate_refused",
+                comment=(
+                    f"Activation refusée. "
+                    f"Service={service.name}; "
+                    f"Pays={country.country_name}; "
+                    f"Motif={message}"
+                ),
+            )
+
+            messages.error(
+                request,
+                f"Activation refusée : {message}",
+            )
+
+            return redirect(
+                "service_dashboard:service_country_control"
+            )
+
+        # ----------------------------------------------------
+        # ACTIVATION FINALE
+        # ----------------------------------------------------
+
+        activation.active = True
+        activation.validated_by_admin = True
+        activation.reason = (
+            "Activation finale validée par "
+            "administration NSIKAY."
+        )
+
+        activation.save(
+            update_fields=[
+                "active",
+                "validated_by_admin",
+                "reason",
+            ]
+        )
+
+        _create_service_log(
+            activation=activation,
+            admin_user=request.user,
+            action="activate",
+            comment=(
+                f"Activation finale validée. "
+                f"Service={service.name}; "
+                f"Pays={country.country_name}; "
+                f"Contrôle={message}"
+            ),
+        )
+
+    messages.success(
+        request,
+        (
+            f"Service {service.name} activé pour "
+            f"{country.country_name}."
+        ),
+    )
+
+    return redirect(
+        "service_dashboard:service_country_control"
+    )

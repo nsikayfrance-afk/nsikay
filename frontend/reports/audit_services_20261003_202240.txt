@@ -1,0 +1,34 @@
+============================================================
+ Date : 2026-10-03 20:22:41
+ Racine : C:\Users\DELL Technologies\Desktop\nsikay nante\frontend
+============================================================
+MISS backend
+MISS backend\manage.py
+MISS backend\nsikay
+MISS frontend
+MISS frontend\src
+MISS frontend\src\App.jsx
+DJANGO_CHECK=ERREUR
+MIGRATIONS=A_VERIFIER
+TOTAL_APPS=0
+TOTAL_MODELS=0
+TOTAL_BACKEND_ROUTES=0
+TOTAL_FRONTEND_PAGES=0
+APP_JSX=MISS
+TOTAL_FRONTEND_API_CALLS=0
+TRANSPORT_MISS=backend\transport\models.py
+TRANSPORT_MISS=backend\transport\views.py
+TRANSPORT_MISS=backend\transport\serializers.py
+TRANSPORT_MISS=backend\transport\urls.py
+TRANSPORT_MISS=backend\transport\rules.py
+TRANSPORT_MISS=frontend\src\pages\TransportOnboarding.jsx
+MODULE=wenze ABSENT
+MODULE=finance ABSENT
+MODULE=certification ABSENT
+MODULE=banking ABSENT
+MODULE=administration ABSENT
+MODULE=transactions ABSENT
+MODULE=partner_finance ABSENT
+MODULE=account_security ABSENT
+MODULE=business ABSENT
+BUILD_FRONTEND=OK

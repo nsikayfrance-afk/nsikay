@@ -1,0 +1,215 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Journal administratif global - NSIKAY</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 24px;
+            background: #f4f6f8;
+        }
+
+        h1 {
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #555;
+            margin-bottom: 24px;
+        }
+
+        .stats {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 18px;
+            min-width: 180px;
+            box-shadow: 0 2px 8px rgba(0,0,0,.08);
+        }
+
+        .card strong {
+            display: block;
+            font-size: 24px;
+            margin-top: 6px;
+        }
+
+        .navigation {
+            margin-bottom: 20px;
+        }
+
+        .navigation a {
+            display: inline-block;
+            margin-right: 10px;
+            margin-bottom: 8px;
+            padding: 9px 13px;
+            background: #1f2937;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 8px;
+            overflow-x: auto;
+            box-shadow: 0 2px 8px rgba(0,0,0,.08);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 11px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background: #eef1f4;
+        }
+
+        .status {
+            font-weight: bold;
+        }
+
+        .empty {
+            padding: 30px;
+            text-align: center;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Journal administratif global NSIKAY</h1>
+
+<div class="subtitle">
+    Historique centralisé des opérations administratives enregistrées
+    sur la configuration des pays et les services.
+</div>
+
+<div class="navigation">
+
+    <a href="{% url 'service_dashboard:control_center' %}">
+        Centre de contrôle
+    </a>
+
+    <a href="{% url 'service_dashboard:country_statistics' %}">
+        Statistiques pays
+    </a>
+
+    <a href="{% url 'service_dashboard:operational_countries_history' %}">
+        Historique pays
+    </a>
+
+</div>
+
+<div class="stats">
+
+    <div class="card">
+        Journaux configuration pays
+        <strong>{{ country_log_count }}</strong>
+    </div>
+
+    <div class="card">
+        Journaux services
+        <strong>{{ service_log_count }}</strong>
+    </div>
+
+    <div class="card">
+        Entrées affichées
+        <strong>{{ total_entries }}</strong>
+    </div>
+
+</div>
+
+<div class="table-container">
+
+<table>
+
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Action</th>
+            <th>Administrateur</th>
+            <th>Service</th>
+            <th>Pays</th>
+            <th>Détails</th>
+            <th>Statut</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+    {% for entry in entries %}
+
+        <tr>
+
+            <td>
+                {{ entry.date|date:"d/m/Y H:i:s" }}
+            </td>
+
+            <td>
+                {{ entry.type }}
+            </td>
+
+            <td>
+                {{ entry.action }}
+            </td>
+
+            <td>
+                {{ entry.administrateur }}
+            </td>
+
+            <td>
+                {{ entry.service }}
+            </td>
+
+            <td>
+                {{ entry.pays }}
+            </td>
+
+            <td>
+                {{ entry.details }}
+            </td>
+
+            <td class="status">
+                {{ entry.statut }}
+            </td>
+
+        </tr>
+
+    {% empty %}
+
+        <tr>
+            <td colspan="8" class="empty">
+                Aucun événement administratif enregistré.
+            </td>
+        </tr>
+
+    {% endfor %}
+
+    </tbody>
+
+</table>
+
+</div>
+
+</body>
+</html>
+

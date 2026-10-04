@@ -1,0 +1,155 @@
+============================================================
+NSIKAY - INSPECTION MODELES CADEAUX / FINANCE
+============================================================
+DATE : 2026-10-01 15:52:48
+MODE : LECTURE SEULE - AUCUNE MODIFICATION
+
+CODE RETOUR SHELL : 0
+======================================================================
+NSIKAY - MODELES CADEAUX / FINANCE
+======================================================================
+
+----------------------------------------------------------------------
+MODELE : finance.Wallet
+----------------------------------------------------------------------
+TABLE : finance_wallet
+- id | type= BigAutoField | null= False | blank= True | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- user | type= ForeignKey | null= False | blank= False | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- currency | type= ForeignKey | null= False | blank= False | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- balance | type= DecimalField | null= False | blank= False | default= 0
+- active | type= BooleanField | null= False | blank= False | default= True
+- created_at | type= DateTimeField | null= False | blank= True | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+
+----------------------------------------------------------------------
+MODELE : finance.WalletTransaction
+----------------------------------------------------------------------
+TABLE : finance_wallettransaction
+- id | type= BigAutoField | null= False | blank= True | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- wallet | type= ForeignKey | null= False | blank= False | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- transaction_type | type= CharField | null= False | blank= False | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- amount | type= DecimalField | null= False | blank= False | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- reference | type= CharField | null= False | blank= False | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- status | type= CharField | null= False | blank= False | default= pending
+- created_at | type= DateTimeField | null= False | blank= True | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+
+----------------------------------------------------------------------
+MODELE : finance.FinancialLedger
+----------------------------------------------------------------------
+TABLE : finance_financialledger
+- id | type= BigAutoField | null= False | blank= True | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- wallet | type= ForeignKey | null= False | blank= False | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- transaction_type | type= CharField | null= False | blank= False | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- amount | type= DecimalField | null= False | blank= False | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- currency | type= CharField | null= False | blank= False | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- reference | type= CharField | null= False | blank= False | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- metadata | type= JSONField | null= False | blank= False | default= <class 'dict'>
+- created_at | type= DateTimeField | null= False | blank= True | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+
+----------------------------------------------------------------------
+MODELE : wallet.Wallet
+----------------------------------------------------------------------
+TABLE : wallet_wallet
+- id | type= BigAutoField | null= False | blank= True | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- user | type= OneToOneField | null= False | blank= False | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- status | type= CharField | null= False | blank= False | default= ACTIVE
+- created_at | type= DateTimeField | null= False | blank= True | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+
+----------------------------------------------------------------------
+MODELE : wallet.WalletBalance
+----------------------------------------------------------------------
+TABLE : wallet_walletbalance
+- id | type= BigAutoField | null= False | blank= True | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- wallet | type= ForeignKey | null= False | blank= False | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- currency | type= CharField | null= False | blank= False | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- available_balance | type= DecimalField | null= False | blank= False | default= 0
+- locked_balance | type= DecimalField | null= False | blank= False | default= 0
+- updated_at | type= DateTimeField | null= False | blank= True | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+
+----------------------------------------------------------------------
+MODELE : wallet.WalletTransaction
+----------------------------------------------------------------------
+TABLE : wallet_wallettransaction
+- id | type= BigAutoField | null= False | blank= True | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- wallet | type= ForeignKey | null= False | blank= False | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- transaction_type | type= CharField | null= False | blank= False | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- amount | type= DecimalField | null= False | blank= False | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- currency | type= CharField | null= False | blank= False | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- reference | type= CharField | null= False | blank= False | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- status | type= CharField | null= False | blank= False | default= PENDING
+- created_at | type= DateTimeField | null= False | blank= True | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+
+----------------------------------------------------------------------
+MODELE : wallet.WalletOperation
+----------------------------------------------------------------------
+TABLE : wallet_walletoperation
+- id | type= BigAutoField | null= False | blank= True | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- wallet | type= ForeignKey | null= False | blank= False | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- operation_type | type= CharField | null= False | blank= False | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- amount | type= DecimalField | null= False | blank= False | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- currency | type= CharField | null= False | blank= False | default= USD
+- fee | type= DecimalField | null= False | blank= False | default= 0
+- destination_wallet | type= ForeignKey | null= True | blank= True | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- created_at | type= DateTimeField | null= False | blank= True | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+
+----------------------------------------------------------------------
+MODELE : api_nsikay.VirtualGift
+----------------------------------------------------------------------
+TABLE : api_nsikay_virtualgift
+- id | type= BigAutoField | null= False | blank= True | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- name | type= CharField | null= False | blank= False | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- value | type= DecimalField | null= False | blank= False | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- currency | type= CharField | null= False | blank= False | default= USD
+
+----------------------------------------------------------------------
+MODELE : api_nsikay.GiftTransaction
+----------------------------------------------------------------------
+TABLE : api_nsikay_gifttransaction
+- id | type= BigAutoField | null= False | blank= True | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- sender | type= ForeignKey | null= False | blank= False | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- receiver | type= ForeignKey | null= False | blank= False | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- gift | type= ForeignKey | null= False | blank= False | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- created_at | type= DateTimeField | null= False | blank= True | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+
+----------------------------------------------------------------------
+MODELE : api_nsikay.SocialPost
+----------------------------------------------------------------------
+TABLE : api_nsikay_socialpost
+- id | type= BigAutoField | null= False | blank= True | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- author | type= ForeignKey | null= False | blank= False | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- content | type= TextField | null= False | blank= False | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- image | type= URLField | null= False | blank= True | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- likes | type= IntegerField | null= False | blank= False | default= 0
+- created_at | type= DateTimeField | null= False | blank= True | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+
+----------------------------------------------------------------------
+MODELE : api_nsikay.CreatorProfile
+----------------------------------------------------------------------
+TABLE : api_nsikay_creatorprofile
+- id | type= BigAutoField | null= False | blank= True | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- user | type= OneToOneField | null= False | blank= False | default= <class 'django.db.models.fields.NOT_PROVIDED'>
+- verified | type= BooleanField | null= False | blank= False | default= False
+- followers | type= IntegerField | null= False | blank= False | default= 0
+- earnings | type= DecimalField | null= False | blank= False | default= 0
+
+======================================================================
+RELATIONS DES MODELES CADEAUX
+======================================================================
+
+api_nsikay.VirtualGift
+- gifttransaction -> <class 'api_nsikay.models.GiftTransaction'>
+
+api_nsikay.GiftTransaction
+- sender -> <class 'django.contrib.auth.models.User'>
+- receiver -> <class 'django.contrib.auth.models.User'>
+- gift -> <class 'api_nsikay.models.VirtualGift'>
+
+======================================================================
+SERVICES FINANCE / WALLET
+======================================================================
+finance.wallet_service
+finance.ledger
+finance.fees
+
+======================================================================
+INSPECTION TERMINEE
+======================================================================

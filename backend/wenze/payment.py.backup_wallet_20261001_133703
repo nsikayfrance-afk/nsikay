@@ -1,0 +1,225 @@
+﻿from decimal import Decimal
+from uuid import uuid4
+
+from django.db import transaction
+from django.utils import timezone
+
+from finance.models import Wallet
+from financial_routing.services import calculate_fee
+
+from .models import WenzeOrder
+
+
+class WenzePaymentError(Exception):
+    """Erreur métier liée au paiement WENZE."""
+
+
+def pay_wenze_order_with_wallet(order, buyer_wallet):
+    """
+    Paiement réel d'une commande WENZE avec le portefeuille NSIKAY.
+
+    Le paiement :
+    - vérifie la commande ;
+    - vérifie le portefeuille acheteur ;
+    - vérifie la devise ;
+    - vérifie le vendeur ;
+    - verrouille les deux wallets ;
+    - applique 0 % de commission WENZE ;
+    - débite l'acheteur ;
+    - crédite le vendeur ;
+    - marque la commande comme PAID.
+
+    Toute l'opération est atomique.
+    """
+
+    if order.status != "PENDING":
+        raise WenzePaymentError(
+            "Cette commande n'est pas en attente de paiement."
+        )
+
+    if order.payment_method != "WALLET":
+        raise WenzePaymentError(
+            "Cette méthode concerne uniquement le portefeuille NSIKAY."
+        )
+
+    amount = Decimal(str(order.total_amount))
+
+    if amount <= Decimal("0.00"):
+        raise WenzePaymentError(
+            "Le montant de la commande doit être positif."
+        )
+
+    with transaction.atomic():
+
+        buyer_wallet = (
+            Wallet.objects
+            .select_for_update()
+            .select_related("currency", "user")
+            .filter(
+                id=buyer_wallet.id,
+                user=order.buyer,
+                active=True,
+            )
+            .first()
+        )
+
+        if buyer_wallet is None:
+            raise WenzePaymentError(
+                "Le portefeuille acheteur est introuvable ou inactif."
+            )
+
+        seller_wallet = (
+            Wallet.objects
+            .select_for_update()
+            .select_related("currency", "user")
+            .filter(
+                user=order.product.seller,
+                active=True,
+            )
+            .first()
+        )
+
+        if seller_wallet is None:
+            raise WenzePaymentError(
+                "Le vendeur ne possède pas de portefeuille actif."
+            )
+
+        buyer_currency = buyer_wallet.currency.code
+        seller_currency = seller_wallet.currency.code
+
+        if buyer_currency != order.currency:
+            raise WenzePaymentError(
+                "La devise du portefeuille acheteur ne correspond "
+                "pas à la devise de la commande."
+            )
+
+        if seller_currency != order.currency:
+            raise WenzePaymentError(
+                "La devise du portefeuille vendeur ne correspond "
+                "pas à la devise de la commande."
+            )
+
+        if buyer_wallet.id == seller_wallet.id:
+            raise WenzePaymentError(
+                "L'acheteur et le vendeur ne peuvent pas utiliser "
+                "le même portefeuille."
+            )
+
+        if buyer_wallet.balance < amount:
+            raise WenzePaymentError(
+                "Solde insuffisant pour payer cette commande."
+            )
+
+        fee_result = calculate_fee(
+            amount=amount,
+            fee_type="WENZE",
+        )
+
+        fee_amount = Decimal(str(fee_result["fee_amount"]))
+        net_amount = Decimal(str(fee_result["net_amount"]))
+
+        if fee_amount != Decimal("0.00"):
+            raise WenzePaymentError(
+                "La commission WENZE doit être de 0 %."
+            )
+
+        if net_amount != amount:
+            raise WenzePaymentError(
+                "Le montant net WENZE doit être égal au montant de la commande."
+            )
+
+        payment_reference = (
+            f"WENZE-PAY-{uuid4().hex[:16].upper()}"
+        )
+
+        # Débit acheteur.
+        buyer_wallet.balance -= amount
+        buyer_wallet.save(
+            update_fields=["balance"]
+        )
+
+        # Crédit vendeur.
+        seller_wallet.balance += net_amount
+        seller_wallet.save(
+            update_fields=["balance"]
+        )
+
+        # Journal financier du portefeuille acheteur.
+        from finance.models import WalletTransaction
+
+        WalletTransaction.objects.create(
+            wallet=buyer_wallet,
+            transaction_type="withdraw",
+            amount=amount,
+            reference=payment_reference + "-OUT",
+            status="completed",
+        )
+
+        # Journal financier du portefeuille vendeur.
+        WalletTransaction.objects.create(
+            wallet=seller_wallet,
+            transaction_type="deposit",
+            amount=net_amount,
+            reference=payment_reference + "-IN",
+            status="completed",
+        )
+
+        order.status = "PAID"
+        order.payment_method = "WALLET"
+        order.payment_reference = payment_reference
+        order.payment_fee = fee_amount
+        order.paid_at = timezone.now()
+
+        order.save(
+            update_fields=[
+                "status",
+                "payment_method",
+                "payment_reference",
+                "payment_fee",
+                "paid_at",
+                "updated_at",
+            ]
+        )
+
+        return {
+            "order": order,
+            "payment_reference": payment_reference,
+            "amount": amount,
+            "fee": fee_amount,
+            "net_amount": net_amount,
+            "currency": order.currency,
+            "payment_method": "WALLET",
+            "status": "PAID",
+        }
+
+
+def payment_method_status(payment_method):
+    """
+    Retourne l'état technique actuel des moyens de paiement WENZE.
+    """
+
+    statuses = {
+        "WALLET": {
+            "available": True,
+            "label": "Portefeuille NSIKAY",
+        },
+        "MOBILE_MONEY": {
+            "available": False,
+            "label": "Mobile Money",
+            "reason": "Passerelle de paiement externe non connectée.",
+        },
+        "VISA": {
+            "available": False,
+            "label": "Visa",
+            "reason": "Passerelle de paiement externe non connectée.",
+        },
+    }
+
+    return statuses.get(
+        payment_method,
+        {
+            "available": False,
+            "label": payment_method,
+            "reason": "Méthode de paiement inconnue.",
+        },
+    )

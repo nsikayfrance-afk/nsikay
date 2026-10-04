@@ -1,0 +1,8 @@
+﻿NSIKAY IDENTITE VISUELLE
+
+Element :
+globe_communication.txt
+
+Emplacement reserve pour integration graphique.
+
+

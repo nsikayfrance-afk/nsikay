@@ -1,0 +1,157 @@
+﻿
+================================================
+NSIKAY ACCUEIL DESKTOP
+================================================
+
+ECRAN 1 : HERO
+
+[ ROI KUBA ]
+       +
+[ GLOBE MONDIAL NSIKAY ]
+
+Texte:
+Communication mondiale
+Echanges culturels
+Développement économique
+
+
+Boutons:
+
+[ CREER UN COMPTE ]
+
+[ CONNEXION ]
+
+
+
+================================================
+ECRAN 2 : IDENTITE OFFICIELLE
+================================================
+
+NSIKAY
+
+Association déclarée en France
+
+RNA:
+W442031317
+
+SIREN:
+995 089 711
+
+SIRET:
+995 089 711 00015
+
+
+Objectifs officiels de l'association.
+
+
+
+================================================
+ECRAN 3 : PUBLICITE
+================================================
+
+MAITRE DES PUBLICITES
+
+[ IMAGE CAMPAGNE ]
+
+Titre publicité
+
+Description
+
+Bouton:
+Voir plus
+
+
+
+================================================
+ECRAN 4 : DOMAINES NSIKAY
+================================================
+
+Communication
+
+Culture
+
+Art
+
+Technologie
+
+Agriculture
+
+Sport
+
+Social
+
+Religion & Histoire
+
++18
+
+
+
+================================================
+ECRAN 5 : WENZE
+================================================
+
+Commerce NSIKAY
+
+Produits
+
+Services
+
+Evénements
+
+
+
+================================================
+ECRAN 6 : PARTENARIAT
+================================================
+
+En collaboration avec:
+
+ANANSI SA
+
+Entreprise congolaise
+de droit congolais
+
+
+
+================================================
+VERSION MOBILE
+================================================
+
+
+HEADER:
+
+Logo NSIKAY
+
+Menu
+
+
+HERO:
+
+Roi Kuba vertical
+
+Boutons larges
+
+
+IDENTITE:
+
+Cartes verticales
+
+
+PUBLICITE:
+
+Image plein écran
+
+
+MODULES:
+
+Cartes une par une
+
+
+FOOTER:
+
+Informations officielles
+
+
+================================================
+
+

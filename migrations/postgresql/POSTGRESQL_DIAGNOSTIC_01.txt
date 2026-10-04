@@ -1,0 +1,26 @@
+﻿NSIKAY - DIAGNOSTIC POSTGRESQL 17
+Date : 2026-10-01 14:06:33
+
+Projet :
+C:\Users\DELL Technologies\Desktop\nsikay nante
+
+Service :
+postgresql-x64-17
+
+Dossier PostgreSQL detecte :
+C:\Program Files\PostgreSQL\17\bin
+
+Objectif :
+Preparer PostgreSQL pour la validation reelle
+du verrouillage concurrent WENZE.
+
+IMPORTANT :
+Aucune migration SQLite -> PostgreSQL n'a ete effectuee.
+Aucune donnee SQLite n'a ete supprimee.
+Aucun changement de configuration Django de production
+n'a ete applique.
+
+La validation concurrente reste interdite tant que
+la base PostgreSQL n'est pas effectivement utilisee
+par Django.
+

@@ -1,0 +1,118 @@
+﻿============================================================
+ NSIKAY - DESIGN 15 - AUDIT STOCKAGE FINAL
+============================================================
+Date : 2026-10-01 11:29:07
+
+REGLE OFFICIELLE
+------------------------------------------------------------
+Aucun stockage gratuit
+10 GB = 10 EUR
+100 GB = 50 EUR
+
+RESULTATS
+------------------------------------------------------------
+[OK] Aucune formule explicite de stockage gratuit detectee.
+[OK] 10 GB = 10 EUR
+[OK] 100 GB = 50 EUR
+[ERREUR] Django check code 1
+  SystemCheckError: System check identified some issues:
+  System.Management.Automation.RemoteException
+  ERRORS:
+  marketing.Advertisement.image: (fields.E210) Cannot use ImageField because Pillow is not installed.
+  	HINT: Get Pillow at https://pypi.org/project/Pillow/ or run command "python -m pip install Pillow".
+  media.MediaContent.thumbnail: (fields.E210) Cannot use ImageField because Pillow is not installed.
+  	HINT: Get Pillow at https://pypi.org/project/Pillow/ or run command "python -m pip install Pillow".
+  media.TVChannel.logo: (fields.E210) Cannot use ImageField because Pillow is not installed.
+  	HINT: Get Pillow at https://pypi.org/project/Pillow/ or run command "python -m pip install Pillow".
+  System.Management.Automation.RemoteException
+  System check identified 3 issues (0 silenced).
+  === ALIASES DASHBOARD NSIKAY FINALISES ===
+  === API NSIKAY VIEWS COMPATIBILITE CHARGEES ===
+[ATTENTION] Migrations potentiellement necessaires
+  SystemCheckError: System check identified some issues:
+  System.Management.Automation.RemoteException
+  ERRORS:
+  marketing.Advertisement.image: (fields.E210) Cannot use ImageField because Pillow is not installed.
+  	HINT: Get Pillow at https://pypi.org/project/Pillow/ or run command "python -m pip install Pillow".
+  media.MediaContent.thumbnail: (fields.E210) Cannot use ImageField because Pillow is not installed.
+  	HINT: Get Pillow at https://pypi.org/project/Pillow/ or run command "python -m pip install Pillow".
+  media.TVChannel.logo: (fields.E210) Cannot use ImageField because Pillow is not installed.
+  	HINT: Get Pillow at https://pypi.org/project/Pillow/ or run command "python -m pip install Pillow".
+  === ALIASES DASHBOARD NSIKAY FINALISES ===
+  === API NSIKAY VIEWS COMPATIBILITE CHARGEES ===
+
+FICHIERS PYTHON VIDES
+------------------------------------------------------------
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\administration\migrations\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\ai\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\ai\migrations\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api\migrations\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\migrations\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\security\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\serializers\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\tv\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\tv\serializers\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\app_center\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\app_center\migrations\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\association\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\association\migrations\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\audit\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\audit\migrations\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\migrations\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\bank_dashboard\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\bank_dashboard\migrations\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\business\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\business\migrations\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\certification\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\certification\migrations\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\core\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\core\migrations\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\dashboard\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\dashboard\migrations\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\migrations\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\jobs\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\jobs\migrations\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\marketing\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\marketing\migrations\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\media\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\media\migrations\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\nsikay\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\nsikay_core\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\nsikay_core\migrations\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\operations\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\operations\migrations\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\partner_finance\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\partner_finance\migrations\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\migrations\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\migrations\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\transactions\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\transactions\migrations\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\tv_regie\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\tv_regie\migrations\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\migrations\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\__init__.py
+[INFO] C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\migrations\__init__.py
+
+ANCIENNES FORMULES DE STOCKAGE
+------------------------------------------------------------
+[OK] Aucune formule explicite 2 GB gratuit detectee.
+
+TARIFS OFFICIELS
+------------------------------------------------------------
+10 GB = 10 EUR
+100 GB = 50 EUR
+Aucun stockage gratuit
+
+============================================================
+ FIN AUDIT DESIGN 15
+============================================================

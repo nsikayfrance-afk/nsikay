@@ -1,0 +1,3548 @@
+============================================================
+ NSIKAY - AUDIT CADEAUX / PUBLICATIONS / CREATEURS
+============================================================
+
+Date : 2026-10-01 15:09:26
+Projet : C:\Users\DELL Technologies\Desktop\nsikay nante
+Backend : C:\Users\DELL Technologies\Desktop\nsikay nante\backend
+
+REGLES A PREPARER
+------------------
+1. Une personne peut recevoir plusieurs cadeaux.
+2. Des cadeaux peuvent être reçus sur plusieurs publications.
+3. Une même récompense ne doit pas être attribuée deux fois
+   pour la même publication et la même échéance.
+4. Chaque publication possède son propre cycle.
+5. Cycle : 24 heures -> 3 jours -> 7 jours -> 3 mois.
+6. Un échec à une échéance ne bloque pas les suivantes.
+7. Chaque échéance possède son propre contrôle et son propre résultat.
+8. Les cadeaux achetés et distribués sont tracés financièrement.
+9. Le catalogue des cadeaux reste permanent : pas de stock décrémenté.
+10. Les opérations annulées/remboursées ne doivent pas être comptées
+    comme utilisation financière éligible.
+11. La règle des 60 % doit être calculée sur des opérations réelles éligibles.
+
+============================================================
+1. FICHIERS PYTHON CONTENANT DES ELEMENTS PERTINENTS
+============================================================
+
+
+### RECHERCHE : VirtualGift
+----------------------------------------
+api_nsikay\models.py : ligne 364
+    class VirtualGift(models.Model):
+api_nsikay\models.py : ligne 414
+    VirtualGift,
+api_nsikay\models_backup.py : ligne 363
+    class VirtualGift(models.Model):
+api_nsikay\models_backup.py : ligne 413
+    VirtualGift,
+api_nsikay\models_backup_encoding.py : ligne 362
+    class VirtualGift(models.Model):
+api_nsikay\models_backup_encoding.py : ligne 412
+    VirtualGift,
+api_nsikay\migrations\0004_tvchannel_virtualgift_advertisingcampaign_and_more.py : ligne 26
+    name='VirtualGift',
+api_nsikay\migrations\0004_tvchannel_virtualgift_advertisingcampaign_and_more.py : ligne 129
+    ('gift', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api_nsikay.virtualgift')),
+api_nsikay\migrations\0005_adminanalytics_contentanalytics_adcampaigncenter_and_more.py : ligne 11
+    ('api_nsikay', '0004_tvchannel_virtualgift_advertisingcampaign_and_more'),
+
+### RECHERCHE : Gift
+----------------------------------------
+api_nsikay\models.py : ligne 364
+    class VirtualGift(models.Model):
+api_nsikay\models.py : ligne 390
+    class GiftTransaction(models.Model):
+api_nsikay\models.py : ligne 398
+    related_name="sent_gifts"
+api_nsikay\models.py : ligne 408
+    related_name="received_gifts"
+api_nsikay\models.py : ligne 412
+    gift = models.ForeignKey(
+api_nsikay\models.py : ligne 414
+    VirtualGift,
+api_nsikay\models_backup.py : ligne 363
+    class VirtualGift(models.Model):
+api_nsikay\models_backup.py : ligne 389
+    class GiftTransaction(models.Model):
+api_nsikay\models_backup.py : ligne 397
+    related_name="sent_gifts"
+api_nsikay\models_backup.py : ligne 407
+    related_name="received_gifts"
+api_nsikay\models_backup.py : ligne 411
+    gift = models.ForeignKey(
+api_nsikay\models_backup.py : ligne 413
+    VirtualGift,
+api_nsikay\models_backup_encoding.py : ligne 362
+    class VirtualGift(models.Model):
+api_nsikay\models_backup_encoding.py : ligne 388
+    class GiftTransaction(models.Model):
+api_nsikay\models_backup_encoding.py : ligne 396
+    related_name="sent_gifts"
+api_nsikay\models_backup_encoding.py : ligne 406
+    related_name="received_gifts"
+api_nsikay\models_backup_encoding.py : ligne 410
+    gift = models.ForeignKey(
+api_nsikay\models_backup_encoding.py : ligne 412
+    VirtualGift,
+api_nsikay\migrations\0004_tvchannel_virtualgift_advertisingcampaign_and_more.py : ligne 26
+    name='VirtualGift',
+api_nsikay\migrations\0004_tvchannel_virtualgift_advertisingcampaign_and_more.py : ligne 123
+    name='GiftTransaction',
+api_nsikay\migrations\0004_tvchannel_virtualgift_advertisingcampaign_and_more.py : ligne 127
+    ('receiver', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='received_gifts', to=settings.AUTH_USER_MODEL)),
+api_nsikay\migrations\0004_tvchannel_virtualgift_advertisingcampaign_and_more.py : ligne 128
+    ('sender', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='sent_gifts', to=settings.AUTH_USER_MODEL)),
+api_nsikay\migrations\0004_tvchannel_virtualgift_advertisingcampaign_and_more.py : ligne 129
+    ('gift', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api_nsikay.virtualgift')),
+api_nsikay\migrations\0005_adminanalytics_contentanalytics_adcampaigncenter_and_more.py : ligne 11
+    ('api_nsikay', '0004_tvchannel_virtualgift_advertisingcampaign_and_more'),
+financial_routing\models.py : ligne 13
+    ("GIFT", "Cadeau"),
+financial_routing\migrations\0001_initial.py : ligne 35
+    ('source_type', models.CharField(choices=[('WENZE', 'WENZE'), ('EVENT', 'Événement'), ('TICKET', 'Billetterie'), ('ADVERTISING', 'Publicité'), ('MEMBERSHIP', 'Adhésion'), ('GIFT', 'Cadeau'), ('COMMISSION', 'Commission'), ('CREDIT', 'Crédit'), ('INVESTMENT', 'Investissement'), ('OTHER', 'Autre')], max_length=30)),
+venv\Lib\site-packages\pip\_vendor\packaging\licenses\_spdx.py : ligne 308
+    'giftware': {'id': 'Giftware', 'deprecated': False},
+venv\Lib\site-packages\pip\_vendor\rich\_emoji_codes.py : ligne 2747
+    "wrapped_gift": "🎁",
+venv\Lib\site-packages\pip\_vendor\rich\_emoji_codes.py : ligne 3283
+    "gift_heart": "💝",
+venv\Lib\site-packages\pip\_vendor\rich\_emoji_codes.py : ligne 3582
+    "gift": "🎁",
+
+### RECHERCHE : gift
+----------------------------------------
+api_nsikay\models.py : ligne 364
+    class VirtualGift(models.Model):
+api_nsikay\models.py : ligne 390
+    class GiftTransaction(models.Model):
+api_nsikay\models.py : ligne 398
+    related_name="sent_gifts"
+api_nsikay\models.py : ligne 408
+    related_name="received_gifts"
+api_nsikay\models.py : ligne 412
+    gift = models.ForeignKey(
+api_nsikay\models.py : ligne 414
+    VirtualGift,
+api_nsikay\models_backup.py : ligne 363
+    class VirtualGift(models.Model):
+api_nsikay\models_backup.py : ligne 389
+    class GiftTransaction(models.Model):
+api_nsikay\models_backup.py : ligne 397
+    related_name="sent_gifts"
+api_nsikay\models_backup.py : ligne 407
+    related_name="received_gifts"
+api_nsikay\models_backup.py : ligne 411
+    gift = models.ForeignKey(
+api_nsikay\models_backup.py : ligne 413
+    VirtualGift,
+api_nsikay\models_backup_encoding.py : ligne 362
+    class VirtualGift(models.Model):
+api_nsikay\models_backup_encoding.py : ligne 388
+    class GiftTransaction(models.Model):
+api_nsikay\models_backup_encoding.py : ligne 396
+    related_name="sent_gifts"
+api_nsikay\models_backup_encoding.py : ligne 406
+    related_name="received_gifts"
+api_nsikay\models_backup_encoding.py : ligne 410
+    gift = models.ForeignKey(
+api_nsikay\models_backup_encoding.py : ligne 412
+    VirtualGift,
+api_nsikay\migrations\0004_tvchannel_virtualgift_advertisingcampaign_and_more.py : ligne 26
+    name='VirtualGift',
+api_nsikay\migrations\0004_tvchannel_virtualgift_advertisingcampaign_and_more.py : ligne 123
+    name='GiftTransaction',
+api_nsikay\migrations\0004_tvchannel_virtualgift_advertisingcampaign_and_more.py : ligne 127
+    ('receiver', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='received_gifts', to=settings.AUTH_USER_MODEL)),
+api_nsikay\migrations\0004_tvchannel_virtualgift_advertisingcampaign_and_more.py : ligne 128
+    ('sender', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='sent_gifts', to=settings.AUTH_USER_MODEL)),
+api_nsikay\migrations\0004_tvchannel_virtualgift_advertisingcampaign_and_more.py : ligne 129
+    ('gift', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api_nsikay.virtualgift')),
+api_nsikay\migrations\0005_adminanalytics_contentanalytics_adcampaigncenter_and_more.py : ligne 11
+    ('api_nsikay', '0004_tvchannel_virtualgift_advertisingcampaign_and_more'),
+financial_routing\models.py : ligne 13
+    ("GIFT", "Cadeau"),
+financial_routing\migrations\0001_initial.py : ligne 35
+    ('source_type', models.CharField(choices=[('WENZE', 'WENZE'), ('EVENT', 'Événement'), ('TICKET', 'Billetterie'), ('ADVERTISING', 'Publicité'), ('MEMBERSHIP', 'Adhésion'), ('GIFT', 'Cadeau'), ('COMMISSION', 'Commission'), ('CREDIT', 'Crédit'), ('INVESTMENT', 'Investissement'), ('OTHER', 'Autre')], max_length=30)),
+venv\Lib\site-packages\pip\_vendor\packaging\licenses\_spdx.py : ligne 308
+    'giftware': {'id': 'Giftware', 'deprecated': False},
+venv\Lib\site-packages\pip\_vendor\rich\_emoji_codes.py : ligne 2747
+    "wrapped_gift": "🎁",
+venv\Lib\site-packages\pip\_vendor\rich\_emoji_codes.py : ligne 3283
+    "gift_heart": "💝",
+venv\Lib\site-packages\pip\_vendor\rich\_emoji_codes.py : ligne 3582
+    "gift": "🎁",
+
+### RECHERCHE : cadeau
+----------------------------------------
+financial_routing\models.py : ligne 13
+    ("GIFT", "Cadeau"),
+financial_routing\migrations\0001_initial.py : ligne 35
+    ('source_type', models.CharField(choices=[('WENZE', 'WENZE'), ('EVENT', 'Événement'), ('TICKET', 'Billetterie'), ('ADVERTISING', 'Publicité'), ('MEMBERSHIP', 'Adhésion'), ('GIFT', 'Cadeau'), ('COMMISSION', 'Commission'), ('CREDIT', 'Crédit'), ('INVESTMENT', 'Investissement'), ('OTHER', 'Autre')], max_length=30)),
+
+### RECHERCHE : Cadeau
+----------------------------------------
+financial_routing\models.py : ligne 13
+    ("GIFT", "Cadeau"),
+financial_routing\migrations\0001_initial.py : ligne 35
+    ('source_type', models.CharField(choices=[('WENZE', 'WENZE'), ('EVENT', 'Événement'), ('TICKET', 'Billetterie'), ('ADVERTISING', 'Publicité'), ('MEMBERSHIP', 'Adhésion'), ('GIFT', 'Cadeau'), ('COMMISSION', 'Commission'), ('CREDIT', 'Crédit'), ('INVESTMENT', 'Investissement'), ('OTHER', 'Autre')], max_length=30)),
+
+### RECHERCHE : Publication
+----------------------------------------
+venv\Lib\site-packages\django\contrib\auth\models.py : ligne 58
+    certain status or publication date."
+venv\Lib\site-packages\PIL\ImageFilter.py : ligne 189
+    <https://www.mia.uni-saarland.de/Publications/gwosdek-ssvm11.pdf>
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1070
+    logger.exception('Exception during event publication')
+
+### RECHERCHE : publication
+----------------------------------------
+venv\Lib\site-packages\django\contrib\auth\models.py : ligne 58
+    certain status or publication date."
+venv\Lib\site-packages\PIL\ImageFilter.py : ligne 189
+    <https://www.mia.uni-saarland.de/Publications/gwosdek-ssvm11.pdf>
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1070
+    logger.exception('Exception during event publication')
+
+### RECHERCHE : Post
+----------------------------------------
+api_nsikay\marketplace_views.py : ligne 5
+    @api_view(["GET", "POST", "PUT", "PATCH", "DELETE"])
+api_nsikay\models.py : ligne 157
+    class SocialPost(models.Model):
+api_nsikay\models.py : ligne 165
+    related_name="posts"
+api_nsikay\models.py : ligne 193
+    post = models.ForeignKey(
+api_nsikay\models.py : ligne 195
+    SocialPost,
+api_nsikay\models_backup.py : ligne 155
+    class SocialPost(models.Model):
+api_nsikay\models_backup.py : ligne 163
+    related_name="posts"
+api_nsikay\models_backup.py : ligne 191
+    post = models.ForeignKey(
+api_nsikay\models_backup.py : ligne 193
+    SocialPost,
+api_nsikay\models_backup_encoding.py : ligne 155
+    class SocialPost(models.Model):
+api_nsikay\models_backup_encoding.py : ligne 163
+    related_name="posts"
+api_nsikay\models_backup_encoding.py : ligne 191
+    post = models.ForeignKey(
+api_nsikay\models_backup_encoding.py : ligne 193
+    SocialPost,
+api_nsikay\signals.py : ligne 1
+    from django.db.models.signals import post_save
+api_nsikay\signals.py : ligne 13
+    @receiver(post_save, sender=User)
+api_nsikay\superapp_views.py : ligne 4
+    from api_nsikay.models import SocialPost
+api_nsikay\superapp_views.py : ligne 11
+    posts = SocialPost.objects.all().order_by(
+api_nsikay\superapp_views.py : ligne 31
+    for p in posts
+api_nsikay\wallet_bank_views.py : ligne 10
+    @api_view(["POST"])
+api_nsikay\wallet_operations_views.py : ligne 12
+    @api_view(["POST"])
+api_nsikay\wallet_operations_views.py : ligne 25
+    @api_view(["POST"])
+api_nsikay\wallet_operations_views.py : ligne 46
+    @api_view(["POST"])
+api_nsikay\migrations\0004_tvchannel_virtualgift_advertisingcampaign_and_more.py : ligne 93
+    name='SocialPost',
+api_nsikay\migrations\0004_tvchannel_virtualgift_advertisingcampaign_and_more.py : ligne 100
+    ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='posts', to=settings.AUTH_USER_MODEL)),
+api_nsikay\migrations\0004_tvchannel_virtualgift_advertisingcampaign_and_more.py : ligne 110
+    ('post', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='comments', to='api_nsikay.socialpost')),
+backups\wenze_stock_20261001_135627\views.py : ligne 37
+    if request.method != "POST":
+backups\wenze_stock_20261001_135627\views.py : ligne 41
+    quantity = int(request.POST.get("quantity", "1"))
+backups\wenze_stock_20261001_135627\views.py : ligne 115
+    if request.method != "POST":
+backups\wenze_stock_20261001_135627\views.py : ligne 140
+    wallet_id = request.POST.get("wallet_id")
+deployment\postgres_production.py : ligne 8
+    "django.db.backends.postgresql",
+service_control\views.py : ligne 2
+    from django.views.decorators.http import require_GET, require_POST
+service_control\views.py : ligne 74
+    @require_POST
+service_control\views.py : ligne 76
+    service_name = request.POST.get("service")
+service_control\views.py : ligne 77
+    country_code = request.POST.get("country")
+service_control\views.py : ligne 78
+    reason = request.POST.get("reason")
+service_control\views.py : ligne 140
+    @require_POST
+service_control\views.py : ligne 142
+    service_name = request.POST.get("service")
+service_control\views.py : ligne 143
+    country_code = request.POST.get("country")
+service_control\views.py : ligne 144
+    reason = request.POST.get("reason")
+service_dashboard\activation_request_views.py : ligne 6
+    from django.views.decorators.http import require_POST
+service_dashboard\activation_request_views.py : ligne 46
+    @require_POST
+service_dashboard\activation_request_views.py : ligne 53
+    service_id = request.POST.get("service_id")
+service_dashboard\activation_request_views.py : ligne 54
+    country_id = request.POST.get("country_id")
+service_dashboard\activation_request_views.py : ligne 77
+    beneficiary_id = request.POST.get("beneficiary_user_id")
+service_dashboard\activation_request_views.py : ligne 106
+    request.POST.get("reason", ""),
+service_dashboard\activation_request_views.py : ligne 124
+    @require_POST
+service_dashboard\activation_request_views.py : ligne 245
+    @require_POST
+service_dashboard\activation_request_views.py : ligne 252
+    reason = (request.POST.get("reason") or "").strip()
+service_dashboard\activation_validation_views.py : ligne 90
+    or request.POST.get("country")
+service_dashboard\activation_validation_views.py : ligne 96
+    or request.POST.get("service")
+service_dashboard\activation_validation_views.py : ligne 118
+    if request.method == "POST":
+service_dashboard\certification_control_views.py : ligne 45
+    or request.POST.get("country")
+service_dashboard\certification_control_views.py : ligne 51
+    or request.POST.get("service")
+service_dashboard\certification_control_views.py : ligne 66
+    if request.method == "POST":
+service_dashboard\final_activation_views.py : ligne 21
+    if request.method != "POST":
+service_dashboard\final_activation_views.py : ligne 22
+    return HttpResponseNotAllowed(["POST"])
+service_dashboard\final_activation_views.py : ligne 25
+    return HttpResponseNotAllowed(["POST"])
+service_dashboard\final_activation_views.py : ligne 146
+    # POST uniquement : ce contrÃ´le doit Ãªtre le premier.
+service_dashboard\final_activation_views.py : ligne 147
+    if request.method != "POST":
+service_dashboard\final_activation_views.py : ligne 148
+    return HttpResponseNotAllowed(["POST"])
+service_dashboard\final_activation_views.py : ligne 152
+    return HttpResponseNotAllowed(["POST"])
+service_dashboard\final_deactivation_views.py : ligne 32
+    if request.method != "POST":
+service_dashboard\final_deactivation_views.py : ligne 33
+    return HttpResponseNotAllowed(["POST"])
+service_dashboard\financial_health_control_views.py : ligne 52
+    or request.POST.get("country")
+service_dashboard\financial_health_control_views.py : ligne 58
+    or request.POST.get("service")
+service_dashboard\financial_health_control_views.py : ligne 76
+    if request.method == "POST":
+service_dashboard\operational_countries_views.py : ligne 44
+    if request.method == "POST":
+service_dashboard\operational_countries_views.py : ligne 48
+    for code in request.POST.getlist("countries")
+service_dashboard\operational_countries_views.py : ligne 240
+    if request.method != "POST":
+service_dashboard\operational_countries_views.py : ligne 243
+    "Le rollback doit être effectué par une requête POST.",
+service_dashboard\views.py : ligne 46
+    @api_view(["POST"])
+service_dashboard\views.py : ligne 86
+    @api_view(["POST"])
+service_dashboard\workflow_admin_views.py : ligne 93
+    @require_http_methods(["GET", "POST"])
+service_dashboard\workflow_admin_views.py : ligne 120
+    service_id = request.POST.get("service_id", "").strip()
+service_dashboard\workflow_admin_views.py : ligne 121
+    country_id = request.POST.get("country_id", "").strip()
+service_dashboard\workflow_admin_views.py : ligne 122
+    reason = request.POST.get("reason", "").strip()
+service_dashboard\workflow_admin_views.py : ligne 218
+    @require_http_methods(["POST"])
+service_dashboard\workflow_admin_views.py : ligne 223
+    return HttpResponseNotAllowed(["POST"])
+service_dashboard\workflow_admin_views.py : ligne 230
+    message = request.POST.get(
+service_dashboard\workflow_admin_views.py : ligne 259
+    @require_http_methods(["POST"])
+service_dashboard\workflow_admin_views.py : ligne 264
+    return HttpResponseNotAllowed(["POST"])
+service_dashboard\workflow_admin_views.py : ligne 271
+    reason = request.POST.get(
+service_dashboard\workflow_admin_views.py : ligne 311
+    @require_http_methods(["POST"])
+service_dashboard\workflow_admin_views.py : ligne 316
+    return HttpResponseNotAllowed(["POST"])
+service_dashboard\workflow_admin_views.py : ligne 323
+    message = request.POST.get(
+service_dashboard\backups_bloc10_correction\workflow_admin_views.py : ligne 93
+    @require_http_methods(["GET", "POST"])
+service_dashboard\backups_bloc10_correction\workflow_admin_views.py : ligne 120
+    service_id = request.POST.get("service_id", "").strip()
+service_dashboard\backups_bloc10_correction\workflow_admin_views.py : ligne 121
+    country_id = request.POST.get("country_id", "").strip()
+service_dashboard\backups_bloc10_correction\workflow_admin_views.py : ligne 122
+    reason = request.POST.get("reason", "").strip()
+service_dashboard\backups_bloc10_correction\workflow_admin_views.py : ligne 218
+    @require_http_methods(["POST"])
+service_dashboard\backups_bloc10_correction\workflow_admin_views.py : ligne 223
+    return HttpResponseNotAllowed(["POST"])
+service_dashboard\backups_bloc10_correction\workflow_admin_views.py : ligne 230
+    message = request.POST.get(
+service_dashboard\backups_bloc10_correction\workflow_admin_views.py : ligne 259
+    @require_http_methods(["POST"])
+service_dashboard\backups_bloc10_correction\workflow_admin_views.py : ligne 264
+    return HttpResponseNotAllowed(["POST"])
+service_dashboard\backups_bloc10_correction\workflow_admin_views.py : ligne 271
+    reason = request.POST.get(
+service_dashboard\backups_bloc10_correction\workflow_admin_views.py : ligne 311
+    @require_http_methods(["POST"])
+service_dashboard\backups_bloc10_correction\workflow_admin_views.py : ligne 316
+    return HttpResponseNotAllowed(["POST"])
+service_dashboard\backups_bloc10_correction\workflow_admin_views.py : ligne 323
+    message = request.POST.get(
+service_dashboard\backups_bloc6_20260930_182627\activation_request_views.py : ligne 5
+    from django.views.decorators.http import require_POST
+service_dashboard\backups_bloc6_20260930_182627\activation_request_views.py : ligne 45
+    @require_POST
+
+### RECHERCHE : post
+----------------------------------------
+api_nsikay\marketplace_views.py : ligne 5
+    @api_view(["GET", "POST", "PUT", "PATCH", "DELETE"])
+api_nsikay\models.py : ligne 157
+    class SocialPost(models.Model):
+api_nsikay\models.py : ligne 165
+    related_name="posts"
+api_nsikay\models.py : ligne 193
+    post = models.ForeignKey(
+api_nsikay\models.py : ligne 195
+    SocialPost,
+api_nsikay\models_backup.py : ligne 155
+    class SocialPost(models.Model):
+api_nsikay\models_backup.py : ligne 163
+    related_name="posts"
+api_nsikay\models_backup.py : ligne 191
+    post = models.ForeignKey(
+api_nsikay\models_backup.py : ligne 193
+    SocialPost,
+api_nsikay\models_backup_encoding.py : ligne 155
+    class SocialPost(models.Model):
+api_nsikay\models_backup_encoding.py : ligne 163
+    related_name="posts"
+api_nsikay\models_backup_encoding.py : ligne 191
+    post = models.ForeignKey(
+api_nsikay\models_backup_encoding.py : ligne 193
+    SocialPost,
+api_nsikay\signals.py : ligne 1
+    from django.db.models.signals import post_save
+api_nsikay\signals.py : ligne 13
+    @receiver(post_save, sender=User)
+api_nsikay\superapp_views.py : ligne 4
+    from api_nsikay.models import SocialPost
+api_nsikay\superapp_views.py : ligne 11
+    posts = SocialPost.objects.all().order_by(
+api_nsikay\superapp_views.py : ligne 31
+    for p in posts
+api_nsikay\wallet_bank_views.py : ligne 10
+    @api_view(["POST"])
+api_nsikay\wallet_operations_views.py : ligne 12
+    @api_view(["POST"])
+api_nsikay\wallet_operations_views.py : ligne 25
+    @api_view(["POST"])
+api_nsikay\wallet_operations_views.py : ligne 46
+    @api_view(["POST"])
+api_nsikay\migrations\0004_tvchannel_virtualgift_advertisingcampaign_and_more.py : ligne 93
+    name='SocialPost',
+api_nsikay\migrations\0004_tvchannel_virtualgift_advertisingcampaign_and_more.py : ligne 100
+    ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='posts', to=settings.AUTH_USER_MODEL)),
+api_nsikay\migrations\0004_tvchannel_virtualgift_advertisingcampaign_and_more.py : ligne 110
+    ('post', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='comments', to='api_nsikay.socialpost')),
+backups\wenze_stock_20261001_135627\views.py : ligne 37
+    if request.method != "POST":
+backups\wenze_stock_20261001_135627\views.py : ligne 41
+    quantity = int(request.POST.get("quantity", "1"))
+backups\wenze_stock_20261001_135627\views.py : ligne 115
+    if request.method != "POST":
+backups\wenze_stock_20261001_135627\views.py : ligne 140
+    wallet_id = request.POST.get("wallet_id")
+deployment\postgres_production.py : ligne 8
+    "django.db.backends.postgresql",
+service_control\views.py : ligne 2
+    from django.views.decorators.http import require_GET, require_POST
+service_control\views.py : ligne 74
+    @require_POST
+service_control\views.py : ligne 76
+    service_name = request.POST.get("service")
+service_control\views.py : ligne 77
+    country_code = request.POST.get("country")
+service_control\views.py : ligne 78
+    reason = request.POST.get("reason")
+service_control\views.py : ligne 140
+    @require_POST
+service_control\views.py : ligne 142
+    service_name = request.POST.get("service")
+service_control\views.py : ligne 143
+    country_code = request.POST.get("country")
+service_control\views.py : ligne 144
+    reason = request.POST.get("reason")
+service_dashboard\activation_request_views.py : ligne 6
+    from django.views.decorators.http import require_POST
+service_dashboard\activation_request_views.py : ligne 46
+    @require_POST
+service_dashboard\activation_request_views.py : ligne 53
+    service_id = request.POST.get("service_id")
+service_dashboard\activation_request_views.py : ligne 54
+    country_id = request.POST.get("country_id")
+service_dashboard\activation_request_views.py : ligne 77
+    beneficiary_id = request.POST.get("beneficiary_user_id")
+service_dashboard\activation_request_views.py : ligne 106
+    request.POST.get("reason", ""),
+service_dashboard\activation_request_views.py : ligne 124
+    @require_POST
+service_dashboard\activation_request_views.py : ligne 245
+    @require_POST
+service_dashboard\activation_request_views.py : ligne 252
+    reason = (request.POST.get("reason") or "").strip()
+service_dashboard\activation_validation_views.py : ligne 90
+    or request.POST.get("country")
+service_dashboard\activation_validation_views.py : ligne 96
+    or request.POST.get("service")
+service_dashboard\activation_validation_views.py : ligne 118
+    if request.method == "POST":
+service_dashboard\certification_control_views.py : ligne 45
+    or request.POST.get("country")
+service_dashboard\certification_control_views.py : ligne 51
+    or request.POST.get("service")
+service_dashboard\certification_control_views.py : ligne 66
+    if request.method == "POST":
+service_dashboard\final_activation_views.py : ligne 21
+    if request.method != "POST":
+service_dashboard\final_activation_views.py : ligne 22
+    return HttpResponseNotAllowed(["POST"])
+service_dashboard\final_activation_views.py : ligne 25
+    return HttpResponseNotAllowed(["POST"])
+service_dashboard\final_activation_views.py : ligne 146
+    # POST uniquement : ce contrÃ´le doit Ãªtre le premier.
+service_dashboard\final_activation_views.py : ligne 147
+    if request.method != "POST":
+service_dashboard\final_activation_views.py : ligne 148
+    return HttpResponseNotAllowed(["POST"])
+service_dashboard\final_activation_views.py : ligne 152
+    return HttpResponseNotAllowed(["POST"])
+service_dashboard\final_deactivation_views.py : ligne 32
+    if request.method != "POST":
+service_dashboard\final_deactivation_views.py : ligne 33
+    return HttpResponseNotAllowed(["POST"])
+service_dashboard\financial_health_control_views.py : ligne 52
+    or request.POST.get("country")
+service_dashboard\financial_health_control_views.py : ligne 58
+    or request.POST.get("service")
+service_dashboard\financial_health_control_views.py : ligne 76
+    if request.method == "POST":
+service_dashboard\operational_countries_views.py : ligne 44
+    if request.method == "POST":
+service_dashboard\operational_countries_views.py : ligne 48
+    for code in request.POST.getlist("countries")
+service_dashboard\operational_countries_views.py : ligne 240
+    if request.method != "POST":
+service_dashboard\operational_countries_views.py : ligne 243
+    "Le rollback doit être effectué par une requête POST.",
+service_dashboard\views.py : ligne 46
+    @api_view(["POST"])
+service_dashboard\views.py : ligne 86
+    @api_view(["POST"])
+service_dashboard\workflow_admin_views.py : ligne 93
+    @require_http_methods(["GET", "POST"])
+service_dashboard\workflow_admin_views.py : ligne 120
+    service_id = request.POST.get("service_id", "").strip()
+service_dashboard\workflow_admin_views.py : ligne 121
+    country_id = request.POST.get("country_id", "").strip()
+service_dashboard\workflow_admin_views.py : ligne 122
+    reason = request.POST.get("reason", "").strip()
+service_dashboard\workflow_admin_views.py : ligne 218
+    @require_http_methods(["POST"])
+service_dashboard\workflow_admin_views.py : ligne 223
+    return HttpResponseNotAllowed(["POST"])
+service_dashboard\workflow_admin_views.py : ligne 230
+    message = request.POST.get(
+service_dashboard\workflow_admin_views.py : ligne 259
+    @require_http_methods(["POST"])
+service_dashboard\workflow_admin_views.py : ligne 264
+    return HttpResponseNotAllowed(["POST"])
+service_dashboard\workflow_admin_views.py : ligne 271
+    reason = request.POST.get(
+service_dashboard\workflow_admin_views.py : ligne 311
+    @require_http_methods(["POST"])
+service_dashboard\workflow_admin_views.py : ligne 316
+    return HttpResponseNotAllowed(["POST"])
+service_dashboard\workflow_admin_views.py : ligne 323
+    message = request.POST.get(
+service_dashboard\backups_bloc10_correction\workflow_admin_views.py : ligne 93
+    @require_http_methods(["GET", "POST"])
+service_dashboard\backups_bloc10_correction\workflow_admin_views.py : ligne 120
+    service_id = request.POST.get("service_id", "").strip()
+service_dashboard\backups_bloc10_correction\workflow_admin_views.py : ligne 121
+    country_id = request.POST.get("country_id", "").strip()
+service_dashboard\backups_bloc10_correction\workflow_admin_views.py : ligne 122
+    reason = request.POST.get("reason", "").strip()
+service_dashboard\backups_bloc10_correction\workflow_admin_views.py : ligne 218
+    @require_http_methods(["POST"])
+service_dashboard\backups_bloc10_correction\workflow_admin_views.py : ligne 223
+    return HttpResponseNotAllowed(["POST"])
+service_dashboard\backups_bloc10_correction\workflow_admin_views.py : ligne 230
+    message = request.POST.get(
+service_dashboard\backups_bloc10_correction\workflow_admin_views.py : ligne 259
+    @require_http_methods(["POST"])
+service_dashboard\backups_bloc10_correction\workflow_admin_views.py : ligne 264
+    return HttpResponseNotAllowed(["POST"])
+service_dashboard\backups_bloc10_correction\workflow_admin_views.py : ligne 271
+    reason = request.POST.get(
+service_dashboard\backups_bloc10_correction\workflow_admin_views.py : ligne 311
+    @require_http_methods(["POST"])
+service_dashboard\backups_bloc10_correction\workflow_admin_views.py : ligne 316
+    return HttpResponseNotAllowed(["POST"])
+service_dashboard\backups_bloc10_correction\workflow_admin_views.py : ligne 323
+    message = request.POST.get(
+service_dashboard\backups_bloc6_20260930_182627\activation_request_views.py : ligne 5
+    from django.views.decorators.http import require_POST
+service_dashboard\backups_bloc6_20260930_182627\activation_request_views.py : ligne 45
+    @require_POST
+
+### RECHERCHE : Creator
+----------------------------------------
+api_nsikay\models.py : ligne 121
+    class CreatorProfile(models.Model):
+api_nsikay\models.py : ligne 129
+    related_name="creator_profile"
+api_nsikay\models.py : ligne 428
+    class CreatorSubscription(models.Model):
+api_nsikay\models.py : ligne 430
+    creator = models.ForeignKey(
+api_nsikay\models.py : ligne 432
+    CreatorProfile,
+api_nsikay\models_backup.py : ligne 119
+    class CreatorProfile(models.Model):
+api_nsikay\models_backup.py : ligne 127
+    related_name="creator_profile"
+api_nsikay\models_backup.py : ligne 427
+    class CreatorSubscription(models.Model):
+api_nsikay\models_backup.py : ligne 429
+    creator = models.ForeignKey(
+api_nsikay\models_backup.py : ligne 431
+    CreatorProfile,
+api_nsikay\models_backup_encoding.py : ligne 119
+    class CreatorProfile(models.Model):
+api_nsikay\models_backup_encoding.py : ligne 127
+    related_name="creator_profile"
+api_nsikay\models_backup_encoding.py : ligne 426
+    class CreatorSubscription(models.Model):
+api_nsikay\models_backup_encoding.py : ligne 428
+    creator = models.ForeignKey(
+api_nsikay\models_backup_encoding.py : ligne 430
+    CreatorProfile,
+api_nsikay\migrations\0004_tvchannel_virtualgift_advertisingcampaign_and_more.py : ligne 54
+    name='CreatorProfile',
+api_nsikay\migrations\0004_tvchannel_virtualgift_advertisingcampaign_and_more.py : ligne 60
+    ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='creator_profile', to=settings.AUTH_USER_MODEL)),
+api_nsikay\migrations\0004_tvchannel_virtualgift_advertisingcampaign_and_more.py : ligne 64
+    name='CreatorSubscription',
+api_nsikay\migrations\0004_tvchannel_virtualgift_advertisingcampaign_and_more.py : ligne 69
+    ('creator', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api_nsikay.creatorprofile')),
+venv\Lib\site-packages\django\utils\feedgenerator.py : ligne 378
+    "dc:creator",
+venv\Lib\site-packages\PIL\EpsImagePlugin.py : ligne 446
+    fp.write(b"%%Creator: PIL 0.1 EpsEncode\n")
+venv\Lib\site-packages\PIL\ImageCms.py : ligne 808
+    additional information supplied by the creator.
+venv\Lib\site-packages\PIL\ImageCms.py : ligne 850
+    was created, as supplied by the creator.
+venv\Lib\site-packages\PIL\PdfImagePlugin.py : ligne 212
+    "creator": None,
+
+### RECHERCHE : creator
+----------------------------------------
+api_nsikay\models.py : ligne 121
+    class CreatorProfile(models.Model):
+api_nsikay\models.py : ligne 129
+    related_name="creator_profile"
+api_nsikay\models.py : ligne 428
+    class CreatorSubscription(models.Model):
+api_nsikay\models.py : ligne 430
+    creator = models.ForeignKey(
+api_nsikay\models.py : ligne 432
+    CreatorProfile,
+api_nsikay\models_backup.py : ligne 119
+    class CreatorProfile(models.Model):
+api_nsikay\models_backup.py : ligne 127
+    related_name="creator_profile"
+api_nsikay\models_backup.py : ligne 427
+    class CreatorSubscription(models.Model):
+api_nsikay\models_backup.py : ligne 429
+    creator = models.ForeignKey(
+api_nsikay\models_backup.py : ligne 431
+    CreatorProfile,
+api_nsikay\models_backup_encoding.py : ligne 119
+    class CreatorProfile(models.Model):
+api_nsikay\models_backup_encoding.py : ligne 127
+    related_name="creator_profile"
+api_nsikay\models_backup_encoding.py : ligne 426
+    class CreatorSubscription(models.Model):
+api_nsikay\models_backup_encoding.py : ligne 428
+    creator = models.ForeignKey(
+api_nsikay\models_backup_encoding.py : ligne 430
+    CreatorProfile,
+api_nsikay\migrations\0004_tvchannel_virtualgift_advertisingcampaign_and_more.py : ligne 54
+    name='CreatorProfile',
+api_nsikay\migrations\0004_tvchannel_virtualgift_advertisingcampaign_and_more.py : ligne 60
+    ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='creator_profile', to=settings.AUTH_USER_MODEL)),
+api_nsikay\migrations\0004_tvchannel_virtualgift_advertisingcampaign_and_more.py : ligne 64
+    name='CreatorSubscription',
+api_nsikay\migrations\0004_tvchannel_virtualgift_advertisingcampaign_and_more.py : ligne 69
+    ('creator', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api_nsikay.creatorprofile')),
+venv\Lib\site-packages\django\utils\feedgenerator.py : ligne 378
+    "dc:creator",
+venv\Lib\site-packages\PIL\EpsImagePlugin.py : ligne 446
+    fp.write(b"%%Creator: PIL 0.1 EpsEncode\n")
+venv\Lib\site-packages\PIL\ImageCms.py : ligne 808
+    additional information supplied by the creator.
+venv\Lib\site-packages\PIL\ImageCms.py : ligne 850
+    was created, as supplied by the creator.
+venv\Lib\site-packages\PIL\PdfImagePlugin.py : ligne 212
+    "creator": None,
+
+### RECHERCHE : Createur
+----------------------------------------
+Aucun résultat.
+
+### RECHERCHE : Follower
+----------------------------------------
+api_nsikay\models.py : ligne 139
+    followers = models.IntegerField(
+api_nsikay\models_backup.py : ligne 137
+    followers = models.IntegerField(
+api_nsikay\models_backup_encoding.py : ligne 137
+    followers = models.IntegerField(
+api_nsikay\migrations\0004_tvchannel_virtualgift_advertisingcampaign_and_more.py : ligne 58
+    ('followers', models.IntegerField(default=0)),
+
+### RECHERCHE : follower
+----------------------------------------
+api_nsikay\models.py : ligne 139
+    followers = models.IntegerField(
+api_nsikay\models_backup.py : ligne 137
+    followers = models.IntegerField(
+api_nsikay\models_backup_encoding.py : ligne 137
+    followers = models.IntegerField(
+api_nsikay\migrations\0004_tvchannel_virtualgift_advertisingcampaign_and_more.py : ligne 58
+    ('followers', models.IntegerField(default=0)),
+
+### RECHERCHE : Follow
+----------------------------------------
+api_nsikay\models.py : ligne 139
+    followers = models.IntegerField(
+api_nsikay\models_backup.py : ligne 137
+    followers = models.IntegerField(
+api_nsikay\models_backup_encoding.py : ligne 137
+    followers = models.IntegerField(
+api_nsikay\migrations\0004_tvchannel_virtualgift_advertisingcampaign_and_more.py : ligne 58
+    ('followers', models.IntegerField(default=0)),
+venv\Lib\site-packages\django\shortcuts.py : ligne 54
+    to preserve the original HTTP method and body when following the redirect.
+venv\Lib\site-packages\django\apps\config.py : ligne 28
+    # The following attributes could be defined at the class level in a
+venv\Lib\site-packages\django\apps\config.py : ligne 245
+    By default, the following models aren't included:
+venv\Lib\site-packages\django\apps\registry.py : ligne 173
+    By default, the following models aren't included:
+venv\Lib\site-packages\django\conf\locale\__init__.py : ligne 8
+    doesn't follow the traditional 'fr-ca' -> 'fr' fallback logic.
+venv\Lib\site-packages\django\contrib\admin\options.py : ligne 1327
+    # Go through the fields, following all relations.
+venv\Lib\site-packages\django\contrib\admin\options.py : ligne 1346
+    # Update opts to follow the relation.
+venv\Lib\site-packages\django\contrib\admin\options.py : ligne 2839
+    "deleting the following protected related objects: "
+venv\Lib\site-packages\django\contrib\admin\utils.py : ligne 42
+    # Go through the fields (following all relations) and look for an m2m.
+venv\Lib\site-packages\django\contrib\admin\utils.py : ligne 53
+    # This field is a relation; update opts to follow the relation.
+venv\Lib\site-packages\django\contrib\auth\models.py : ligne 45
+    useful in your own code. The Django admin site uses permissions as follows:
+venv\Lib\site-packages\django\contrib\auth\password_validation.py : ligne 137
+    The following ratio calculations are based on testing SequenceMatcher like
+venv\Lib\site-packages\django\contrib\gis\measure.py : ligne 5
+    # modification, are permitted provided that the following conditions are met:
+venv\Lib\site-packages\django\contrib\gis\measure.py : ligne 8
+    #      this list of conditions and the following disclaimer.
+venv\Lib\site-packages\django\contrib\gis\measure.py : ligne 11
+    #      notice, this list of conditions and the following disclaimer in the
+venv\Lib\site-packages\django\contrib\gis\db\backends\postgis\const.py : ligne 12
+    # following structure:
+venv\Lib\site-packages\django\contrib\gis\db\models\fields.py : ligne 89
+    following as keyword arguments:
+venv\Lib\site-packages\django\contrib\gis\db\models\fields.py : ligne 271
+    parameters from BaseSpatialField, it takes the following as keyword
+venv\Lib\site-packages\django\contrib\gis\gdal\__init__.py : ligne 2
+    This module houses ctypes interfaces for GDAL objects. The following GDAL
+venv\Lib\site-packages\django\contrib\gis\gdal\raster\band.py : ligne 68
+    The return value is a tuple with the following structure:
+venv\Lib\site-packages\django\contrib\gis\geos\geometry.py : ligne 754
+    following inputs:
+venv\Lib\site-packages\django\contrib\gis\geos\mutable_list.py : ligne 20
+    and implement the following:
+venv\Lib\site-packages\django\contrib\humanize\templatetags\humanize.py : ligne 161
+    number. This follows Associated Press style.
+venv\Lib\site-packages\django\contrib\staticfiles\management\commands\findstatic.py : ligne 25
+    "\nLooking in the following locations:\n  %s"
+venv\Lib\site-packages\django\core\files\storage\base.py : ligne 17
+    # The following methods represent a public interface to private methods.
+venv\Lib\site-packages\django\core\files\storage\base.py : ligne 139
+    # The following methods form the public API for storage systems, but with
+venv\Lib\site-packages\django\core\management\base.py : ligne 205
+    as follows:
+venv\Lib\site-packages\django\core\management\templates.py : ligne 41
+    # Rewrite the following suffixes when determining the target filename.
+venv\Lib\site-packages\django\core\management\__init__.py : ligne 260
+    # following line will retrigger an ImproperlyConfigured
+venv\Lib\site-packages\django\core\management\commands\diffsettings.py : ligne 39
+    "followed by ###. 'unified' mode prefixes the default setting "
+venv\Lib\site-packages\django\core\management\commands\diffsettings.py : ligne 40
+    "with a minus sign, followed by the changed setting prefixed "
+venv\Lib\site-packages\django\core\management\commands\flush.py : ligne 37
+    # The following are stealth options used by Django's internals.
+venv\Lib\site-packages\django\core\management\commands\inspectdb.py : ligne 63
+    yield "# You'll have to do the following manually to clean this up:"
+venv\Lib\site-packages\django\core\management\commands\makemessages.py : ligne 261
+    help="Follows symlinks to directories when examining source code "
+venv\Lib\site-packages\django\core\management\commands\makemessages.py : ligne 431
+    # Search for characters followed by a non character (i.e.
+venv\Lib\site-packages\django\core\management\commands\makemessages.py : ligne 544
+    root, topdown=True, followlinks=self.symlinks
+venv\Lib\site-packages\django\core\management\commands\migrate.py : ligne 211
+    "  Cannot use --prune because the following squashed "
+venv\Lib\site-packages\django\core\management\commands\shell.py : ligne 73
+    # We want to honor both $PYTHONSTARTUP and .pythonrc.py, so follow
+venv\Lib\site-packages\django\core\management\commands\squashmigrations.py : ligne 117
+    self.style.MIGRATE_HEADING("Will squash the following migrations:")
+venv\Lib\site-packages\django\core\serializers\xml_serializer.py : ligne 32
+    # it following each endElement(). If the closing tag should appear on
+venv\Lib\site-packages\django\db\backends\utils.py : ligne 53
+    # The following methods cannot be implemented in __getattr__, because the
+venv\Lib\site-packages\django\db\backends\base\creation.py : ligne 418
+    # reflected in django.db.connections. If the following line assigned
+venv\Lib\site-packages\django\db\backends\base\features.py : ligne 293
+    only_supports_unbounded_with_preceding_and_following = False
+venv\Lib\site-packages\django\db\backends\base\operations.py : ligne 56
+    FOLLOWING = "FOLLOWING"
+venv\Lib\site-packages\django\db\backends\base\operations.py : ligne 58
+    UNBOUNDED_FOLLOWING = "UNBOUNDED " + FOLLOWING
+venv\Lib\site-packages\django\db\backends\base\operations.py : ligne 795
+    return "%d %s" % (value, self.FOLLOWING)
+venv\Lib\site-packages\django\db\backends\base\operations.py : ligne 812
+    end_ = self.window_frame_value(end) or self.UNBOUNDED_FOLLOWING
+venv\Lib\site-packages\django\db\backends\base\operations.py : ligne 831
+    end_ = self.window_frame_value(end) or self.UNBOUNDED_FOLLOWING
+venv\Lib\site-packages\django\db\backends\base\operations.py : ligne 833
+    if features.only_supports_unbounded_with_preceding_and_following and (
+venv\Lib\site-packages\django\db\backends\base\operations.py : ligne 838
+    "FOLLOWING." % self.connection.display_name
+venv\Lib\site-packages\django\db\backends\base\schema.py : ligne 666
+    # CreateModel with unique_together is followed by AlterUniqueTogether
+venv\Lib\site-packages\django\db\backends\base\schema.py : ligne 729
+    # following any earlier rename of the same table in this batch.
+venv\Lib\site-packages\django\db\backends\base\schema.py : ligne 1072
+    # will now be used in lieu of an index. The following lines from the
+venv\Lib\site-packages\django\db\backends\base\schema.py : ligne 1261
+    # constraint will no longer be used in lieu of an index. The following
+venv\Lib\site-packages\django\db\backends\mysql\validation.py : ligne 40
+    MySQL has the following field length restriction:
+venv\Lib\site-packages\django\db\backends\oracle\base.py : ligne 77
+    # following attributes and values:
+venv\Lib\site-packages\django\db\backends\postgresql\features.py : ligne 60
+    only_supports_unbounded_with_preceding_and_following = True
+venv\Lib\site-packages\django\db\backends\sqlite3\base.py : ligne 345
+    This wrapper performs the following conversions:
+venv\Lib\site-packages\django\db\backends\sqlite3\schema.py : ligne 86
+    This follows the correct procedure to perform non-rename or column
+venv\Lib\site-packages\django\db\migrations\executor.py : ligne 82
+    # Create the forwards plan Django would follow on an empty database
+venv\Lib\site-packages\django\db\migrations\executor.py : ligne 113
+    # Create the forwards plan Django would follow on an empty database
+venv\Lib\site-packages\django\db\migrations\graph.py : ligne 206
+    follow if applying the migrations to a database.
+venv\Lib\site-packages\django\db\migrations\graph.py : ligne 216
+    would follow if removing the migrations from a database.
+venv\Lib\site-packages\django\db\migrations\loader.py : ligne 27
+    but will probably follow the 1234_name.py convention.
+venv\Lib\site-packages\django\db\migrations\migration.py : ligne 15
+    of the following attributes:
+venv\Lib\site-packages\django\db\migrations\migration.py : ligne 100
+    Return the resulting project state for efficient reuse by following
+venv\Lib\site-packages\django\db\migrations\writer.py : ligne 189
+    "\n\n# Functions from the following migrations need manual "
+venv\Lib\site-packages\django\db\models\base.py : ligne 882
+    "The following fields do not exist in this model, are m2m "
+venv\Lib\site-packages\django\db\models\deletion.py : ligne 294
+    models, the one case in which the cascade follows the forwards
+venv\Lib\site-packages\django\db\models\expressions.py : ligne 50
+    # The following is a quoted % operator - it is quoted because it can be
+venv\Lib\site-packages\django\db\models\expressions.py : ligne 603
+    # Behavior for DIV with integer arguments follows Postgres/SQLite,
+venv\Lib\site-packages\django\db\models\expressions.py : ligne 1645
+    raise TypeError(f"The following kwargs are invalid: {invalid_str}")
+venv\Lib\site-packages\django\db\models\expressions.py : ligne 2142
+    frame is optional (the default is UNBOUNDED FOLLOWING, which is the last
+venv\Lib\site-packages\django\db\models\expressions.py : ligne 2201
+    start = "%d %s" % (self.start.value, connection.ops.FOLLOWING)
+venv\Lib\site-packages\django\db\models\expressions.py : ligne 2206
+    end = "%d %s" % (self.end.value, connection.ops.FOLLOWING)
+venv\Lib\site-packages\django\db\models\expressions.py : ligne 2212
+    end = connection.ops.UNBOUNDED_FOLLOWING
+venv\Lib\site-packages\django\db\models\query.py : ligne 746
+    "The following fields do not exist in this model: %s"
+venv\Lib\site-packages\django\db\models\query.py : ligne 1725
+    raise TypeError(f"The following kwargs are invalid: {invalid_kwargs_str}")
+venv\Lib\site-packages\django\db\models\query.py : ligne 2293
+    Indicate that the next filter call and the one following that should
+venv\Lib\site-packages\django\db\models\query.py : ligne 2300
+    followed by a filter() that does create a clone.
+venv\Lib\site-packages\django\db\models\query.py : ligne 2660
+    followed_descriptors = set()  # recursion protection
+venv\Lib\site-packages\django\db\models\query.py : ligne 2762
+    and descriptor in followed_descriptors
+venv\Lib\site-packages\django\db\models\query.py : ligne 2770
+    followed_descriptors.add(descriptor)
+venv\Lib\site-packages\django\db\models\fields\json.py : ligne 317
+    # the following line.
+venv\Lib\site-packages\django\db\models\fields\json.py : ligne 333
+    # The following if-block entirely.
+venv\Lib\site-packages\django\db\models\fields\related.py : ligne 1804
+    "Did you mean one of the following foreign keys to '%s': "
+venv\Lib\site-packages\django\db\models\fields\related_descriptors.py : ligne 11
+    Forward accessors follow foreign keys. Reverse accessors trace them back. For
+venv\Lib\site-packages\django\db\models\fields\related_descriptors.py : ligne 12
+    example, with the following models::
+venv\Lib\site-packages\django\db\models\fields\related_descriptors.py : ligne 446
+    # Following the example above, `related` is an instance of OneToOneRel
+venv\Lib\site-packages\django\db\models\fields\related_descriptors.py : ligne 598
+    # Following the example above, this would be the cached
+venv\Lib\site-packages\django\db\models\fields\reverse_related.py : ligne 60
+    # Some of the following cached_properties can't be initialized in
+venv\Lib\site-packages\django\db\models\fields\__init__.py : ligne 618
+    the following types (including inner values of collection types):
+venv\Lib\site-packages\django\db\models\functions\mixins.py : ligne 10
+    # following function signatures:
+venv\Lib\site-packages\django\db\models\sql\compiler.py : ligne 250
+    The klass_info structure contains the following information:
+venv\Lib\site-packages\django\db\models\sql\compiler.py : ligne 1523
+    "Only relational fields followed in the query are allowed. "
+venv\Lib\site-packages\django\db\models\sql\compiler.py : ligne 1729
+    # The following hook is only used by Oracle Spatial, which sometimes
+
+### RECHERCHE : follow
+----------------------------------------
+api_nsikay\models.py : ligne 139
+    followers = models.IntegerField(
+api_nsikay\models_backup.py : ligne 137
+    followers = models.IntegerField(
+api_nsikay\models_backup_encoding.py : ligne 137
+    followers = models.IntegerField(
+api_nsikay\migrations\0004_tvchannel_virtualgift_advertisingcampaign_and_more.py : ligne 58
+    ('followers', models.IntegerField(default=0)),
+venv\Lib\site-packages\django\shortcuts.py : ligne 54
+    to preserve the original HTTP method and body when following the redirect.
+venv\Lib\site-packages\django\apps\config.py : ligne 28
+    # The following attributes could be defined at the class level in a
+venv\Lib\site-packages\django\apps\config.py : ligne 245
+    By default, the following models aren't included:
+venv\Lib\site-packages\django\apps\registry.py : ligne 173
+    By default, the following models aren't included:
+venv\Lib\site-packages\django\conf\locale\__init__.py : ligne 8
+    doesn't follow the traditional 'fr-ca' -> 'fr' fallback logic.
+venv\Lib\site-packages\django\contrib\admin\options.py : ligne 1327
+    # Go through the fields, following all relations.
+venv\Lib\site-packages\django\contrib\admin\options.py : ligne 1346
+    # Update opts to follow the relation.
+venv\Lib\site-packages\django\contrib\admin\options.py : ligne 2839
+    "deleting the following protected related objects: "
+venv\Lib\site-packages\django\contrib\admin\utils.py : ligne 42
+    # Go through the fields (following all relations) and look for an m2m.
+venv\Lib\site-packages\django\contrib\admin\utils.py : ligne 53
+    # This field is a relation; update opts to follow the relation.
+venv\Lib\site-packages\django\contrib\auth\models.py : ligne 45
+    useful in your own code. The Django admin site uses permissions as follows:
+venv\Lib\site-packages\django\contrib\auth\password_validation.py : ligne 137
+    The following ratio calculations are based on testing SequenceMatcher like
+venv\Lib\site-packages\django\contrib\gis\measure.py : ligne 5
+    # modification, are permitted provided that the following conditions are met:
+venv\Lib\site-packages\django\contrib\gis\measure.py : ligne 8
+    #      this list of conditions and the following disclaimer.
+venv\Lib\site-packages\django\contrib\gis\measure.py : ligne 11
+    #      notice, this list of conditions and the following disclaimer in the
+venv\Lib\site-packages\django\contrib\gis\db\backends\postgis\const.py : ligne 12
+    # following structure:
+venv\Lib\site-packages\django\contrib\gis\db\models\fields.py : ligne 89
+    following as keyword arguments:
+venv\Lib\site-packages\django\contrib\gis\db\models\fields.py : ligne 271
+    parameters from BaseSpatialField, it takes the following as keyword
+venv\Lib\site-packages\django\contrib\gis\gdal\__init__.py : ligne 2
+    This module houses ctypes interfaces for GDAL objects. The following GDAL
+venv\Lib\site-packages\django\contrib\gis\gdal\raster\band.py : ligne 68
+    The return value is a tuple with the following structure:
+venv\Lib\site-packages\django\contrib\gis\geos\geometry.py : ligne 754
+    following inputs:
+venv\Lib\site-packages\django\contrib\gis\geos\mutable_list.py : ligne 20
+    and implement the following:
+venv\Lib\site-packages\django\contrib\humanize\templatetags\humanize.py : ligne 161
+    number. This follows Associated Press style.
+venv\Lib\site-packages\django\contrib\staticfiles\management\commands\findstatic.py : ligne 25
+    "\nLooking in the following locations:\n  %s"
+venv\Lib\site-packages\django\core\files\storage\base.py : ligne 17
+    # The following methods represent a public interface to private methods.
+venv\Lib\site-packages\django\core\files\storage\base.py : ligne 139
+    # The following methods form the public API for storage systems, but with
+venv\Lib\site-packages\django\core\management\base.py : ligne 205
+    as follows:
+venv\Lib\site-packages\django\core\management\templates.py : ligne 41
+    # Rewrite the following suffixes when determining the target filename.
+venv\Lib\site-packages\django\core\management\__init__.py : ligne 260
+    # following line will retrigger an ImproperlyConfigured
+venv\Lib\site-packages\django\core\management\commands\diffsettings.py : ligne 39
+    "followed by ###. 'unified' mode prefixes the default setting "
+venv\Lib\site-packages\django\core\management\commands\diffsettings.py : ligne 40
+    "with a minus sign, followed by the changed setting prefixed "
+venv\Lib\site-packages\django\core\management\commands\flush.py : ligne 37
+    # The following are stealth options used by Django's internals.
+venv\Lib\site-packages\django\core\management\commands\inspectdb.py : ligne 63
+    yield "# You'll have to do the following manually to clean this up:"
+venv\Lib\site-packages\django\core\management\commands\makemessages.py : ligne 261
+    help="Follows symlinks to directories when examining source code "
+venv\Lib\site-packages\django\core\management\commands\makemessages.py : ligne 431
+    # Search for characters followed by a non character (i.e.
+venv\Lib\site-packages\django\core\management\commands\makemessages.py : ligne 544
+    root, topdown=True, followlinks=self.symlinks
+venv\Lib\site-packages\django\core\management\commands\migrate.py : ligne 211
+    "  Cannot use --prune because the following squashed "
+venv\Lib\site-packages\django\core\management\commands\shell.py : ligne 73
+    # We want to honor both $PYTHONSTARTUP and .pythonrc.py, so follow
+venv\Lib\site-packages\django\core\management\commands\squashmigrations.py : ligne 117
+    self.style.MIGRATE_HEADING("Will squash the following migrations:")
+venv\Lib\site-packages\django\core\serializers\xml_serializer.py : ligne 32
+    # it following each endElement(). If the closing tag should appear on
+venv\Lib\site-packages\django\db\backends\utils.py : ligne 53
+    # The following methods cannot be implemented in __getattr__, because the
+venv\Lib\site-packages\django\db\backends\base\creation.py : ligne 418
+    # reflected in django.db.connections. If the following line assigned
+venv\Lib\site-packages\django\db\backends\base\features.py : ligne 293
+    only_supports_unbounded_with_preceding_and_following = False
+venv\Lib\site-packages\django\db\backends\base\operations.py : ligne 56
+    FOLLOWING = "FOLLOWING"
+venv\Lib\site-packages\django\db\backends\base\operations.py : ligne 58
+    UNBOUNDED_FOLLOWING = "UNBOUNDED " + FOLLOWING
+venv\Lib\site-packages\django\db\backends\base\operations.py : ligne 795
+    return "%d %s" % (value, self.FOLLOWING)
+venv\Lib\site-packages\django\db\backends\base\operations.py : ligne 812
+    end_ = self.window_frame_value(end) or self.UNBOUNDED_FOLLOWING
+venv\Lib\site-packages\django\db\backends\base\operations.py : ligne 831
+    end_ = self.window_frame_value(end) or self.UNBOUNDED_FOLLOWING
+venv\Lib\site-packages\django\db\backends\base\operations.py : ligne 833
+    if features.only_supports_unbounded_with_preceding_and_following and (
+venv\Lib\site-packages\django\db\backends\base\operations.py : ligne 838
+    "FOLLOWING." % self.connection.display_name
+venv\Lib\site-packages\django\db\backends\base\schema.py : ligne 666
+    # CreateModel with unique_together is followed by AlterUniqueTogether
+venv\Lib\site-packages\django\db\backends\base\schema.py : ligne 729
+    # following any earlier rename of the same table in this batch.
+venv\Lib\site-packages\django\db\backends\base\schema.py : ligne 1072
+    # will now be used in lieu of an index. The following lines from the
+venv\Lib\site-packages\django\db\backends\base\schema.py : ligne 1261
+    # constraint will no longer be used in lieu of an index. The following
+venv\Lib\site-packages\django\db\backends\mysql\validation.py : ligne 40
+    MySQL has the following field length restriction:
+venv\Lib\site-packages\django\db\backends\oracle\base.py : ligne 77
+    # following attributes and values:
+venv\Lib\site-packages\django\db\backends\postgresql\features.py : ligne 60
+    only_supports_unbounded_with_preceding_and_following = True
+venv\Lib\site-packages\django\db\backends\sqlite3\base.py : ligne 345
+    This wrapper performs the following conversions:
+venv\Lib\site-packages\django\db\backends\sqlite3\schema.py : ligne 86
+    This follows the correct procedure to perform non-rename or column
+venv\Lib\site-packages\django\db\migrations\executor.py : ligne 82
+    # Create the forwards plan Django would follow on an empty database
+venv\Lib\site-packages\django\db\migrations\executor.py : ligne 113
+    # Create the forwards plan Django would follow on an empty database
+venv\Lib\site-packages\django\db\migrations\graph.py : ligne 206
+    follow if applying the migrations to a database.
+venv\Lib\site-packages\django\db\migrations\graph.py : ligne 216
+    would follow if removing the migrations from a database.
+venv\Lib\site-packages\django\db\migrations\loader.py : ligne 27
+    but will probably follow the 1234_name.py convention.
+venv\Lib\site-packages\django\db\migrations\migration.py : ligne 15
+    of the following attributes:
+venv\Lib\site-packages\django\db\migrations\migration.py : ligne 100
+    Return the resulting project state for efficient reuse by following
+venv\Lib\site-packages\django\db\migrations\writer.py : ligne 189
+    "\n\n# Functions from the following migrations need manual "
+venv\Lib\site-packages\django\db\models\base.py : ligne 882
+    "The following fields do not exist in this model, are m2m "
+venv\Lib\site-packages\django\db\models\deletion.py : ligne 294
+    models, the one case in which the cascade follows the forwards
+venv\Lib\site-packages\django\db\models\expressions.py : ligne 50
+    # The following is a quoted % operator - it is quoted because it can be
+venv\Lib\site-packages\django\db\models\expressions.py : ligne 603
+    # Behavior for DIV with integer arguments follows Postgres/SQLite,
+venv\Lib\site-packages\django\db\models\expressions.py : ligne 1645
+    raise TypeError(f"The following kwargs are invalid: {invalid_str}")
+venv\Lib\site-packages\django\db\models\expressions.py : ligne 2142
+    frame is optional (the default is UNBOUNDED FOLLOWING, which is the last
+venv\Lib\site-packages\django\db\models\expressions.py : ligne 2201
+    start = "%d %s" % (self.start.value, connection.ops.FOLLOWING)
+venv\Lib\site-packages\django\db\models\expressions.py : ligne 2206
+    end = "%d %s" % (self.end.value, connection.ops.FOLLOWING)
+venv\Lib\site-packages\django\db\models\expressions.py : ligne 2212
+    end = connection.ops.UNBOUNDED_FOLLOWING
+venv\Lib\site-packages\django\db\models\query.py : ligne 746
+    "The following fields do not exist in this model: %s"
+venv\Lib\site-packages\django\db\models\query.py : ligne 1725
+    raise TypeError(f"The following kwargs are invalid: {invalid_kwargs_str}")
+venv\Lib\site-packages\django\db\models\query.py : ligne 2293
+    Indicate that the next filter call and the one following that should
+venv\Lib\site-packages\django\db\models\query.py : ligne 2300
+    followed by a filter() that does create a clone.
+venv\Lib\site-packages\django\db\models\query.py : ligne 2660
+    followed_descriptors = set()  # recursion protection
+venv\Lib\site-packages\django\db\models\query.py : ligne 2762
+    and descriptor in followed_descriptors
+venv\Lib\site-packages\django\db\models\query.py : ligne 2770
+    followed_descriptors.add(descriptor)
+venv\Lib\site-packages\django\db\models\fields\json.py : ligne 317
+    # the following line.
+venv\Lib\site-packages\django\db\models\fields\json.py : ligne 333
+    # The following if-block entirely.
+venv\Lib\site-packages\django\db\models\fields\related.py : ligne 1804
+    "Did you mean one of the following foreign keys to '%s': "
+venv\Lib\site-packages\django\db\models\fields\related_descriptors.py : ligne 11
+    Forward accessors follow foreign keys. Reverse accessors trace them back. For
+venv\Lib\site-packages\django\db\models\fields\related_descriptors.py : ligne 12
+    example, with the following models::
+venv\Lib\site-packages\django\db\models\fields\related_descriptors.py : ligne 446
+    # Following the example above, `related` is an instance of OneToOneRel
+venv\Lib\site-packages\django\db\models\fields\related_descriptors.py : ligne 598
+    # Following the example above, this would be the cached
+venv\Lib\site-packages\django\db\models\fields\reverse_related.py : ligne 60
+    # Some of the following cached_properties can't be initialized in
+venv\Lib\site-packages\django\db\models\fields\__init__.py : ligne 618
+    the following types (including inner values of collection types):
+venv\Lib\site-packages\django\db\models\functions\mixins.py : ligne 10
+    # following function signatures:
+venv\Lib\site-packages\django\db\models\sql\compiler.py : ligne 250
+    The klass_info structure contains the following information:
+venv\Lib\site-packages\django\db\models\sql\compiler.py : ligne 1523
+    "Only relational fields followed in the query are allowed. "
+venv\Lib\site-packages\django\db\models\sql\compiler.py : ligne 1729
+    # The following hook is only used by Oracle Spatial, which sometimes
+
+### RECHERCHE : Subscriber
+----------------------------------------
+api_nsikay\models.py : ligne 438
+    subscriber = models.ForeignKey(
+api_nsikay\models_backup.py : ligne 437
+    subscriber = models.ForeignKey(
+api_nsikay\models_backup_encoding.py : ligne 436
+    subscriber = models.ForeignKey(
+api_nsikay\migrations\0004_tvchannel_virtualgift_advertisingcampaign_and_more.py : ligne 70
+    ('subscriber', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1013
+    self._subscribers = {}
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1015
+    def add(self, event, subscriber, append=True):
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1017
+    Add a subscriber for an event.
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1020
+    :param subscriber: The subscriber to be added (and called when the
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1022
+    :param append: Whether to append or prepend the subscriber to an
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1023
+    existing subscriber list for the event.
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1025
+    subs = self._subscribers
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1027
+    subs[event] = deque([subscriber])
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1031
+    sq.append(subscriber)
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1033
+    sq.appendleft(subscriber)
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1035
+    def remove(self, event, subscriber):
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1037
+    Remove a subscriber for an event.
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1040
+    :param subscriber: The subscriber to be removed.
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1042
+    subs = self._subscribers
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1044
+    raise ValueError('No subscribers: %r' % event)
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1045
+    subs[event].remove(subscriber)
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1047
+    def get_subscribers(self, event):
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1049
+    Return an iterator for the subscribers for an event.
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1050
+    :param event: The event to return subscribers for.
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1052
+    return iter(self._subscribers.get(event, ()))
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1057
+    subscribers.
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1061
+    subscribers.
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1063
+    subscribers.
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1066
+    for subscriber in self.get_subscribers(event):
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1068
+    value = subscriber(event, *args, **kwargs)
+
+### RECHERCHE : subscriber
+----------------------------------------
+api_nsikay\models.py : ligne 438
+    subscriber = models.ForeignKey(
+api_nsikay\models_backup.py : ligne 437
+    subscriber = models.ForeignKey(
+api_nsikay\models_backup_encoding.py : ligne 436
+    subscriber = models.ForeignKey(
+api_nsikay\migrations\0004_tvchannel_virtualgift_advertisingcampaign_and_more.py : ligne 70
+    ('subscriber', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1013
+    self._subscribers = {}
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1015
+    def add(self, event, subscriber, append=True):
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1017
+    Add a subscriber for an event.
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1020
+    :param subscriber: The subscriber to be added (and called when the
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1022
+    :param append: Whether to append or prepend the subscriber to an
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1023
+    existing subscriber list for the event.
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1025
+    subs = self._subscribers
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1027
+    subs[event] = deque([subscriber])
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1031
+    sq.append(subscriber)
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1033
+    sq.appendleft(subscriber)
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1035
+    def remove(self, event, subscriber):
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1037
+    Remove a subscriber for an event.
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1040
+    :param subscriber: The subscriber to be removed.
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1042
+    subs = self._subscribers
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1044
+    raise ValueError('No subscribers: %r' % event)
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1045
+    subs[event].remove(subscriber)
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1047
+    def get_subscribers(self, event):
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1049
+    Return an iterator for the subscribers for an event.
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1050
+    :param event: The event to return subscribers for.
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1052
+    return iter(self._subscribers.get(event, ()))
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1057
+    subscribers.
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1061
+    subscribers.
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1063
+    subscribers.
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1066
+    for subscriber in self.get_subscribers(event):
+venv\Lib\site-packages\pip\_vendor\distlib\util.py : ligne 1068
+    value = subscriber(event, *args, **kwargs)
+
+### RECHERCHE : Audience
+----------------------------------------
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 16
+    InvalidAudienceError,
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 188
+    audience: str | Iterable[str] | None = None,
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 223
+    :param audience: optional, the value for ``verify_aud`` check
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 224
+    :type audience: str or typing.Iterable[str] or None
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 280
+    audience=audience,
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 317
+    audience: str | Iterable[str] | None = None,
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 351
+    :param audience: optional, the value for ``verify_aud`` check
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 352
+    :type audience: str or typing.Iterable[str] or None
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 377
+    audience=audience,
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 388
+    audience: Iterable[str] | str | None = None,
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 396
+    if audience is not None and not isinstance(audience, (str, Iterable)):
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 397
+    raise TypeError("audience must be a string, iterable or None")
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 417
+    payload, audience, strict=options.get("strict_aud", False)
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 518
+    audience: str | Iterable[str] | None,
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 522
+    if audience is None:
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 525
+    # Application did not specify an audience, but
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 527
+    raise InvalidAudienceError("Invalid audience")
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 530
+    # Application specified an audience, but it could not be
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 534
+    audience_claims = payload["aud"]
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 536
+    # In strict mode, we forbid list matching: the supplied audience
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 537
+    # must be a string, and it must exactly match the audience claim.
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 539
+    # Only a single audience is allowed in strict mode.
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 540
+    if not isinstance(audience, str):
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 541
+    raise InvalidAudienceError("Invalid audience (strict)")
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 543
+    # Only a single audience claim is allowed in strict mode.
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 544
+    if not isinstance(audience_claims, str):
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 545
+    raise InvalidAudienceError("Invalid claim format in token (strict)")
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 547
+    if audience != audience_claims:
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 548
+    raise InvalidAudienceError("Audience doesn't match (strict)")
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 552
+    if isinstance(audience_claims, str):
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 553
+    audience_claims = [audience_claims]
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 554
+    if not isinstance(audience_claims, list):
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 555
+    raise InvalidAudienceError("Invalid claim format in token")
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 556
+    if any(not isinstance(c, str) for c in audience_claims):
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 557
+    raise InvalidAudienceError("Invalid claim format in token")
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 559
+    if isinstance(audience, str):
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 560
+    audience = [audience]
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 562
+    if all(aud not in audience_claims for aud in audience):
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 563
+    raise InvalidAudienceError("Audience doesn't match")
+venv\Lib\site-packages\jwt\exceptions.py : ligne 34
+    class InvalidAudienceError(InvalidTokenError):
+venv\Lib\site-packages\jwt\exceptions.py : ligne 36
+    audience values"""
+venv\Lib\site-packages\jwt\types.py : ligne 37
+    """Default: ``False``. (requires ``verify_aud=True``) Check that the ``aud`` claim is a single value (not a list), and matches ``audience`` exactly."""
+venv\Lib\site-packages\jwt\types.py : ligne 39
+    """Default: ``verify_signature``. Check that ``aud`` (audience) claim matches ``audience``."""
+venv\Lib\site-packages\jwt\__init__.py : ligne 15
+    InvalidAudienceError,
+venv\Lib\site-packages\jwt\__init__.py : ligne 66
+    "InvalidAudienceError",
+venv\Lib\site-packages\rest_framework_simplejwt\backends.py : ligne 46
+    audience: Union[str, Iterable, None] = None,
+venv\Lib\site-packages\rest_framework_simplejwt\backends.py : ligne 57
+    self.audience = audience
+venv\Lib\site-packages\rest_framework_simplejwt\backends.py : ligne 134
+    if self.audience is not None:
+venv\Lib\site-packages\rest_framework_simplejwt\backends.py : ligne 135
+    jwt_payload["aud"] = self.audience
+venv\Lib\site-packages\rest_framework_simplejwt\backends.py : ligne 164
+    audience=self.audience,
+venv\Lib\site-packages\rest_framework_simplejwt\backends.py : ligne 168
+    "verify_aud": self.audience is not None,
+venv\Lib\site-packages\rest_framework_simplejwt\settings.py : ligne 22
+    "AUDIENCE": None,
+venv\Lib\site-packages\rest_framework_simplejwt\state.py : ligne 8
+    api_settings.AUDIENCE,
+
+### RECHERCHE : audience
+----------------------------------------
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 16
+    InvalidAudienceError,
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 188
+    audience: str | Iterable[str] | None = None,
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 223
+    :param audience: optional, the value for ``verify_aud`` check
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 224
+    :type audience: str or typing.Iterable[str] or None
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 280
+    audience=audience,
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 317
+    audience: str | Iterable[str] | None = None,
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 351
+    :param audience: optional, the value for ``verify_aud`` check
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 352
+    :type audience: str or typing.Iterable[str] or None
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 377
+    audience=audience,
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 388
+    audience: Iterable[str] | str | None = None,
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 396
+    if audience is not None and not isinstance(audience, (str, Iterable)):
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 397
+    raise TypeError("audience must be a string, iterable or None")
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 417
+    payload, audience, strict=options.get("strict_aud", False)
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 518
+    audience: str | Iterable[str] | None,
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 522
+    if audience is None:
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 525
+    # Application did not specify an audience, but
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 527
+    raise InvalidAudienceError("Invalid audience")
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 530
+    # Application specified an audience, but it could not be
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 534
+    audience_claims = payload["aud"]
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 536
+    # In strict mode, we forbid list matching: the supplied audience
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 537
+    # must be a string, and it must exactly match the audience claim.
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 539
+    # Only a single audience is allowed in strict mode.
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 540
+    if not isinstance(audience, str):
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 541
+    raise InvalidAudienceError("Invalid audience (strict)")
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 543
+    # Only a single audience claim is allowed in strict mode.
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 544
+    if not isinstance(audience_claims, str):
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 545
+    raise InvalidAudienceError("Invalid claim format in token (strict)")
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 547
+    if audience != audience_claims:
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 548
+    raise InvalidAudienceError("Audience doesn't match (strict)")
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 552
+    if isinstance(audience_claims, str):
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 553
+    audience_claims = [audience_claims]
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 554
+    if not isinstance(audience_claims, list):
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 555
+    raise InvalidAudienceError("Invalid claim format in token")
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 556
+    if any(not isinstance(c, str) for c in audience_claims):
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 557
+    raise InvalidAudienceError("Invalid claim format in token")
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 559
+    if isinstance(audience, str):
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 560
+    audience = [audience]
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 562
+    if all(aud not in audience_claims for aud in audience):
+venv\Lib\site-packages\jwt\api_jwt.py : ligne 563
+    raise InvalidAudienceError("Audience doesn't match")
+venv\Lib\site-packages\jwt\exceptions.py : ligne 34
+    class InvalidAudienceError(InvalidTokenError):
+venv\Lib\site-packages\jwt\exceptions.py : ligne 36
+    audience values"""
+venv\Lib\site-packages\jwt\types.py : ligne 37
+    """Default: ``False``. (requires ``verify_aud=True``) Check that the ``aud`` claim is a single value (not a list), and matches ``audience`` exactly."""
+venv\Lib\site-packages\jwt\types.py : ligne 39
+    """Default: ``verify_signature``. Check that ``aud`` (audience) claim matches ``audience``."""
+venv\Lib\site-packages\jwt\__init__.py : ligne 15
+    InvalidAudienceError,
+venv\Lib\site-packages\jwt\__init__.py : ligne 66
+    "InvalidAudienceError",
+venv\Lib\site-packages\rest_framework_simplejwt\backends.py : ligne 46
+    audience: Union[str, Iterable, None] = None,
+venv\Lib\site-packages\rest_framework_simplejwt\backends.py : ligne 57
+    self.audience = audience
+venv\Lib\site-packages\rest_framework_simplejwt\backends.py : ligne 134
+    if self.audience is not None:
+venv\Lib\site-packages\rest_framework_simplejwt\backends.py : ligne 135
+    jwt_payload["aud"] = self.audience
+venv\Lib\site-packages\rest_framework_simplejwt\backends.py : ligne 164
+    audience=self.audience,
+venv\Lib\site-packages\rest_framework_simplejwt\backends.py : ligne 168
+    "verify_aud": self.audience is not None,
+venv\Lib\site-packages\rest_framework_simplejwt\settings.py : ligne 22
+    "AUDIENCE": None,
+venv\Lib\site-packages\rest_framework_simplejwt\state.py : ligne 8
+    api_settings.AUDIENCE,
+
+### RECHERCHE : Reward
+----------------------------------------
+backups\finance_migration_0008_20261001_131432\models.py : ligne 68
+    ("reward","Récompense"),
+backups\financial_clean_20261001_130349\models.py : ligne 68
+    ("reward","Récompense"),
+finance\models.py : ligne 68
+    ("reward","Récompense"),
+finance\migrations\0002_currency_remove_payment_transaction_and_more.py : ligne 63
+    ('transaction_type', models.CharField(choices=[('deposit', 'Dépôt'), ('withdraw', 'Retrait'), ('transfer', 'Transfert'), ('purchase', 'Achat'), ('reward', 'Récompense')], max_length=50)),
+
+### RECHERCHE : reward
+----------------------------------------
+backups\finance_migration_0008_20261001_131432\models.py : ligne 68
+    ("reward","Récompense"),
+backups\financial_clean_20261001_130349\models.py : ligne 68
+    ("reward","Récompense"),
+finance\models.py : ligne 68
+    ("reward","Récompense"),
+finance\migrations\0002_currency_remove_payment_transaction_and_more.py : ligne 63
+    ('transaction_type', models.CharField(choices=[('deposit', 'Dépôt'), ('withdraw', 'Retrait'), ('transfer', 'Transfert'), ('purchase', 'Achat'), ('reward', 'Récompense')], max_length=50)),
+
+### RECHERCHE : remuneration
+----------------------------------------
+Aucun résultat.
+
+### RECHERCHE : rémunération
+----------------------------------------
+Aucun résultat.
+
+### RECHERCHE : 24
+----------------------------------------
+financial_routing\migrations\0001_initial.py : ligne 79
+    index=models.Index(fields=['source_type', 'active'], name='financial_r_source__24e2a0_idx'),
+scripts\analyse_249_pays.py : ligne 33
+    "nsikay_249_pays_analyse.csv"
+scripts\apply_official_240_countries.py : ligne 48
+    EXPECTED_PRIMARY = 249
+scripts\apply_official_240_countries.py : ligne 49
+    EXPECTED_OPERATIONAL = 240
+scripts\apply_official_240_countries.py : ligne 116
+    # CALCUL DES 240 PAYS
+scripts\apply_official_240_countries.py : ligne 136
+    "240 pays operationnels calcules =",
+scripts\apply_official_240_countries.py : ligne 171
+    # Activation exacte des 240 pays.
+scripts\apply_official_240_countries.py : ligne 238
+    action="configuration_officielle_240_pays",
+scripts\apply_official_240_countries.py : ligne 302
+    assert primary.count() == 249
+scripts\apply_official_240_countries.py : ligne 303
+    assert operational.count() == 240
+scripts\apply_official_240_countries.py : ligne 312
+    print("249 pays principaux")
+scripts\apply_official_240_countries.py : ligne 313
+    print("240 pays operationnels")
+scripts\classify_249_iso_entities.py : ligne 82
+    "nsikay_classification_249_entites.csv"
+scripts\create_official_240_countries_log.py : ligne 28
+    EXPECTED_PRIMARY = 249
+scripts\create_official_240_countries_log.py : ligne 29
+    EXPECTED_OPERATIONAL = 240
+scripts\create_official_240_countries_log.py : ligne 34
+    ACTION = "configuration_officielle_240_pays"
+scripts\create_official_240_countries_log.py : ligne 58
+    f"249 pays principaux attendus, "
+scripts\create_official_240_countries_log.py : ligne 64
+    f"240 pays operationnels attendus, "
+scripts\create_official_240_countries_log.py : ligne 142
+    print("249 PAYS PRINCIPAUX =", primary.count())
+scripts\create_official_240_countries_log.py : ligne 143
+    print("240 OPERATIONNELS =", operational.count())
+scripts\create_official_240_countries_log.py : ligne 147
+    assert primary.count() == 249
+scripts\create_official_240_countries_log.py : ligne 148
+    assert operational.count() == 240
+scripts\create_official_240_countries_log.py : ligne 151
+    assert log.selected_count == 240
+scripts\export_249_pays_selection.py : ligne 31
+    "nsikay_249_pays_selection_240.csv"
+scripts\export_249_pays_selection.py : ligne 49
+    "SELECTION_240"
+scripts\export_249_pays_selection.py : ligne 69
+    print("Objectif operationnel = 240 pays")
+scripts\export_249_pays_selection.py : ligne 73
+    print("Pays restant a selectionner =", 240 - countries.filter(
+scripts\export_final_240_countries.py : ligne 31
+    "nsikay_configuration_finale_240_pays.csv"
+scripts\set_operational_countries.py : ligne 72
+    if len(codes) != 240:
+scripts\set_operational_countries.py : ligne 75
+    f"Elle doit contenir exactement 240 codes."
+scripts\set_operational_countries.py : ligne 97
+    print("Liste valide : 240 codes ISO3 reconnus.")
+scripts\set_operational_countries.py : ligne 100
+    # On ne touche qu'aux 249 lignes principales.
+scripts\set_operational_countries.py : ligne 125
+    if operationnels != 240:
+scripts\set_operational_countries.py : ligne 128
+    "n'est pas egal a 240."
+scripts\set_operational_countries.py : ligne 133
+    print("CONFIGURATION DES 240 PAYS OPERATIONNELS VALIDEE.")
+scripts\verify_before_240_activation.py : ligne 40
+    assert primary.count() == 249
+scripts\verify_country_audit_final.py : ligne 73
+    "249_ISO_PRINCIPAUX =",
+scripts\verify_country_audit_final.py : ligne 74
+    countries.count() == 249
+scripts\verify_country_integrity_before_final.py : ligne 58
+    assert countries.count() == 249
+scripts\verify_exact_240_countries.py : ligne 48
+    print(" VERIFICATION EXACTE DES 240 PAYS")
+scripts\verify_exact_240_countries.py : ligne 67
+    "ECHEC : les 240 pays ne correspondent pas exactement."
+scripts\verify_exact_240_countries.py : ligne 75
+    if primary.count() != 249:
+scripts\verify_exact_240_countries.py : ligne 76
+    raise SystemExit("ECHEC : 249 pays principaux attendus.")
+scripts\verify_exact_240_countries.py : ligne 78
+    if len(actual_operational) != 240:
+scripts\verify_exact_240_countries.py : ligne 79
+    raise SystemExit("ECHEC : exactement 240 pays attendus.")
+scripts\verify_exact_240_countries.py : ligne 92
+    print("249 pays principaux")
+scripts\verify_exact_240_countries.py : ligne 93
+    print("240 pays operationnels")
+scripts\verify_exact_240_countries.py : ligne 97
+    print("CONFIGURATION DES 240 PAYS VALIDEE.")
+scripts\verify_operational_countries.py : ligne 75
+    ).count() == 249
+scripts\verify_operational_countries.py : ligne 79
+    "240_PAYS_OPERATIONNELS =",
+scripts\verify_operational_countries.py : ligne 83
+    ).count() == 240
+service_control\management\commands\load_countries.py : ligne 8
+    help = "Charge les 240 pays NSIKAY"
+service_dashboard\models.py : ligne 11
+    default="configuration_240_pays"
+service_dashboard\operational_countries_views.py : ligne 54
+    if len(selected_codes) != 240:
+service_dashboard\operational_countries_views.py : ligne 59
+    f"240 pays opérationnels. Sélection actuelle : "
+service_dashboard\operational_countries_views.py : ligne 74
+    "limit": 240,
+service_dashboard\operational_countries_views.py : ligne 76
+    240 - len(selected_codes),
+service_dashboard\operational_countries_views.py : ligne 85
+    # VERROUILLAGE DES 249 PAYS PRINCIPAUX
+service_dashboard\operational_countries_views.py : ligne 95
+    if len(locked_countries) != 249:
+service_dashboard\operational_countries_views.py : ligne 98
+    f"principaux est {len(locked_countries)} au lieu de 249."
+service_dashboard\operational_countries_views.py : ligne 127
+    action="configuration_officielle_240_pays",
+service_dashboard\operational_countries_views.py : ligne 172
+    if operational_count != 240:
+service_dashboard\operational_countries_views.py : ligne 175
+    f"opérationnels est {operational_count} au lieu de 240."
+service_dashboard\operational_countries_views.py : ligne 203
+    "Configuration des 240 pays enregistrée avec succès. "
+service_dashboard\operational_countries_views.py : ligne 228
+    "limit": 240,
+service_dashboard\operational_countries_views.py : ligne 230
+    240 - operational_count,
+service_dashboard\operational_countries_views.py : ligne 260
+    action="configuration_officielle_240_pays",
+service_dashboard\operational_countries_views.py : ligne 303
+    if len(countries) != 249:
+service_dashboard\operational_countries_views.py : ligne 306
+    f"est {len(countries)} au lieu de 249."
+service_dashboard\operational_countries_views.py : ligne 393
+    "des 240 pays avec restauration du snapshot précédent."
+service_dashboard\backups\models_before_bloc3_20260930_174733.py : ligne 10
+    default="configuration_240_pays"
+service_dashboard\backups_bloc10\models.py : ligne 11
+    default="configuration_240_pays"
+service_dashboard\backups_bloc6_20260930_182627\models.py : ligne 11
+    default="configuration_240_pays"
+service_dashboard\backups_bloc8\models.py : ligne 11
+    default="configuration_240_pays"
+service_dashboard\backups_bloc9\models.py : ligne 11
+    default="configuration_240_pays"
+service_dashboard\backups_pre_hebergement\20260930_192835__service_dashboard__models.py : ligne 11
+    default="configuration_240_pays"
+service_dashboard\migrations\0002_operationalcountryconfigurationlog.py : ligne 20
+    ('action', models.CharField(default='configuration_240_pays', max_length=50)),
+venv\Lib\site-packages\django\apps\config.py : ligne 83
+    # contains duplicates that must be removed (#25246).
+venv\Lib\site-packages\django\conf\global_settings.py : ligne 493
+    SESSION_COOKIE_AGE = 60 * 60 * 24 * 7 * 2
+venv\Lib\site-packages\django\conf\global_settings.py : ligne 546
+    PASSWORD_RESET_TIMEOUT = 60 * 60 * 24 * 3
+venv\Lib\site-packages\django\conf\global_settings.py : ligne 577
+    CSRF_COOKIE_AGE = 60 * 60 * 24 * 7 * 52
+venv\Lib\site-packages\django\conf\locale\fr_CA\formats.py : ligne 5
+    DATE_FORMAT = "j F Y"  # 31 janvier 2024
+venv\Lib\site-packages\django\conf\locale\fr_CA\formats.py : ligne 7
+    DATETIME_FORMAT = "j F Y, H\xa0\\h\xa0i"  # 31 janvier 2024, 13 h 40
+venv\Lib\site-packages\django\conf\locale\pt_BR\formats.py : ligne 19
+    # "%d de %b de %Y",  # '24 de Out de 2006'
+venv\Lib\site-packages\django\contrib\admin\checks.py : ligne 630
+    id="admin.E024",
+venv\Lib\site-packages\django\contrib\admin\checks.py : ligne 1192
+    id="admin.E124",
+venv\Lib\site-packages\django\contrib\admindocs\views.py : ligne 78
+    # Non-trivial TEMPLATES settings aren't supported (#24125).
+venv\Lib\site-packages\django\contrib\admindocs\views.py : ligne 115
+    # Non-trivial TEMPLATES settings aren't supported (#24125).
+venv\Lib\site-packages\django\contrib\admindocs\views.py : ligne 424
+    # Non-trivial TEMPLATES settings aren't supported (#24125).
+venv\Lib\site-packages\django\contrib\auth\hashers.py : ligne 398
+    memory_cost = 102400
+venv\Lib\site-packages\django\contrib\gis\geoip2.py : ligne 204
+    '24.124.1.80' and 'djangoproject.com' are valid parameters.
+venv\Lib\site-packages\django\contrib\gis\measure.py : ligne 256
+    "british_chain_benoit": 20.1167824944,
+venv\Lib\site-packages\django\contrib\gis\db\backends\oracle\models.py : ligne 19
+    column_name = models.CharField(max_length=1024)
+venv\Lib\site-packages\django\contrib\gis\db\backends\postgis\operations.py : ligne 205
+    # PostGIS and not from PostgreSQL itself (see #24862).
+venv\Lib\site-packages\django\contrib\gis\gdal\geometries.py : ligne 33
+    MULTIPOINT (-89.99993037860248 29.99979788655764,-89.99993037860248
+venv\Lib\site-packages\django\contrib\gis\gdal\srs.py : ligne 22
+    (6378137.0, 6356752.3142451793, 298.25722356300003)
+venv\Lib\site-packages\django\contrib\gis\geos\prototypes\io.py : ligne 275
+    ((value & 0x000000FF) << 24)
+venv\Lib\site-packages\django\contrib\gis\geos\prototypes\io.py : ligne 278
+    | ((value & 0xFF000000) >> 24)
+venv\Lib\site-packages\django\contrib\humanize\templatetags\humanize.py : ligne 120
+    24,
+venv\Lib\site-packages\django\core\cache\backends\memcached.py : ligne 58
+    if timeout > 2592000:  # 60*60*24*30, 30 days
+
+### RECHERCHE : 3 days
+----------------------------------------
+venv\Lib\site-packages\django\conf\global_settings.py : ligne 545
+    # The number of seconds a password reset link is valid for (default: 3 days).
+venv\Lib\site-packages\django\utils\dateparse.py : ligne 53
+    # Support PostgreSQL's day-time interval format, e.g. "3 days 04:05:06". The
+venv\Lib\site-packages\django\utils\timesince.py : ligne 39
+    but also between 2007/08/10 and 2008/09/10 despite the delta being 393 days
+venv\Lib\site-packages\django\utils\timesince.py : ligne 43
+    "2 weeks, 3 days" and "1 year, 3 months" are possible outputs, but
+venv\Lib\site-packages\pip\_internal\cli\cmdoptions.py : ligne 499
+    "(e.g., 'P3D' for packages uploaded at least 3 days ago). "
+
+### RECHERCHE : 7 days
+----------------------------------------
+venv\Lib\site-packages\django\contrib\admin\filters.py : ligne 500
+    _("Past 7 days"),
+venv\Lib\site-packages\pip\_internal\cli\cmdoptions.py : ligne 450
+    (e.g., 'P7D' for 7 days ago).
+
+### RECHERCHE : 3 months
+----------------------------------------
+venv\Lib\site-packages\django\utils\timesince.py : ligne 43
+    "2 weeks, 3 days" and "1 year, 3 months" are possible outputs, but
+
+### RECHERCHE : 60%
+----------------------------------------
+Aucun résultat.
+
+============================================================
+2. MODELES DJANGO DETECTES
+============================================================
+
+add_bank_country_access.py : class BankCountryAccess(models.Model):
+add_bank_models.py : class BankCurrencyAccess(models.Model):
+add_bank_models.py : class BankServiceAuthorization(models.Model):
+add_bank_models.py : class CountryBankAuthorization(models.Model):
+build_bank_partner_module.py : class BankPartner(models.Model):
+build_bank_partner_module.py : class BankPartnerCurrency(models.Model):
+build_bank_partner_module.py : class BankPartnerService(models.Model):
+build_certification_centrale_nsikay.py : class NSIKAYCertification(models.Model):
+build_certification_module.py : class NSIKAYCertification(models.Model):
+build_certification_module.py : class CertificationHistory(models.Model):
+build_country_supervision.py : class CountryCurrencyAccess(models.Model):
+build_country_supervision.py : class CountryRegulation(models.Model):
+build_country_supervision.py : class CountryBankAccess(models.Model):
+build_country_supervision_module.py : class CountrySupervisionDetail(models.Model):
+build_nsikay_roles_permissions.py : class NSIKAYAdminRole(models.Model):
+build_nsikay_roles_permissions.py : class NSIKAYPermission(models.Model):
+build_secure_api_nsikay.py : class AdminActionLog(models.Model):
+build_secure_api_nsikay.py : class SecurityAlert(models.Model):
+fix_certification_model.py : class NSIKAYCertification(models.Model):
+administration\models.py : class BankCertification(models.Model):
+administration\models.py : class CurrencyApproval(models.Model):
+administration\models.py : class PartnerCertification(models.Model):
+administration\models.py : class CountrySupervision(models.Model):
+administration\models.py : class ValidationRequest(models.Model):
+administration\models.py : class BankCountryAccess(models.Model):
+administration\models.py : class BankCurrencyAccess(models.Model):
+administration\models.py : class BankServiceAuthorization(models.Model):
+administration\models.py : class CountryBankAuthorization(models.Model):
+administration\models.py : class BankPartner(models.Model):
+administration\models.py : class BankPartnerCurrency(models.Model):
+administration\models.py : class BankPartnerService(models.Model):
+administration\models.py : class CountryCurrencyAccess(models.Model):
+administration\models.py : class CountryRegulation(models.Model):
+administration\models.py : class CountryBankAccess(models.Model):
+administration\models.py : class CountrySupervisionDetail(models.Model):
+administration\models.py : class NSIKAYAdminRole(models.Model):
+administration\models.py : class NSIKAYPermission(models.Model):
+administration\models.py : class HealthInsurance(models.Model):
+api\models.py : class AdminActionLog(models.Model):
+api\models.py : class SecurityAlert(models.Model):
+api_nsikay\bank_models.py : class PartnerBank(models.Model):
+api_nsikay\bank_models.py : class SettlementAccount(models.Model):
+api_nsikay\bank_models.py : class BankDeposit(models.Model):
+api_nsikay\finance_models.py : class FinanceRule(models.Model):
+api_nsikay\finance_models.py : class FinanceApproval(models.Model):
+api_nsikay\finance_models.py : class FinancialMonitoring(models.Model):
+api_nsikay\kyc_models.py : class KYCProfile(models.Model):
+api_nsikay\models.py : class UserRole(models.Model):
+api_nsikay\models.py : class SecurityProfile(models.Model):
+api_nsikay\models.py : class CreatorProfile(models.Model):
+api_nsikay\models.py : class SocialPost(models.Model):
+api_nsikay\models.py : class SocialComment(models.Model):
+api_nsikay\models.py : class NsikayEvent(models.Model):
+api_nsikay\models.py : class EventParticipant(models.Model):
+api_nsikay\models.py : class AdvertisingCampaign(models.Model):
+api_nsikay\models.py : class AdvertisementPlacement(models.Model):
+api_nsikay\models.py : class TVContent(models.Model):
+api_nsikay\models.py : class VirtualGift(models.Model):
+api_nsikay\models.py : class GiftTransaction(models.Model):
+api_nsikay\models.py : class CreatorSubscription(models.Model):
+api_nsikay\models.py : class ContentRecommendation(models.Model):
+api_nsikay\models.py : class ModerationRecord(models.Model):
+api_nsikay\models.py : class ContentAnalytics(models.Model):
+api_nsikay\models.py : class AdCampaignCenter(models.Model):
+api_nsikay\models.py : class PagePromotionSlot(models.Model):
+api_nsikay\models.py : class EventPromotion(models.Model):
+api_nsikay\models.py : class AdminAnalytics(models.Model):
+api_nsikay\models.py : class CountryConfiguration(models.Model):
+api_nsikay\models.py : class UserNotification(models.Model):
+api_nsikay\models.py : class InternalMessage(models.Model):
+api_nsikay\models.py : class CloudFile(models.Model):
+api_nsikay\models.py : class APIGatewayLog(models.Model):
+api_nsikay\models_backup.py : class UserRole(models.Model):
+api_nsikay\models_backup.py : class SecurityProfile(models.Model):
+api_nsikay\models_backup.py : class CreatorProfile(models.Model):
+api_nsikay\models_backup.py : class SocialPost(models.Model):
+api_nsikay\models_backup.py : class SocialComment(models.Model):
+api_nsikay\models_backup.py : class NsikayEvent(models.Model):
+api_nsikay\models_backup.py : class EventParticipant(models.Model):
+api_nsikay\models_backup.py : class AdvertisingCampaign(models.Model):
+api_nsikay\models_backup.py : class AdvertisementPlacement(models.Model):
+api_nsikay\models_backup.py : class TVChannel(models.Model):
+api_nsikay\models_backup.py : class TVContent(models.Model):
+api_nsikay\models_backup.py : class VirtualGift(models.Model):
+api_nsikay\models_backup.py : class GiftTransaction(models.Model):
+api_nsikay\models_backup.py : class CreatorSubscription(models.Model):
+api_nsikay\models_backup.py : class ContentRecommendation(models.Model):
+api_nsikay\models_backup.py : class ModerationRecord(models.Model):
+api_nsikay\models_backup.py : class ContentAnalytics(models.Model):
+api_nsikay\models_backup.py : class AdCampaignCenter(models.Model):
+api_nsikay\models_backup.py : class PagePromotionSlot(models.Model):
+api_nsikay\models_backup.py : class EventPromotion(models.Model):
+api_nsikay\models_backup.py : class AdminAnalytics(models.Model):
+api_nsikay\models_backup.py : class CountryConfiguration(models.Model):
+api_nsikay\models_backup.py : class UserNotification(models.Model):
+api_nsikay\models_backup.py : class InternalMessage(models.Model):
+api_nsikay\models_backup.py : class CloudFile(models.Model):
+api_nsikay\models_backup.py : class APIGatewayLog(models.Model):
+api_nsikay\models_backup_encoding.py : class UserRole(models.Model):
+api_nsikay\models_backup_encoding.py : class SecurityProfile(models.Model):
+api_nsikay\models_backup_encoding.py : class CreatorProfile(models.Model):
+api_nsikay\models_backup_encoding.py : class SocialPost(models.Model):
+api_nsikay\models_backup_encoding.py : class SocialComment(models.Model):
+api_nsikay\models_backup_encoding.py : class NsikayEvent(models.Model):
+api_nsikay\models_backup_encoding.py : class EventParticipant(models.Model):
+api_nsikay\models_backup_encoding.py : class AdvertisingCampaign(models.Model):
+api_nsikay\models_backup_encoding.py : class AdvertisementPlacement(models.Model):
+api_nsikay\models_backup_encoding.py : class TVContent(models.Model):
+api_nsikay\models_backup_encoding.py : class VirtualGift(models.Model):
+api_nsikay\models_backup_encoding.py : class GiftTransaction(models.Model):
+api_nsikay\models_backup_encoding.py : class CreatorSubscription(models.Model):
+api_nsikay\models_backup_encoding.py : class ContentRecommendation(models.Model):
+api_nsikay\models_backup_encoding.py : class ModerationRecord(models.Model):
+api_nsikay\models_backup_encoding.py : class ContentAnalytics(models.Model):
+api_nsikay\models_backup_encoding.py : class AdCampaignCenter(models.Model):
+api_nsikay\models_backup_encoding.py : class PagePromotionSlot(models.Model):
+api_nsikay\models_backup_encoding.py : class EventPromotion(models.Model):
+api_nsikay\models_backup_encoding.py : class AdminAnalytics(models.Model):
+api_nsikay\models_backup_encoding.py : class CountryConfiguration(models.Model):
+api_nsikay\models_backup_encoding.py : class UserNotification(models.Model):
+api_nsikay\models_backup_encoding.py : class InternalMessage(models.Model):
+api_nsikay\models_backup_encoding.py : class CloudFile(models.Model):
+api_nsikay\models_backup_encoding.py : class APIGatewayLog(models.Model):
+api_nsikay\logs\models.py : class AdminSecurityLog(models.Model):
+api_nsikay\tv\models.py : class TVChannel(models.Model):
+association\models.py : class MembershipType(models.Model):
+association\models.py : class Member(models.Model):
+association\models.py : class Subscription(models.Model):
+association\models.py : class Donation(models.Model):
+backups\finance_migration_0008_20261001_131432\models.py : class Currency(models.Model):
+backups\finance_migration_0008_20261001_131432\models.py : class Wallet(models.Model):
+backups\finance_migration_0008_20261001_131432\models.py : class WalletTransaction(models.Model):
+backups\finance_migration_0008_20261001_131432\models.py : class ExchangeRate(models.Model):
+backups\finance_migration_0008_20261001_131432\models.py : class FinancialLedger(models.Model):
+backups\finance_migration_0008_20261001_131432\models.py : class ExchangeRateHistory(models.Model):
+backups\finance_migration_0008_20261001_131432\models.py : class MerchantPayment(models.Model):
+backups\finance_migration_0008_20261001_131432\models.py : class BankReconciliation(models.Model):
+backups\finance_migration_0008_20261001_131432\models.py : class PlatformCommission(models.Model):
+backups\finance_migration_0008_20261001_131432\models.py : class AuditLog(models.Model):
+backups\finance_migration_0008_20261001_131432\models.py : class WalletSecurityStatus(models.Model):
+backups\finance_migration_0008_20261001_131432\models.py : class FraudDetectionEvent(models.Model):
+backups\finance_migration_0008_20261001_131432\models.py : class KYCCompliance(models.Model):
+backups\finance_migration_0008_20261001_131432\models.py : class SellerProfile(models.Model):
+backups\finance_migration_0008_20261001_131432\models.py : class MarketplaceProduct(models.Model):
+backups\finance_migration_0008_20261001_131432\models.py : class MarketplaceOrder(models.Model):
+backups\finance_migration_0008_20261001_131432\models.py : class MarketplaceCommission(models.Model):
+backups\financial_clean_20261001_130349\models.py : class Currency(models.Model):
+backups\financial_clean_20261001_130349\models.py : class Wallet(models.Model):
+backups\financial_clean_20261001_130349\models.py : class WalletTransaction(models.Model):
+backups\financial_clean_20261001_130349\models.py : class ExchangeRate(models.Model):
+backups\financial_clean_20261001_130349\models.py : class FinancialLedger(models.Model):
+backups\financial_clean_20261001_130349\models.py : class ExchangeRateHistory(models.Model):
+backups\financial_clean_20261001_130349\models.py : class MerchantPayment(models.Model):
+backups\financial_clean_20261001_130349\models.py : class BankReconciliation(models.Model):
+backups\financial_clean_20261001_130349\models.py : class PlatformCommission(models.Model):
+backups\financial_clean_20261001_130349\models.py : class AuditLog(models.Model):
+backups\financial_clean_20261001_130349\models.py : class WalletSecurityStatus(models.Model):
+backups\financial_clean_20261001_130349\models.py : class FraudDetectionEvent(models.Model):
+backups\financial_clean_20261001_130349\models.py : class KYCCompliance(models.Model):
+backups\financial_clean_20261001_130349\models.py : class SellerProfile(models.Model):
+backups\financial_clean_20261001_130349\models.py : class MarketplaceProduct(models.Model):
+backups\financial_clean_20261001_130349\models.py : class MarketplaceOrder(models.Model):
+backups\financial_clean_20261001_130349\models.py : class MarketplaceCommission(models.Model):
+backups\financial_full_check_20261001_131156\models.py : class PartnerApplication(models.Model):
+backups\financial_full_check_20261001_131156\models.py : class PartnerCertification(models.Model):
+backups\financial_full_check_20261001_131156\models.py : class PartnerSupply(models.Model):
+backups\financial_full_check_20261001_131156\models.py : class PartnerWallet(models.Model):
+backups\financial_full_check_20261001_131156\models.py : class PartnerDeposit(models.Model):
+backups\financial_full_check_20261001_131156\models.py : class SupplyTransaction(models.Model):
+backups\financial_full_check_20261001_131156\partner_models.py : class FinancialPartner(models.Model):
+banking\models.py : class Bank(models.Model):
+banking\models.py : class BankAccount(models.Model):
+banking\models.py : class BankingOperation(models.Model):
+banking\models.py : class BankCountry(models.Model):
+banking\models.py : class BankCurrency(models.Model):
+banking\models.py : class BankService(models.Model):
+banking\models.py : class BankCredit(models.Model):
+banking\models.py : class BankInsurance(models.Model):
+banking\models.py : class BankReport(models.Model):
+banking\models.py : class AccountOpeningRequest(models.Model):
+banking\models.py : class AccountNumberGenerator(models.Model):
+banking\models.py : class BankUserProfile(models.Model):
+banking\models.py : class BankTransaction(models.Model):
+banking\models.py : class BankBalance(models.Model):
+banking\models.py : class PartnerApproval(models.Model):
+banking\models.py : class CashDeposit(models.Model):
+banking\models.py : class PartnerTransaction(models.Model):
+banking\models.py : class OnlineBankAccountRequest(models.Model):
+banking\models.py : class BankCustomerService(models.Model):
+banking\models.py : class BankCountryAccess(models.Model):
+banking\models.py : class BankCurrencyAccess(models.Model):
+business\models.py : class Sector(models.Model):
+business\models.py : class Company(models.Model):
+business\models.py : class Employee(models.Model):
+certification\models.py : class CertificationAgent(models.Model):
+certification\models.py : class FieldInspection(models.Model):
+certification\models.py : class CertificationCertificate(models.Model):
+certification\models.py : class NSIKAYCertification(models.Model):
+certification\models.py : class CertificationHistory(models.Model):
+core\models.py : class Profile(models.Model):
+finance\models.py : class Currency(models.Model):
+finance\models.py : class Wallet(models.Model):
+finance\models.py : class WalletTransaction(models.Model):
+finance\models.py : class ExchangeRate(models.Model):
+finance\models.py : class FinancialLedger(models.Model):
+finance\models.py : class ExchangeRateHistory(models.Model):
+finance\models.py : class MerchantPayment(models.Model):
+finance\models.py : class BankReconciliation(models.Model):
+finance\models.py : class PlatformCommission(models.Model):
+finance\models.py : class AuditLog(models.Model):
+finance\models.py : class WalletSecurityStatus(models.Model):
+finance\models.py : class FraudDetectionEvent(models.Model):
+finance\models.py : class KYCCompliance(models.Model):
+finance\models.py : class SellerProfile(models.Model):
+finance\models.py : class MarketplaceProduct(models.Model):
+finance\models.py : class MarketplaceOrder(models.Model):
+finance\models.py : class MarketplaceCommission(models.Model):
+finance\wallet_models.py : class Wallet(models.Model):
+finance\wallet_models.py : class WalletOperation(models.Model):
+financial_routing\models.py : class FinancialRoutingRule(models.Model):
+financial_routing\models.py : class FinancialRoutingLog(models.Model):
+financial_routing\models.py : class FinancialFeeRule(models.Model):
+financial_routing\partner_models.py : class FinancialPartner(models.Model):
+marketing\models.py : class Advertiser(models.Model):
+marketing\models.py : class AdvertisingCampaign(models.Model):
+marketing\models.py : class AdvertisementPlacement(models.Model):
+marketing\models.py : class Advertisement(models.Model):
+marketing\models.py : class AdvertisementStatistic(models.Model):
+media\models.py : class MediaContent(models.Model):
+media\models.py : class TVChannel(models.Model):
+media\models.py : class TVProgram(models.Model):
+media\models.py : class Event(models.Model):
+media\models.py : class EventRegistration(models.Model):
+nsikay_core\models.py : class NsikayCountry(models.Model):
+nsikay_core\models.py : class ActivityDomain(models.Model):
+nsikay_core\models.py : class ActorProfile(models.Model):
+nsikay_core\models.py : class ActorCertification(models.Model):
+operations\models.py : class DepositRequest(models.Model):
+operations\models.py : class WithdrawalRequest(models.Model):
+operations\models.py : class OperationApproval(models.Model):
+partner_finance\models.py : class PartnerApplication(models.Model):
+partner_finance\models.py : class PartnerCertification(models.Model):
+partner_finance\models.py : class PartnerSupply(models.Model):
+partner_finance\models.py : class PartnerWallet(models.Model):
+partner_finance\models.py : class PartnerDeposit(models.Model):
+partner_finance\models.py : class SupplyTransaction(models.Model):
+service_control\models.py : class CountryServiceStatus(models.Model):
+service_control\models.py : class GlobalService(models.Model):
+service_control\models.py : class ServiceActivation(models.Model):
+service_control\models.py : class ServiceRule(models.Model):
+service_control\rules_models.py : class ServiceRule(models.Model):
+service_dashboard\models.py : class OperationalCountryConfigurationLog(models.Model):
+service_dashboard\models.py : class OperationalCountryConfigurationSnapshot(models.Model):
+service_dashboard\models.py : class ServiceDashboardLog(models.Model):
+service_dashboard\models.py : class ServiceActivationRequest(models.Model):
+service_dashboard\backups\models_before_bloc3_20260930_174733.py : class OperationalCountryConfigurationLog(models.Model):
+service_dashboard\backups\models_before_bloc3_20260930_174733.py : class OperationalCountryConfigurationSnapshot(models.Model):
+service_dashboard\backups\models_before_bloc3_20260930_174733.py : class ServiceDashboardLog(models.Model):
+service_dashboard\backups_bloc10\models.py : class OperationalCountryConfigurationLog(models.Model):
+service_dashboard\backups_bloc10\models.py : class OperationalCountryConfigurationSnapshot(models.Model):
+service_dashboard\backups_bloc10\models.py : class ServiceDashboardLog(models.Model):
+service_dashboard\backups_bloc10\models.py : class ServiceActivationRequest(models.Model):
+service_dashboard\backups_bloc6_20260930_182627\models.py : class OperationalCountryConfigurationLog(models.Model):
+service_dashboard\backups_bloc6_20260930_182627\models.py : class OperationalCountryConfigurationSnapshot(models.Model):
+service_dashboard\backups_bloc6_20260930_182627\models.py : class ServiceDashboardLog(models.Model):
+service_dashboard\backups_bloc6_20260930_182627\models.py : class ServiceActivationRequest(models.Model):
+service_dashboard\backups_bloc8\models.py : class OperationalCountryConfigurationLog(models.Model):
+service_dashboard\backups_bloc8\models.py : class OperationalCountryConfigurationSnapshot(models.Model):
+service_dashboard\backups_bloc8\models.py : class ServiceDashboardLog(models.Model):
+service_dashboard\backups_bloc8\models.py : class ServiceActivationRequest(models.Model):
+service_dashboard\backups_bloc9\models.py : class OperationalCountryConfigurationLog(models.Model):
+service_dashboard\backups_bloc9\models.py : class OperationalCountryConfigurationSnapshot(models.Model):
+service_dashboard\backups_bloc9\models.py : class ServiceDashboardLog(models.Model):
+service_dashboard\backups_bloc9\models.py : class ServiceActivationRequest(models.Model):
+service_dashboard\backups_pre_hebergement\20260930_192835__administration__models.py : class BankCertification(models.Model):
+service_dashboard\backups_pre_hebergement\20260930_192835__administration__models.py : class CurrencyApproval(models.Model):
+service_dashboard\backups_pre_hebergement\20260930_192835__administration__models.py : class PartnerCertification(models.Model):
+service_dashboard\backups_pre_hebergement\20260930_192835__administration__models.py : class CountrySupervision(models.Model):
+service_dashboard\backups_pre_hebergement\20260930_192835__administration__models.py : class ValidationRequest(models.Model):
+service_dashboard\backups_pre_hebergement\20260930_192835__administration__models.py : class BankCountryAccess(models.Model):
+service_dashboard\backups_pre_hebergement\20260930_192835__administration__models.py : class BankCurrencyAccess(models.Model):
+service_dashboard\backups_pre_hebergement\20260930_192835__administration__models.py : class BankServiceAuthorization(models.Model):
+service_dashboard\backups_pre_hebergement\20260930_192835__administration__models.py : class CountryBankAuthorization(models.Model):
+service_dashboard\backups_pre_hebergement\20260930_192835__administration__models.py : class BankPartner(models.Model):
+service_dashboard\backups_pre_hebergement\20260930_192835__administration__models.py : class BankPartnerCurrency(models.Model):
+service_dashboard\backups_pre_hebergement\20260930_192835__administration__models.py : class BankPartnerService(models.Model):
+service_dashboard\backups_pre_hebergement\20260930_192835__administration__models.py : class CountryCurrencyAccess(models.Model):
+service_dashboard\backups_pre_hebergement\20260930_192835__administration__models.py : class CountryRegulation(models.Model):
+service_dashboard\backups_pre_hebergement\20260930_192835__administration__models.py : class CountryBankAccess(models.Model):
+service_dashboard\backups_pre_hebergement\20260930_192835__administration__models.py : class CountrySupervisionDetail(models.Model):
+service_dashboard\backups_pre_hebergement\20260930_192835__administration__models.py : class NSIKAYAdminRole(models.Model):
+service_dashboard\backups_pre_hebergement\20260930_192835__administration__models.py : class NSIKAYPermission(models.Model):
+service_dashboard\backups_pre_hebergement\20260930_192835__administration__models.py : class HealthInsurance(models.Model):
+service_dashboard\backups_pre_hebergement\20260930_192835__service_control__models.py : class CountryServiceStatus(models.Model):
+service_dashboard\backups_pre_hebergement\20260930_192835__service_control__models.py : class GlobalService(models.Model):
+service_dashboard\backups_pre_hebergement\20260930_192835__service_control__models.py : class ServiceActivation(models.Model):
+service_dashboard\backups_pre_hebergement\20260930_192835__service_control__models.py : class ServiceRule(models.Model):
+service_dashboard\backups_pre_hebergement\20260930_192835__service_dashboard__models.py : class OperationalCountryConfigurationLog(models.Model):
+service_dashboard\backups_pre_hebergement\20260930_192835__service_dashboard__models.py : class OperationalCountryConfigurationSnapshot(models.Model):
+service_dashboard\backups_pre_hebergement\20260930_192835__service_dashboard__models.py : class ServiceDashboardLog(models.Model):
+service_dashboard\backups_pre_hebergement\20260930_192835__service_dashboard__models.py : class ServiceActivationRequest(models.Model):
+transactions\models.py : class Transaction(models.Model):
+tv_regie\models.py : class CameraSystem(models.Model):
+tv_regie\models.py : class LiveStream(models.Model):
+tv_regie\models.py : class VideoEffect(models.Model):
+tv_regie\models.py : class TextAnimation(models.Model):
+tv_regie\models.py : class AudioControl(models.Model):
+tv_regie\models.py : class RegieScene(models.Model):
+tv_regie\models.py : class BroadcastSchedule(models.Model):
+venv\Lib\site-packages\django\contrib\admin\models.py : class LogEntry(models.Model):
+venv\Lib\site-packages\django\contrib\auth\base_user.py : class AbstractBaseUser(models.Model):
+venv\Lib\site-packages\django\contrib\auth\models.py : class Permission(models.Model):
+venv\Lib\site-packages\django\contrib\auth\models.py : class Group(models.Model):
+venv\Lib\site-packages\django\contrib\auth\models.py : class PermissionsMixin(models.Model):
+venv\Lib\site-packages\django\contrib\contenttypes\models.py : class ContentType(models.Model):
+venv\Lib\site-packages\django\contrib\flatpages\models.py : class FlatPage(models.Model):
+venv\Lib\site-packages\django\contrib\gis\db\backends\oracle\models.py : class OracleGeometryColumns(models.Model):
+venv\Lib\site-packages\django\contrib\gis\db\backends\oracle\models.py : class OracleSpatialRefSys(models.Model, SpatialRefSysMixin):
+venv\Lib\site-packages\django\contrib\gis\db\backends\postgis\models.py : class PostGISGeometryColumns(models.Model):
+venv\Lib\site-packages\django\contrib\gis\db\backends\postgis\models.py : class PostGISSpatialRefSys(models.Model, SpatialRefSysMixin):
+venv\Lib\site-packages\django\contrib\gis\db\backends\spatialite\models.py : class SpatialiteGeometryColumns(models.Model):
+venv\Lib\site-packages\django\contrib\gis\db\backends\spatialite\models.py : class SpatialiteSpatialRefSys(models.Model, SpatialRefSysMixin):
+venv\Lib\site-packages\django\contrib\redirects\models.py : class Redirect(models.Model):
+venv\Lib\site-packages\django\contrib\sessions\base_session.py : class AbstractBaseSession(models.Model):
+venv\Lib\site-packages\django\contrib\sites\models.py : class Site(models.Model):
+venv\Lib\site-packages\django\db\migrations\recorder.py : class Migration(models.Model):
+venv\Lib\site-packages\rest_framework\authtoken\models.py : class Token(models.Model):
+venv\Lib\site-packages\rest_framework_simplejwt\token_blacklist\models.py : class OutstandingToken(models.Model):
+venv\Lib\site-packages\rest_framework_simplejwt\token_blacklist\models.py : class BlacklistedToken(models.Model):
+wallet\currency_models.py : class WalletCurrencyBalance(models.Model):
+wallet\models.py : class Wallet(models.Model):
+wallet\models.py : class WalletBalance(models.Model):
+wallet\models.py : class WalletTransaction(models.Model):
+wallet\models.py : class ExchangeRate(models.Model):
+wallet\models.py : class WalletSecurityEvent(models.Model):
+wallet\models.py : class WalletOperation(models.Model):
+wallet\models.py : class WalletCommission(models.Model):
+wallet\models.py : class WalletAuditLog(models.Model):
+wallet\models.py : class WalletKYCProfile(models.Model):
+wallet\models.py : class WalletBankAccount(models.Model):
+wenze\models.py : class WenzeProduct(models.Model):
+wenze\models.py : class WenzeOrder(models.Model):
+wenze\models.py : class BukaPrixCampaign(models.Model):
+
+============================================================
+3. FICHIERS / MODELES FINANCIERS PERTINENTS
+============================================================
+
+add_finance_dashboard.py
+fix_finance_dashboard.py
+update_finance_dashboard_real.py
+update_transactions_dashboard_real.py
+_nsikay_full_financial_check.py
+api_nsikay\finance_admin_urls.py
+api_nsikay\finance_admin_views.py
+api_nsikay\finance_api_urls.py
+api_nsikay\finance_models.py
+api_nsikay\finance_urls.py
+api_nsikay\finance_views.py
+api_nsikay\transactions_urls.py
+api_nsikay\wallet_api_urls.py
+api_nsikay\wallet_api_views.py
+api_nsikay\wallet_bank_urls.py
+api_nsikay\wallet_bank_views.py
+api_nsikay\wallet_dashboard_urls.py
+api_nsikay\wallet_dashboard_views.py
+api_nsikay\wallet_operations_urls.py
+api_nsikay\wallet_operations_views.py
+api_nsikay\wallet_urls.py
+api_nsikay\migrations\0004_tvchannel_virtualgift_advertisingcampaign_and_more.py
+api_nsikay\permissions\wallet_permissions.py
+api_nsikay\serializers\currency_wallet_serializer.py
+api_nsikay\serializers\wallet_audit_serializer.py
+api_nsikay\serializers\wallet_bank_serializer.py
+api_nsikay\serializers\wallet_operation_serializer.py
+api_nsikay\serializers\wallet_serializers.py
+backups\finance_migration_0008_20261001_131432\models.py
+backups\financial_clean_20261001_130349\fees.py
+backups\financial_clean_20261001_130349\ledger.py
+backups\financial_clean_20261001_130349\models.py
+backups\financial_clean_20261001_130349\services.py
+backups\financial_full_check_20261001_131156\admin.py
+backups\financial_full_check_20261001_131156\fees.py
+backups\financial_full_check_20261001_131156\ledger.py
+backups\financial_full_check_20261001_131156\marketplace.py
+backups\financial_full_check_20261001_131156\models.py
+backups\financial_full_check_20261001_131156\partner_models.py
+backups\financial_full_check_20261001_131156\services.py
+backups\financial_full_check_20261001_131156\wallet_service.py
+backups\ledger_fix_20261001_131013\ledger.py
+backups\transactions_alignment_20261001_131312\services.py
+backups\wenze_stock_20261001_135627\payment.py
+backups\wenze_stock_final_20261001_135828\payment.py
+backups_marketplace_legacy_20261001_120358\finance__marketplace.py
+banking\migrations\0006_bankbalance_banktransaction.py
+banking\migrations\0008_cashdeposit_partnertransaction.py
+finance\admin.py
+finance\apps.py
+finance\audit.py
+finance\fees.py
+finance\ledger.py
+finance\marketplace.py
+finance\models.py
+finance\security_engine.py
+finance\tests.py
+finance\urls.py
+finance\views.py
+finance\wallet_models.py
+finance\wallet_service.py
+finance\__init__.py
+finance\migrations\0001_initial.py
+finance\migrations\0002_currency_remove_payment_transaction_and_more.py
+finance\migrations\0003_alter_wallet_user_alter_wallettransaction_wallet.py
+finance\migrations\0004_exchangeratehistory_financialledger.py
+finance\migrations\0005_bankreconciliation_merchantpayment_and_more.py
+finance\migrations\0006_auditlog_frauddetectionevent_kyccompliance_and_more.py
+finance\migrations\0007_marketplaceproduct_marketplaceorder_and_more.py
+finance\migrations\0008_alter_marketplacecommission_rate.py
+finance\migrations\__init__.py
+financial_routing\admin.py
+financial_routing\apps.py
+financial_routing\models.py
+financial_routing\partner_models.py
+financial_routing\services.py
+financial_routing\wenze.py
+financial_routing\__init__.py
+financial_routing\migrations\0001_initial.py
+financial_routing\migrations\0002_financialpartner.py
+financial_routing\migrations\0003_alter_financialfeerule_fee_type.py
+financial_routing\migrations\__init__.py
+partner_finance\admin.py
+partner_finance\apps.py
+partner_finance\models.py
+partner_finance\tests.py
+partner_finance\urls.py
+partner_finance\views.py
+partner_finance\__init__.py
+partner_finance\migrations\0001_initial.py
+partner_finance\migrations\0002_partnerdeposit_supplytransaction.py
+partner_finance\migrations\0003_alter_partnerapplication_user_and_more.py
+partner_finance\migrations\__init__.py
+service_dashboard\financial_health_control_views.py
+tests\test_wenze_concurrent_payment.py
+tests\test_wenze_payment_errors.py
+tests\test_wenze_stock_payment.py
+transactions\admin.py
+transactions\apps.py
+transactions\models.py
+transactions\services.py
+transactions\tests.py
+transactions\urls.py
+transactions\views.py
+transactions\__init__.py
+transactions\migrations\0001_initial.py
+transactions\migrations\__init__.py
+venv\Lib\site-packages\django\db\transaction.py
+venv\Lib\site-packages\psycopg\transaction.py
+wallet\admin.py
+wallet\apps.py
+wallet\currency_models.py
+wallet\kyc_limits.py
+wallet\models.py
+wallet\security.py
+wallet\serializers.py
+wallet\services.py
+wallet\signals.py
+wallet\tests.py
+wallet\urls.py
+wallet\views.py
+wallet\views_secure.py
+wallet\__init__.py
+wallet\migrations\0001_initial.py
+wallet\migrations\0002_alter_wallet_user.py
+wallet\migrations\0003_walletcommission_walletoperation.py
+wallet\migrations\0004_walletauditlog.py
+wallet\migrations\0005_walletkycprofile_walletcurrencybalance.py
+wallet\migrations\0006_walletbankaccount.py
+wallet\migrations\__init__.py
+wenze\payment.py
+wenze\migrations\0002_wenzeorder_paid_at_wenzeorder_payment_fee_and_more.py
+
+============================================================
+4. URLS / ROUTES / VUES RELATIVES AUX CADEAUX
+============================================================
+
+add_bank_admin.py : ligne 3
+    admin = Path("administration/admin.py")
+add_bank_country_access.py : ligne 3
+    file = Path("administration/models.py")
+add_bank_models.py : ligne 3
+    file = Path("administration/models.py")
+add_banque_dashboard.py : ligne 3
+    file = Path("dashboard/views.py")
+add_certification_admin.py : ligne 3
+    file = Path("certification/admin.py")
+add_certification_dashboard.py : ligne 3
+    file = Path("dashboard/views.py")
+add_country_admin.py : ligne 3
+    file = Path("administration/admin.py")
+add_dashboard_route.py : ligne 3
+    file = Path("dashboard/urls.py")
+add_dashboard_route.py : ligne 8
+    path("stats/", views.dashboard_stats),
+add_dashboard_route.py : ligne 11
+    if 'path("stats/"' not in content:
+add_dashboard_stats.py : ligne 3
+    file = Path("dashboard/views.py")
+add_finance_dashboard.py : ligne 3
+    file = Path("dashboard/views.py")
+add_pays_dashboard.py : ligne 3
+    file = Path("dashboard/views.py")
+add_wenze_dashboard.py : ligne 3
+    file = Path("dashboard/views.py")
+build_bank_partner_module.py : ligne 5
+    models = Path("administration/models.py")
+build_certification_centrale_nsikay.py : ligne 5
+    models = Path("certification/models.py")
+build_certification_module.py : ligne 5
+    file = Path("certification/models.py")
+build_country_supervision.py : ligne 5
+    file = Path("administration/models.py")
+build_country_supervision_module.py : ligne 5
+    models = Path("administration/models.py")
+build_nsikay_control_center.py : ligne 6
+    path = Path("dashboard/views.py")
+build_nsikay_control_center.py : ligne 88
+    url_path = Path("dashboard/urls.py")
+build_nsikay_control_center.py : ligne 101
+    path(
+build_nsikay_roles_permissions.py : ligne 6
+    path = Path("administration/models.py")
+build_nsikay_role_security.py : ligne 8
+    path = Path("dashboard/security.py")
+build_nsikay_role_security.py : ligne 98
+    views = Path("dashboard/views.py")
+build_secure_api_nsikay.py : ligne 33
+    path("users/",views.users),
+build_secure_api_nsikay.py : ligne 34
+    path("banks/",views.banks),
+build_secure_api_nsikay.py : ligne 35
+    path("countries/",views.countries),
+build_secure_api_nsikay.py : ligne 36
+    path("certifications/",views.certifications),
+build_secure_api_nsikay.py : ligne 37
+    path("transactions/",views.transactions),
+build_secure_api_nsikay.py : ligne 38
+    path("finance/",views.finance),
+build_secure_api_nsikay.py : ligne 129
+    "urlpatterns = [\n    path('api/', include('api.urls')),"
+connect_bank_partner_dashboard.py : ligne 5
+    views = Path("dashboard/views.py")
+connect_certification_dashboard.py : ligne 5
+    views = Path("dashboard/views.py")
+connect_country_dashboard.py : ligne 5
+    views = Path("dashboard/views.py")
+connect_dashboards.py : ligne 3
+    file = Path("dashboard/views.py")
+connect_real_banks_dashboard.py : ligne 3
+    file = Path("dashboard/views.py")
+connect_real_dashboards.py : ligne 3
+    file = Path("dashboard/views.py")
+create_dashboards.py : ligne 3
+    file = Path("dashboard/views.py")
+create_dashboard_urls.py : ligne 3
+    file = Path("dashboard/urls.py")
+create_dashboard_urls.py : ligne 12
+    path("admin/", views.admin_dashboard),
+create_dashboard_urls.py : ligne 13
+    path("pays/", views.pays_dashboard),
+create_dashboard_urls.py : ligne 14
+    path("banque/", views.banque_dashboard),
+create_dashboard_urls.py : ligne 15
+    path("finance/", views.finance_dashboard),
+create_dashboard_urls.py : ligne 16
+    path("wenze/", views.wenze_dashboard),
+create_dashboard_urls.py : ligne 17
+    path("certification/", views.certification_dashboard),
+create_dashboard_urls.py : ligne 18
+    path("conformite/", views.conformite_dashboard),
+create_dashboard_urls.py : ligne 19
+    path("publicite/", views.publicite_dashboard),
+create_dashboard_urls.py : ligne 20
+    path("evenements/", views.evenements_dashboard),
+fix_all_dashboard_routes.py : ligne 3
+    file = Path("dashboard/views.py")
+fix_certification_model.py : ligne 5
+    file = Path("certification/models.py")
+fix_dashboard_aliases.py : ligne 3
+    file = Path("dashboard/views.py")
+fix_dashboard_all_aliases.py : ligne 3
+    views = Path("dashboard/views.py")
+fix_finance_dashboard.py : ligne 3
+    file = Path("dashboard/views.py")
+fix_hosts.py : ligne 3
+    file = Path("nsikay/settings.py")
+restore_dashboard_stats.py : ligne 3
+    file = Path("dashboard/views.py")
+update_certification_dashboard_real.py : ligne 6
+    path = Path("dashboard/views.py")
+update_country_supervision_dashboard_real.py : ligne 6
+    path = Path("dashboard/views.py")
+update_finance_dashboard_real.py : ligne 6
+    path = Path("dashboard/views.py")
+update_real_dashboards.py : ligne 3
+    file = Path("dashboard/views.py")
+update_transactions_dashboard_real.py : ligne 6
+    path = Path("dashboard/views.py")
+administration\urls.py : ligne 8
+    path(
+administration\urls.py : ligne 15
+    path(
+administration\urls.py : ligne 21
+    path(
+administration\urls.py : ligne 27
+    path(
+ai\urls.py : ligne 5
+    path('', views.index, name='index'),
+api\urls.py : ligne 7
+    path("users/",views.users),
+api\urls.py : ligne 8
+    path("banks/",views.banks),
+api\urls.py : ligne 9
+    path("countries/",views.countries),
+api\urls.py : ligne 10
+    path("certifications/",views.certifications),
+api\urls.py : ligne 11
+    path("transactions/",views.transactions),
+api\urls.py : ligne 12
+    path("finance/",views.finance),
+api_nsikay\analytics_urls.py : ligne 10
+    path(
+api_nsikay\banks_urls.py : ligne 7
+    path("", views.banks_list, name="banks-list"),
+api_nsikay\bank_api_urls.py : ligne 8
+    path(
+api_nsikay\certifications_urls.py : ligne 6
+    path("",CertificationAPI.as_view()),
+api_nsikay\certification_urls.py : ligne 7
+    path("", views.certification_list, name="certification-list"),
+api_nsikay\countries_urls.py : ligne 8
+    path("", views.countries_list, name="countries-list"),
+api_nsikay\enterprise_urls.py : ligne 10
+    path(
+api_nsikay\finance_admin_urls.py : ligne 10
+    path(
+api_nsikay\finance_api_urls.py : ligne 8
+    path(
+api_nsikay\finance_urls.py : ligne 7
+    path("", views.finance_dashboard, name="finance-dashboard"),
+api_nsikay\kyc_urls.py : ligne 7
+    path("", views.kyc_status, name="kyc-status"),
+api_nsikay\marketplace_urls.py : ligne 10
+    path(
+api_nsikay\models.py : ligne 364
+    class VirtualGift(models.Model):
+api_nsikay\models.py : ligne 390
+    class GiftTransaction(models.Model):
+api_nsikay\models.py : ligne 398
+    related_name="sent_gifts"
+api_nsikay\models.py : ligne 408
+    related_name="received_gifts"
+api_nsikay\models.py : ligne 412
+    gift = models.ForeignKey(
+api_nsikay\models.py : ligne 414
+    VirtualGift,
+api_nsikay\models_backup.py : ligne 363
+    class VirtualGift(models.Model):
+api_nsikay\models_backup.py : ligne 389
+    class GiftTransaction(models.Model):
+api_nsikay\models_backup.py : ligne 397
+    related_name="sent_gifts"
+api_nsikay\models_backup.py : ligne 407
+    related_name="received_gifts"
+api_nsikay\models_backup.py : ligne 411
+    gift = models.ForeignKey(
+api_nsikay\models_backup.py : ligne 413
+    VirtualGift,
+api_nsikay\models_backup_encoding.py : ligne 362
+    class VirtualGift(models.Model):
+api_nsikay\models_backup_encoding.py : ligne 388
+    class GiftTransaction(models.Model):
+api_nsikay\models_backup_encoding.py : ligne 396
+    related_name="sent_gifts"
+api_nsikay\models_backup_encoding.py : ligne 406
+    related_name="received_gifts"
+api_nsikay\models_backup_encoding.py : ligne 410
+    gift = models.ForeignKey(
+api_nsikay\models_backup_encoding.py : ligne 412
+    VirtualGift,
+api_nsikay\routing.py : ligne 10
+    re_path(
+api_nsikay\security_urls.py : ligne 19
+    path(
+api_nsikay\security_urls.py : ligne 28
+    path(
+api_nsikay\security_urls.py : ligne 37
+    path(
+api_nsikay\superapp_urls.py : ligne 9
+    path(
+api_nsikay\transactions_urls.py : ligne 7
+    path("", views.transactions_list, name="transactions-list"),
+api_nsikay\urls.py : ligne 6
+    path(
+api_nsikay\urls.py : ligne 11
+    path(
+api_nsikay\urls.py : ligne 16
+    path(
+api_nsikay\urls.py : ligne 21
+    path(
+api_nsikay\urls.py : ligne 26
+    path(
+api_nsikay\urls.py : ligne 33
+    path(
+api_nsikay\urls.py : ligne 39
+    path(
+api_nsikay\urls.py : ligne 45
+    path(
+api_nsikay\urls.py : ligne 51
+    path(
+api_nsikay\urls.py : ligne 57
+    path(
+api_nsikay\urls.py : ligne 63
+    path(
+api_nsikay\urls.py : ligne 69
+    path(
+api_nsikay\urls.py : ligne 75
+    path(
+api_nsikay\urls.py : ligne 82
+    path("tv/", include("api_nsikay.tv.urls")),
+api_nsikay\urls_backup.py : ligne 6
+    path(
+api_nsikay\urls_backup.py : ligne 11
+    path(
+api_nsikay\urls_backup.py : ligne 16
+    path(
+api_nsikay\urls_backup.py : ligne 21
+    path(
+api_nsikay\urls_backup.py : ligne 26
+    path(
+api_nsikay\urls_backup.py : ligne 33
+    path(
+api_nsikay\urls_backup.py : ligne 39
+    path(
+api_nsikay\urls_backup.py : ligne 45
+    path(
+api_nsikay\urls_backup.py : ligne 51
+    path(
+api_nsikay\urls_backup.py : ligne 57
+    path(
+api_nsikay\urls_backup.py : ligne 63
+    path(
+api_nsikay\urls_backup.py : ligne 69
+    path(
+api_nsikay\urls_backup.py : ligne 75
+    path(
+api_nsikay\urls_backup.py : ligne 81
+    path(
+api_nsikay\urls_backup.py : ligne 88
+    path("tv/", include("api_nsikay.tv.urls")),
+api_nsikay\urls_before_repair_20261001_115304.py : ligne 6
+    path(
+api_nsikay\urls_before_repair_20261001_115304.py : ligne 11
+    path(
+api_nsikay\urls_before_repair_20261001_115304.py : ligne 16
+    path(
+api_nsikay\urls_before_repair_20261001_115304.py : ligne 21
+    path(
+api_nsikay\urls_before_repair_20261001_115304.py : ligne 26
+    path(
+api_nsikay\urls_before_repair_20261001_115304.py : ligne 33
+    path(
+api_nsikay\urls_before_repair_20261001_115304.py : ligne 39
+    path(
+api_nsikay\urls_before_repair_20261001_115304.py : ligne 45
+    path(
+api_nsikay\urls_before_repair_20261001_115304.py : ligne 51
+    path(
+api_nsikay\urls_before_repair_20261001_115304.py : ligne 57
+    path(
+api_nsikay\urls_before_repair_20261001_115304.py : ligne 64
+    path(
+api_nsikay\urls_before_repair_20261001_115304.py : ligne 70
+    path(
+api_nsikay\urls_before_repair_20261001_115304.py : ligne 76
+    path(
+api_nsikay\urls_before_repair_20261001_115304.py : ligne 83
+    path("tv/", include("api_nsikay.tv.urls")),
+api_nsikay\users_urls.py : ligne 6
+    path("",UsersAPI.as_view()),
+api_nsikay\wallet_api_urls.py : ligne 6
+    path(
+api_nsikay\wallet_bank_urls.py : ligne 15
+    path(
+api_nsikay\wallet_bank_urls.py : ligne 24
+    path(
+api_nsikay\wallet_dashboard_urls.py : ligne 10
+    path(
+api_nsikay\wallet_operations_urls.py : ligne 12
+    path(
+api_nsikay\wallet_operations_urls.py : ligne 18
+    path(
+api_nsikay\wallet_operations_urls.py : ligne 24
+    path(
+api_nsikay\wallet_urls.py : ligne 7
+    path("", views.wallet_dashboard, name="wallet-dashboard"),
+api_nsikay\migrations\0004_tvchannel_virtualgift_advertisingcampaign_and_more.py : ligne 26
+    name='VirtualGift',
+api_nsikay\migrations\0004_tvchannel_virtualgift_advertisingcampaign_and_more.py : ligne 123
+    name='GiftTransaction',
+api_nsikay\migrations\0004_tvchannel_virtualgift_advertisingcampaign_and_more.py : ligne 127
+    ('receiver', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='received_gifts', to=settings.AUTH_USER_MODEL)),
+api_nsikay\migrations\0004_tvchannel_virtualgift_advertisingcampaign_and_more.py : ligne 128
+    ('sender', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='sent_gifts', to=settings.AUTH_USER_MODEL)),
+api_nsikay\migrations\0004_tvchannel_virtualgift_advertisingcampaign_and_more.py : ligne 129
+    ('gift', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api_nsikay.virtualgift')),
+api_nsikay\migrations\0005_adminanalytics_contentanalytics_adcampaigncenter_and_more.py : ligne 11
+    ('api_nsikay', '0004_tvchannel_virtualgift_advertisingcampaign_and_more'),
+api_nsikay\tv\urls.py : ligne 8
+    path(
+app_center\urls.py : ligne 5
+    path('', views.index, name='index'),
+association\urls.py : ligne 5
+    path('', views.index, name='index'),
+backups_marketplace_deactivation_20261001_120442\api_nsikay__marketplace_urls.py : ligne 14
+    path(
+backups_marketplace_legacy_20261001_120358\api_nsikay__marketplace_urls.py : ligne 14
+    path(
+backups_marketplace_legacy_20261001_120358\api_nsikay__urls.py : ligne 6
+    path(
+backups_marketplace_legacy_20261001_120358\api_nsikay__urls.py : ligne 11
+    path(
+backups_marketplace_legacy_20261001_120358\api_nsikay__urls.py : ligne 16
+    path(
+backups_marketplace_legacy_20261001_120358\api_nsikay__urls.py : ligne 21
+    path(
+backups_marketplace_legacy_20261001_120358\api_nsikay__urls.py : ligne 26
+    path(
+backups_marketplace_legacy_20261001_120358\api_nsikay__urls.py : ligne 33
+    path(
+backups_marketplace_legacy_20261001_120358\api_nsikay__urls.py : ligne 39
+    path(
+backups_marketplace_legacy_20261001_120358\api_nsikay__urls.py : ligne 45
+    path(
+backups_marketplace_legacy_20261001_120358\api_nsikay__urls.py : ligne 51
+    path(
+backups_marketplace_legacy_20261001_120358\api_nsikay__urls.py : ligne 57
+    path(
+backups_marketplace_legacy_20261001_120358\api_nsikay__urls.py : ligne 63
+    path(
+backups_marketplace_legacy_20261001_120358\api_nsikay__urls.py : ligne 69
+    path(
+backups_marketplace_legacy_20261001_120358\api_nsikay__urls.py : ligne 75
+    path(
+backups_marketplace_legacy_20261001_120358\api_nsikay__urls.py : ligne 82
+    path("tv/", include("api_nsikay.tv.urls")),
+backups_marketplace_legacy_20261001_120358\api_nsikay__urls_backup.py : ligne 6
+    path(
+backups_marketplace_legacy_20261001_120358\api_nsikay__urls_backup.py : ligne 11
+    path(
+backups_marketplace_legacy_20261001_120358\api_nsikay__urls_backup.py : ligne 16
+    path(
+backups_marketplace_legacy_20261001_120358\api_nsikay__urls_backup.py : ligne 21
+    path(
+backups_marketplace_legacy_20261001_120358\api_nsikay__urls_backup.py : ligne 26
+    path(
+backups_marketplace_legacy_20261001_120358\api_nsikay__urls_backup.py : ligne 33
+    path(
+backups_marketplace_legacy_20261001_120358\api_nsikay__urls_backup.py : ligne 39
+    path(
+backups_marketplace_legacy_20261001_120358\api_nsikay__urls_backup.py : ligne 45
+    path(
+backups_marketplace_legacy_20261001_120358\api_nsikay__urls_backup.py : ligne 51
+    path(
+backups_marketplace_legacy_20261001_120358\api_nsikay__urls_backup.py : ligne 57
+    path(
+backups_marketplace_legacy_20261001_120358\api_nsikay__urls_backup.py : ligne 63
+    path(
+backups_marketplace_legacy_20261001_120358\api_nsikay__urls_backup.py : ligne 69
+    path(
+backups_marketplace_legacy_20261001_120358\api_nsikay__urls_backup.py : ligne 75
+    path(
+backups_marketplace_legacy_20261001_120358\api_nsikay__urls_backup.py : ligne 81
+    path(
+backups_marketplace_legacy_20261001_120358\api_nsikay__urls_backup.py : ligne 88
+    path("tv/", include("api_nsikay.tv.urls")),
+banking\urls.py : ligne 7
+    path(
+banking\urls.py : ligne 13
+    path(
+banking\urls.py : ligne 19
+    path(
+banking\urls.py : ligne 25
+    path(
+bank_dashboard\urls.py : ligne 5
+    path('', views.index, name='index'),
+business\urls.py : ligne 5
+    path('', views.index, name='index'),
+certification\urls.py : ligne 7
+    path(
+certification\urls.py : ligne 13
+    path(
+certification\urls.py : ligne 19
+    path(
+dashboard\urls.py : ligne 7
+    path("stats/", views.dashboard_stats),
+dashboard\urls.py : ligne 9
+    path("banques/", views.banques_partenaires),
+dashboard\urls.py : ligne 11
+    path("pays/", views.supervision_pays),
+dashboard\urls.py : ligne 13
+    path("certification/", views.certification_stats),
+dashboard\urls.py : ligne 15
+    path("transactions/", views.transactions_stats),
+dashboard\urls.py : ligne 17
+    path("finance/", views.finance_stats),
+dashboard\urls.py : ligne 26
+    path(
+finance\urls.py : ligne 5
+    path('', views.index, name='index'),
+financial_routing\models.py : ligne 13
+    ("GIFT", "Cadeau"),
+financial_routing\migrations\0001_initial.py : ligne 35
+    ('source_type', models.CharField(choices=[('WENZE', 'WENZE'), ('EVENT', 'Événement'), ('TICKET', 'Billetterie'), ('ADVERTISING', 'Publicité'), ('MEMBERSHIP', 'Adhésion'), ('GIFT', 'Cadeau'), ('COMMISSION', 'Commission'), ('CREDIT', 'Crédit'), ('INVESTMENT', 'Investissement'), ('OTHER', 'Autre')], max_length=30)),
+marketing\urls.py : ligne 21
+    path('', include(router.urls)),
+media\urls.py : ligne 21
+    path('', include(router.urls)),
+nsikay\api_urls_final.py : ligne 17
+    path(
+nsikay\api_urls_final.py : ligne 23
+    path(
+nsikay\api_urls_final.py : ligne 30
+    path(
+nsikay\api_urls_final.py : ligne 37
+    path(
+nsikay\api_urls_final.py : ligne 46
+    path(
+nsikay\api_urls_final.py : ligne 51
+    path(
+nsikay\settings.py : ligne 17
+    BASE_DIR = Path(__file__).resolve().parent.parent
+nsikay\storage_production.py : ligne 5
+    BASE_DIR = Path(__file__).resolve().parent.parent
+nsikay\urls.py : ligne 6
+    path("api/services/", include("service_control.urls")),
+nsikay\urls.py : ligne 7
+    path('api/', include('api.urls')),
+nsikay\urls.py : ligne 9
+    path("admin/", admin.site.urls),
+nsikay\urls.py : ligne 11
+    path("banking/", include("banking.urls")),
+nsikay\urls.py : ligne 12
+    path("dashboard/", include("dashboard.urls")),
+nsikay\urls.py : ligne 13
+    path("certification/", include("certification.urls")),
+nsikay\urls.py : ligne 14
+    path("administration/", include("administration.urls")),
+nsikay\urls.py : ligne 15
+    path("transactions/", include("transactions.urls")),
+nsikay\urls.py : ligne 16
+    path("partners/", include("partner_finance.urls")),
+nsikay\urls.py : ligne 18
+    path("finance/", include("finance.urls")),
+nsikay\urls.py : ligne 19
+    path("business/", include("business.urls")),
+nsikay\urls.py : ligne 20
+    path("wenze/", include("wenze.urls")),
+nsikay\urls.py : ligne 21
+    path("marketing/", include("marketing.urls")),
+nsikay\urls.py : ligne 22
+    path("media/", include("media.urls")),
+nsikay\urls.py : ligne 23
+    path("ai/", include("ai.urls")),
+nsikay\urls.py : ligne 24
+    path("operations/", include("operations.urls")),
+nsikay\urls.py : ligne 25
+    path("association/", include("association.urls")),
+nsikay\urls.py : ligne 26
+    path("app-center/", include("app_center.urls")),
+nsikay\urls.py : ligne 27
+    path("bank-dashboard/", include("bank_dashboard.urls")),
+nsikay\urls.py : ligne 28
+    path("service-dashboard/", include("service_dashboard.urls")),
+nsikay\urls.py : ligne 29
+    path("dashboard/tv-regie/", include("tv_regie.dashboard_urls")),
+nsikay\urls.py : ligne 31
+    path("api/nsikay/", include("api_nsikay.urls")),
+nsikay\urls.py : ligne 32
+    path("api/tv-regie/", include("tv_regie.urls")),
+operations\urls.py : ligne 5
+    path('', views.index, name='index'),
+partner_finance\urls.py : ligne 8
+    path(
+partner_finance\urls.py : ligne 13
+    path(
+partner_finance\urls.py : ligne 18
+    path(
+scripts\analyse_249_pays.py : ligne 7
+    os.path.abspath(__file__)
+scripts\apply_official_240_countries.py : ligne 5
+    os.path.dirname(os.path.abspath(__file__))
+scripts\classify_249_iso_entities.py : ligne 6
+    os.path.dirname(os.path.abspath(__file__))
+scripts\create_official_240_countries_log.py : ligne 5
+    os.path.dirname(os.path.abspath(__file__))
+scripts\export_249_pays_selection.py : ligne 7
+    os.path.abspath(__file__)
+scripts\export_final_240_countries.py : ligne 6
+    os.path.dirname(os.path.abspath(__file__))
+scripts\set_operational_countries.py : ligne 5
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+scripts\verify_before_240_activation.py : ligne 5
+    os.path.dirname(os.path.abspath(__file__))
+scripts\verify_country_audit_final.py : ligne 6
+    os.path.abspath(__file__)
+scripts\verify_country_integrity_before_final.py : ligne 6
+    os.path.abspath(__file__)
+scripts\verify_country_integrity_final.py : ligne 6
+    os.path.abspath(__file__)
+scripts\verify_country_routes_final.py : ligne 6
+    os.path.abspath(__file__)
+scripts\verify_exact_240_countries.py : ligne 5
+    os.path.dirname(os.path.abspath(__file__))
+scripts\verify_operational_countries.py : ligne 4
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+scripts\verify_operational_countries_url.py : ligne 4
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+scripts\verify_operational_countries_view.py : ligne 6
+    os.path.abspath(__file__)
+scripts\verify_operational_route_final.py : ligne 6
+    os.path.abspath(__file__)
+service_control\urls.py : ligne 10
+    path(
+service_control\urls.py : ligne 15
+    path(
+service_control\urls.py : ligne 20
+    path(
+service_dashboard\integrate_activation.py : ligne 3
+    file = Path("service_dashboard/dashboard_views.py")
+service_dashboard\integrate_activation.py : ligne 6
+    patch = Path("service_dashboard/activation_patch.py").read_text(
+service_dashboard\urls.py : ligne 49
+    path(
+service_dashboard\urls.py : ligne 55
+    path(
+service_dashboard\urls.py : ligne 61
+    path(
+service_dashboard\urls.py : ligne 71
+    path(
+service_dashboard\urls.py : ligne 77
+    path(
+service_dashboard\urls.py : ligne 83
+    path(
+service_dashboard\urls.py : ligne 93
+    path(
+service_dashboard\urls.py : ligne 99
+    path(
+service_dashboard\urls.py : ligne 109
+    path(
+service_dashboard\urls.py : ligne 115
+    path(
+service_dashboard\urls.py : ligne 125
+    path(
+service_dashboard\urls.py : ligne 135
+    path(
+service_dashboard\urls.py : ligne 141
+    path(
+service_dashboard\urls.py : ligne 151
+    path(
+service_dashboard\urls.py : ligne 157
+    path(
+service_dashboard\urls.py : ligne 163
+    path(
+service_dashboard\urls.py : ligne 179
+    path(
+service_dashboard\urls.py : ligne 184
+    path(
+service_dashboard\urls.py : ligne 189
+    path(
+service_dashboard\urls.py : ligne 200
+    path(
+service_dashboard\urls.py : ligne 205
+    path(
+service_dashboard\urls.py : ligne 218
+    path(
+
+============================================================
+5. ADMINISTRATION / PERMISSIONS
+============================================================
+
+
+### administration\models.py
+ligne 55 : "finance.Currency",
+ligne 94 : "partner_finance.PartnerApplication",
+ligne 540 : ("SUPER_ADMIN", "Super Administrateur NSIKAY"),
+ligne 548 : ("FINANCE_ADMIN", "Administrateur Finance"),
+ligne 581 : class NSIKAYPermission(models.Model):
+
+### api\views.py
+ligne 17 : "permissions":"actives"
+ligne 65 : def finance(request):
+ligne 67 : "module":"API Finance NSIKAY",
+
+### api_nsikay\views.py
+ligne 4 : from rest_framework.permissions import IsAuthenticated
+ligne 8 : permission_classes=[IsAuthenticated]
+ligne 20 : "permissions"
+ligne 65 : class FinanceAPI(SecureAPIView):
+ligne 68 : "module":"FINANCE",
+ligne 79 : from rest_framework.decorators import api_view, permission_classes
+ligne 80 : from rest_framework.permissions import IsAuthenticated
+ligne 85 : @permission_classes([IsAuthenticated])
+ligne 141 : def finance_dashboard(request):
+ligne 143 : "module": "finance",
+
+### backups\finance_migration_0008_20261001_131432\models.py
+ligne 38 : related_name='finance_wallets', on_delete=models.CASCADE
+ligne 73 : related_name='finance_wallets', on_delete=models.CASCADE
+ligne 132 : class FinancialLedger(models.Model):
+
+### backups\financial_clean_20261001_130349\models.py
+ligne 38 : related_name='finance_wallets', on_delete=models.CASCADE
+ligne 73 : related_name='finance_wallets', on_delete=models.CASCADE
+ligne 132 : class FinancialLedger(models.Model):
+
+### backups\financial_full_check_20261001_131156\admin.py
+ligne 4 : FinancialPartner,
+ligne 5 : FinancialRoutingRule,
+ligne 6 : FinancialRoutingLog,
+ligne 7 : FinancialFeeRule,
+ligne 94 : # FINANCIAL PARTNER
+ligne 97 : @admin.register(FinancialPartner)
+ligne 98 : class FinancialPartnerAdminNSIKAY(admin.ModelAdmin):
+ligne 141 : # FINANCIAL ROUTING RULE
+ligne 144 : @admin.register(FinancialRoutingRule)
+ligne 145 : class FinancialRoutingRuleAdminNSIKAY(admin.ModelAdmin):
+ligne 196 : # FINANCIAL ROUTING LOG
+ligne 199 : @admin.register(FinancialRoutingLog)
+ligne 200 : class FinancialRoutingLogAdminNSIKAY(admin.ModelAdmin):
+ligne 225 : # FINANCIAL FEE RULE
+ligne 228 : @admin.register(FinancialFeeRule)
+ligne 229 : class FinancialFeeRuleAdminNSIKAY(admin.ModelAdmin):
+
+### backups\financial_full_check_20261001_131156\models.py
+ligne 24 : related_name="partner_finance_relation"
+ligne 111 : "finance.Currency",
+ligne 144 : "finance.Currency",
+ligne 173 : "partner_finance.PartnerWallet",
+ligne 193 : "finance.Currency",
+ligne 220 : "partner_finance.PartnerWallet",
+
+### backups\financial_full_check_20261001_131156\services.py
+ligne 3 : from finance.models import Wallet
+ligne 4 : from finance.wallet_service import (
+
+### backups\transactions_alignment_20261001_131312\services.py
+ligne 4 : from financial_routing.services import calculate_fee
+
+### backups\wenze_stock_20261001_135627\views.py
+ligne 9 : from financial_routing.wenze import prepare_wenze_revenue
+ligne 69 : financial_preparation = prepare_wenze_revenue(
+ligne 103 : "financial_preparation": financial_preparation,
+ligne 154 : from finance.models import Wallet
+
+### banking\models.py
+ligne 3 : from finance.models import Wallet, Currency
+ligne 106 : from finance.models import Currency
+ligne 230 : from finance.models import Currency
+ligne 352 : "finance.Currency",
+ligne 383 : "finance.Currency",
+ligne 410 : "partner_finance.PartnerApplication",
+ligne 428 : "finance.Currency",
+ligne 462 : "partner_finance.PartnerApplication",
+ligne 480 : "finance.Currency",
+ligne 526 : "partner_finance.PartnerApplication",
+ligne 544 : "finance.Currency",
+ligne 595 : "finance.Currency",
+ligne 678 : "finance.Currency",
+
+### banking\permissions.py
+ligne 11 : return user.is_staff
+ligne 16 : if user.is_staff:
+
+### dashboard\views.py
+ligne 16 : from finance.models import *
+ligne 196 : def dashboard_finance(request):
+ligne 312 : def finance_dashboard(request):
+ligne 313 : return dashboard_finance(request)
+ligne 358 : @require_nsikay_role(['SUPER_ADMIN','FINANCE_ADMIN','BANK_ADMIN'])
+ligne 366 : @require_nsikay_role(['SUPER_ADMIN','FINANCE_ADMIN'])
+ligne 367 : def finance_stats(request):
+ligne 369 : from finance.models import Currency, ExchangeRate
+ligne 436 : "Finance RÃ©elle NSIKAY",
+ligne 516 : finance_stats
+ligne 518 : @require_nsikay_role(['SUPER_ADMIN','FINANCE_ADMIN'])
+ligne 519 : def finance_stats(request):
+ligne 520 : return finance_dashboard(request)
+
+### finance\models.py
+ligne 38 : related_name='finance_wallets', on_delete=models.CASCADE
+ligne 73 : related_name='finance_wallets', on_delete=models.CASCADE
+ligne 132 : class FinancialLedger(models.Model):
+
+### financial_routing\admin.py
+ligne 4 : FinancialPartner,
+ligne 5 : FinancialRoutingRule,
+ligne 6 : FinancialRoutingLog,
+ligne 7 : FinancialFeeRule,
+ligne 94 : # FINANCIAL PARTNER
+ligne 97 : @admin.register(FinancialPartner)
+ligne 98 : class FinancialPartnerAdminNSIKAY(admin.ModelAdmin):
+ligne 141 : # FINANCIAL ROUTING RULE
+ligne 144 : @admin.register(FinancialRoutingRule)
+ligne 145 : class FinancialRoutingRuleAdminNSIKAY(admin.ModelAdmin):
+ligne 196 : # FINANCIAL ROUTING LOG
+ligne 199 : @admin.register(FinancialRoutingLog)
+ligne 200 : class FinancialRoutingLogAdminNSIKAY(admin.ModelAdmin):
+ligne 225 : # FINANCIAL FEE RULE
+ligne 228 : @admin.register(FinancialFeeRule)
+ligne 229 : class FinancialFeeRuleAdminNSIKAY(admin.ModelAdmin):
+
+### financial_routing\models.py
+ligne 5 : class FinancialRoutingRule(models.Model):
+ligne 32 : ("FINANCIAL_PARTNER", "Partenaire financier"),
+ligne 153 : related_name="financial_routing_rules_created"
+ligne 161 : related_name="financial_routing_rules_approved"
+ligne 187 : class FinancialRoutingLog(models.Model):
+ligne 199 : FinancialRoutingRule,
+ligne 229 : class FinancialFeeRule(models.Model):
+ligne 276 : from .partner_models import FinancialPartner
+
+### financial_routing\services.py
+ligne 5 : from .models import FinancialRoutingRule, FinancialFeeRule
+ligne 25 : return FinancialFeeRule.objects.filter(
+ligne 70 : def resolve_financial_route(
+ligne 91 : queryset = FinancialRoutingRule.objects.filter(
+ligne 139 : def route_financial_operation(
+ligne 165 : rule = resolve_financial_route(
+ligne 210 : FinancialFeeRule.TRANSFER_INTERNAL,
+ligne 211 : FinancialFeeRule.TRANSFER_MOBILE_MONEY,
+ligne 212 : FinancialFeeRule.TRANSFER_VISA,
+ligne 213 : FinancialFeeRule.WITHDRAWAL,
+ligne 214 : FinancialFeeRule.WENZE,
+
+### operations\models.py
+ligne 31 : "partner_finance.PartnerWallet",
+ligne 49 : "finance.Currency",
+ligne 113 : "partner_finance.PartnerWallet",
+ligne 131 : "finance.Currency",
+
+### operations\services.py
+ligne 3 : from finance.models import Wallet
+ligne 4 : from finance.wallet_service import (
+
+### partner_finance\models.py
+ligne 24 : related_name="partner_finance_relation"
+ligne 111 : "finance.Currency",
+ligne 144 : "finance.Currency",
+ligne 173 : "partner_finance.PartnerWallet",
+ligne 193 : "finance.Currency",
+ligne 220 : "partner_finance.PartnerWallet",
+
+### service_control\admin.py
+ligne 73 : "financial_partner_required",
+ligne 83 : "financial_partner_required",
+
+### service_control\models.py
+ligne 112 : financial_partner_required = models.BooleanField(default=False)
+
+### service_control\services.py
+ligne 22 : from partner_finance.models import (
+ligne 186 : def check_financial_partner(country):
+ligne 320 : if rule.financial_partner_required:
+ligne 321 : valid, message = ServiceActivationValidator.check_financial_partner(
+ligne 403 : if not rule.partner_bank_required and not rule.financial_partner_required:
+ligne 436 : if rule.financial_partner_required:
+ligne 492 : if rule.partner_bank_required or rule.financial_partner_required:
+
+### service_dashboard\models.py
+ligne 165 : financial_partner_checked = models.BooleanField(
+
+### service_dashboard\backups_bloc10\models.py
+ligne 165 : financial_partner_checked = models.BooleanField(
+
+### service_dashboard\backups_bloc6_20260930_182627\models.py
+ligne 156 : financial_partner_checked = models.BooleanField(
+
+### service_dashboard\backups_bloc8\models.py
+ligne 165 : financial_partner_checked = models.BooleanField(
+
+### service_dashboard\backups_bloc9\models.py
+ligne 165 : financial_partner_checked = models.BooleanField(
+
+### transactions\models.py
+ligne 48 : "partner_finance.PartnerWallet",
+ligne 62 : "finance.Currency",
+
+### transactions\services.py
+ligne 4 : from financial_routing.services import calculate_fee
+
+### tv_regie\permissions.py
+ligne 1 : from rest_framework.permissions import BasePermission
+ligne 4 : class IsTVRegieOperator(BasePermission):
+ligne 9 : def has_permission(self, request, view):
+ligne 14 : request.user.is_staff
+ligne 15 : or request.user.groups.filter(
+
+### tv_regie\views.py
+ligne 3 : from .permissions import IsTVRegieOperator
+ligne 27 : permission_classes = [IsTVRegieOperator]
+
+### venv\Lib\site-packages\django\contrib\admindocs\views.py
+ligne 11 : remove_non_capturing_groups,
+ligne 13 : replace_named_groups,
+ligne 14 : replace_unnamed_groups,
+ligne 16 : from django.contrib.auth import get_permission_codename
+ligne 19 : PermissionDenied,
+ligne 210 : def user_has_model_view_permission(user, opts):
+ligne 211 : """Based off ModelAdmin.has_view_permission."""
+ligne 212 : codename_view = get_permission_codename("view", opts)
+ligne 213 : codename_change = get_permission_codename("change", opts)
+ligne 226 : if user_has_model_view_permission(self.request.user, m._meta)
+ligne 249 : if not user_has_model_view_permission(self.request.user, opts):
+ligne 250 : raise PermissionDenied
+ligne 517 : pattern = remove_non_capturing_groups(pattern)
+ligne 518 : pattern = replace_named_groups(pattern)
+ligne 519 : pattern = replace_unnamed_groups(pattern)
+
+### venv\Lib\site-packages\django\contrib\auth\admin.py
+ligne 11 : from django.contrib.auth.models import Group, User
+ligne 12 : from django.core.exceptions import PermissionDenied
+ligne 25 : @admin.register(Group)
+ligne 26 : class GroupAdmin(admin.ModelAdmin):
+ligne 29 : filter_horizontal = ("permissions",)
+ligne 32 : if db_field.name == "permissions":
+ligne 34 : # Avoid a major performance hit resolving permission names which
+ligne 48 : _("Permissions"),
+ligne 52 : "is_staff",
+ligne 53 : "is_superuser",
+ligne 54 : "groups",
+ligne 55 : "user_permissions",
+ligne 73 : list_display = ("username", "email", "first_name", "last_name", "is_staff")
+ligne 74 : list_filter = ("is_staff", "is_superuser", "is_active", "groups")
+ligne 78 : "groups",
+ligne 79 : "user_permissions",
+ligne 122 : # It's an error for a user to have add permission but NOT change
+ligne 123 : # permission for users. If we allowed such users to add users, they
+ligne 125 : # the permission to change users. To avoid the problem entirely, we
+ligne 127 : # permission.
+ligne 128 : if not self.has_change_permission(request):
+ligne 129 : if self.has_add_permission(request) and settings.DEBUG:
+ligne 133 : 'Your user does not have the "Change user" permission. In '
+ligne 136 : "permissions set."
+ligne 138 : raise PermissionDenied
+ligne 152 : if not self.has_change_permission(request, user):
+ligne 153 : raise PermissionDenied
+ligne 218 : "has_delete_permission": False,
+ligne 219 : "has_change_permission": True,
+
+### venv\Lib\site-packages\django\contrib\auth\models.py
+ligne 8 : from django.core.exceptions import PermissionDenied
+ligne 27 : class PermissionManager(models.Manager):
+ligne 39 : class Permission(models.Model):
+ligne 41 : The permissions system provides a way to assign permissions to specific
+ligne 42 : users and groups of users.
+ligne 44 : The permission system is used by the Django admin site, but may also be
+ligne 45 : useful in your own code. The Django admin site uses permissions as follows:
+ligne 47 : - The "add" permission limits the user's ability to view the "add" form
+ligne 49 : - The "change" permission limits a user's ability to view the change
+ligne 51 : - The "delete" permission limits the ability to delete an object.
+ligne 52 : - The "view" permission limits the ability to view an object.
+ligne 54 : Permissions are set globally per type of object, not per specific object
+ligne 60 : The permissions listed above are automatically created for each model.
+ligne 71 : objects = PermissionManager()
+ligne 74 : verbose_name = _("permission")
+ligne 75 : verbose_name_plural = _("permissions")
+ligne 84 : """String representation for the user permission check."""
+ligne 93 : class GroupManager(models.Manager):
+ligne 95 : The manager for the auth's Group model.
+ligne 107 : class Group(models.Model):
+ligne 109 : Groups are a generic way of categorizing users to apply permissions, or
+ligne 111 : groups.
+ligne 113 : A user in a group automatically has all the permissions granted to that
+ligne 114 : group. For example, if the group 'Site editors' has the permission
+ligne 115 : can_edit_home_page, any user in that group will have that permission.
+ligne 117 : Beyond permissions, groups are a convenient way to categorize users to
+ligne 119 : could create a group 'Special users', and you could write code that would
+ligne 126 : permissions = models.ManyToManyField(
+ligne 127 : Permission,
+ligne 128 : verbose_name=_("permissions"),
+ligne 132 : objects = GroupManager()
+ligne 135 : verbose_name = _("group")
+ligne 136 : verbose_name_plural = _("groups")
+ligne 178 : extra_fields.setdefault("is_staff", False)
+ligne 179 : extra_fields.setdefault("is_superuser", False)
+ligne 185 : extra_fields.setdefault("is_staff", False)
+ligne 186 : extra_fields.setdefault("is_superuser", False)
+ligne 192 : extra_fields.setdefault("is_staff", True)
+ligne 193 : extra_fields.setdefault("is_superuser", True)
+ligne 195 : if extra_fields.get("is_staff") is not True:
+ligne 196 : raise ValueError("Superuser must have is_staff=True.")
+ligne 197 : if extra_fields.get("is_superuser") is not True:
+ligne 198 : raise ValueError("Superuser must have is_superuser=True.")
+ligne 207 : extra_fields.setdefault("is_staff", True)
+ligne 208 : extra_fields.setdefault("is_superuser", True)
+ligne 210 : if extra_fields.get("is_staff") is not True:
+ligne 211 : raise ValueError("Superuser must have is_staff=True.")
+ligne 212 : if extra_fields.get("is_superuser") is not True:
+ligne 213 : raise ValueError("Superuser must have is_superuser=True.")
+ligne 248 : def _user_get_permissions(user, obj, from_name):
+ligne 249 : permissions = set()
+ligne 250 : name = "get_%s_permissions" % from_name
+ligne 253 : permissions.update(getattr(backend, name)(user, obj))
+ligne 254 : return permissions
+ligne 257 : async def _auser_get_permissions(user, obj, from_name):
+ligne 258 : permissions = set()
+ligne 259 : name = "aget_%s_permissions" % from_name
+ligne 262 : permissions.update(await getattr(backend, name)(user, obj))
+ligne 263 : return permissions
+ligne 268 : A backend can raise `PermissionDenied` to short-circuit permission checks.
+ligne 276 : except PermissionDenied:
+ligne 289 : except PermissionDenied:
+ligne 296 : A backend can raise `PermissionDenied` to short-circuit permission checks.
+ligne 304 : except PermissionDenied:
+ligne 317 : except PermissionDenied:
+ligne 322 : class PermissionsMixin(models.Model):
+ligne 324 : Add the fields and methods necessary to support the Group and Permission
+ligne 328 : is_superuser = models.BooleanField(
+ligne 332 : "Designates that this user has all permissions without "
+ligne 336 : groups = models.ManyToManyField(
+ligne 337 : Group,
+ligne 338 : verbose_name=_("groups"),
+ligne 341 : "The groups this user belongs to. A user will get all permissions "
+ligne 342 : "granted to each of their groups."
+ligne 347 : user_permissions = models.ManyToManyField(
+ligne 348 : Permission,
+ligne 349 : verbose_name=_("user permissions"),
+ligne 351 : help_text=_("Specific permissions for this user."),
+ligne 359 : def get_user_permissions(self, obj=None):
+ligne 361 : Return a list of permission strings that this user has directly.
+
+### venv\Lib\site-packages\django\contrib\contenttypes\admin.py
+ligne 113 : can_delete = self.can_delete and self.has_delete_permission(request, obj)
+ligne 131 : can_change = self.has_change_permission(request, obj) if request else True
+ligne 132 : can_add = self.has_add_permission(request, obj) if request else True
+ligne 134 : class PermissionProtectedModelForm(base_model_form):
+ligne 143 : defaults["form"] = PermissionProtectedModelForm
+
+### venv\Lib\site-packages\django\contrib\contenttypes\models.py
+ligne 68 : # Models that aren't already in the cache grouped by app labels.
+
+### venv\Lib\site-packages\django\db\migrations\operations\models.py
+ligne 797 : (like verbose_name, permissions, ordering). Python code in migrations
+ligne 809 : "permissions",
+ligne 810 : "default_permissions",
+
+### venv\Lib\site-packages\rest_framework\permissions.py
+ligne 2 : Provides a set of pluggable permission policies.
+ligne 66 : def has_permission(self, request, view):
+ligne 68 : self.op1.has_permission(request, view) and
+ligne 69 : self.op2.has_permission(request, view)
+ligne 72 : def has_object_permission(self, request, view, obj):
+ligne 74 : self.op1.has_object_permission(request, view, obj) and
+ligne 75 : self.op2.has_object_permission(request, view, obj)
+ligne 84 : def has_permission(self, request, view):
+ligne 86 : self.op1.has_permission(request, view) or
+ligne 87 : self.op2.has_permission(request, view)
+ligne 90 : def has_object_permission(self, request, view, obj):
+ligne 92 : self.op1.has_permission(request, view)
+ligne 93 : and self.op1.has_object_permission(request, view, obj)
+ligne 95 : self.op2.has_permission(request, view)
+ligne 96 : and self.op2.has_object_permission(request, view, obj)
+ligne 104 : def has_permission(self, request, view):
+ligne 105 : return not self.op1.has_permission(request, view)
+ligne 107 : def has_object_permission(self, request, view, obj):
+ligne 108 : return not self.op1.has_object_permission(request, view, obj)
+ligne 111 : class BasePermissionMetaclass(OperationHolderMixin, type):
+ligne 115 : class BasePermission(metaclass=BasePermissionMetaclass):
+ligne 117 : A base class from which all permission classes should inherit.
+ligne 120 : def has_permission(self, request, view):
+ligne 122 : Return `True` if permission is granted, `False` otherwise.
+ligne 126 : def has_object_permission(self, request, view, obj):
+ligne 128 : Return `True` if permission is granted, `False` otherwise.
+ligne 133 : class AllowAny(BasePermission):
+ligne 137 : permission_classes list, but it's useful because it makes the intention
+ligne 141 : def has_permission(self, request, view):
+ligne 145 : class IsAuthenticated(BasePermission):
+ligne 150 : def has_permission(self, request, view):
+ligne 154 : class IsAdminUser(BasePermission):
+ligne 159 : def has_permission(self, request, view):
+ligne 160 : return bool(request.user and request.user.is_staff)
+ligne 163 : class IsAuthenticatedOrReadOnly(BasePermission):
+ligne 168 : def has_permission(self, request, view):
+ligne 176 : class DjangoModelPermissions(BasePermission):
+ligne 178 : The request is authenticated using `django.contrib.auth` permissions.
+ligne 179 : See: https://docs.djangoproject.com/en/dev/topics/auth/#permissions
+ligne 182 : `add`/`change`/`delete` permissions on the model.
+ligne 184 : This permission can only be applied against view classes that
+ligne 188 : # Map methods into required permission codes.
+ligne 189 : # Override this if you need to also provide 'view' permissions,
+ligne 190 : # or if you want to provide custom permission codes.
+ligne 203 : def get_required_permissions(self, method, model_cls):
+ligne 205 : Given a model and an HTTP method, return the list of permission
+ligne 233 : def has_permission(self, request, view):
+ligne 238 : # Workaround to ensure DjangoModelPermissions are not applied
+ligne 240 : if getattr(view, '_ignore_model_permissions', False):
+ligne 244 : perms = self.get_required_permissions(request.method, queryset.model)
+ligne 249 : class DjangoModelPermissionsOrAnonReadOnly(DjangoModelPermissions):
+ligne 251 : Similar to DjangoModelPermissions, except that anonymous users are
+ligne 257 : class DjangoObjectPermissions(DjangoModelPermissions):
+ligne 259 : The request is authenticated using Django's object-level permissions.
+ligne 260 : It requires an object-permissions-enabled backend, such as Django Guardian.
+ligne 263 : `add`/`change`/`delete` permissions on the object using .has_perms.
+ligne 265 : This permission can only be applied against view classes that
+ligne 278 : def get_required_object_permissions(self, method, model_cls):
+ligne 289 : def has_object_permission(self, request, view, obj):
+ligne 290 : # authentication checks have already executed via has_permission
+ligne 295 : perms = self.get_required_object_permissions(request.method, model_cls)
+ligne 298 : # If the user does not have permissions we need to determine if
+ligne 299 : # they have read permissions to see 403, or not, and simply see
+ligne 303 : # Read permissions already checked and failed, no need
+ligne 307 : read_perms = self.get_required_object_permissions('GET', model_cls)
+ligne 311 : # Has read permissions.
+
+### venv\Lib\site-packages\rest_framework\views.py
+ligne 5 : from django.core.exceptions import PermissionDenied
+ligne 77 : Django's built-in `Http404` and `PermissionDenied` exceptions.
+ligne 84 : elif isinstance(exc, PermissionDenied):
+ligne 85 : exc = exceptions.PermissionDenied(*(exc.args))
+ligne 112 : permission_classes = api_settings.DEFAULT_PERMISSION_CLASSES
+ligne 144 : # DEFAULT_PERMISSION_CLASSES to 'rest_framework.permissions.IsAuthenticated' instead
+ligne 174 : def permission_denied(self, request, message=None, code=None):
+ligne 180 : raise exceptions.PermissionDenied(detail=message, code=code)
+ligne 279 : def get_permissions(self):
+ligne 281 : Instantiates and returns the list of permissions that this view requires.
+ligne 283 : return [permission() for permission in self.permission_classes]
+ligne 331 : def check_permissions(self, request):
+ligne 336 : for permission in self.get_permissions():
+ligne 337 : if not permission.has_permission(request, self):
+ligne 338 : self.permission_denied(
+ligne 340 : message=getattr(permission, 'message', None),
+ligne 341 : code=getattr(permission, 'code', None)
+ligne 344 : def check_object_permissions(self, request, obj):
+ligne 349 : for permission in self.get_permissions():
+ligne 350 : if not permission.has_object_permission(request, self, obj):
+ligne 351 : self.permission_denied(
+ligne 353 : message=getattr(permission, 'message', None),
+ligne 354 : code=getattr(permission, 'code', None)
+ligne 420 : self.check_permissions(request)
+ligne 498 : 2. Performs content negotiation, authentication, permission, and
+
+### venv\Lib\site-packages\rest_framework\authtoken\views.py
+ligne 10 : permission_classes = ()
+
+### venv\Lib\site-packages\rest_framework\schemas\views.py
+ligne 13 : _ignore_model_permissions = True
+ligne 32 : raise exceptions.PermissionDenied()
+
+### venv\Lib\site-packages\rest_framework_simplejwt\models.py
+ligne 27 : _groups = EmptyManager(auth_models.Group)
+ligne 28 : _user_permissions = EmptyManager(auth_models.Permission)
+ligne 49 : def is_staff(self) -> bool:
+ligne 50 : return self.token.get("is_staff", False)
+ligne 53 : def is_superuser(self) -> bool:
+ligne 54 : return self.token.get("is_superuser", False)
+ligne 80 : def groups(self) -> auth_models.Group:
+ligne 81 : return self._groups
+ligne 84 : def user_permissions(self) -> auth_models.Permission:
+ligne 85 : return self._user_permissions
+ligne 87 : def get_group_permissions(self, obj: Optional[object] = None) -> set:
+ligne 90 : def get_all_permissions(self, obj: Optional[object] = None) -> set:
+
+### venv\Lib\site-packages\rest_framework_simplejwt\views.py
+ligne 15 : permission_classes = ()
+
+### venv\Lib\site-packages\rest_framework_simplejwt\token_blacklist\admin.py
+ligne 40 : def has_add_permission(self, *args, **kwargs) -> bool:
+ligne 43 : def has_delete_permission(self, *args, **kwargs) -> bool:
+ligne 46 : def has_change_permission(
+ligne 49 : return request.method in ["GET", "HEAD"] and super().has_change_permission(
+
+### wenze\views.py
+ligne 9 : from financial_routing.wenze import prepare_wenze_revenue
+ligne 69 : financial_preparation = prepare_wenze_revenue(
+ligne 104 : "financial_preparation": financial_preparation,
+ligne 155 : from finance.models import Wallet
+
+============================================================
+6. MIGRATIONS DEJA PRESENTES
+============================================================
+
+administration\migrations\__init__.py
+administration\migrations\0001_initial.py
+administration\migrations\0002_countrysupervision_and_more.py
+administration\migrations\0003_bankcountryaccess_bankcurrencyaccess_and_more.py
+administration\migrations\0004_bankpartner_bankpartnercurrency_bankpartnerservice.py
+administration\migrations\0005_countrybankaccess_countrycurrencyaccess_and_more.py
+administration\migrations\0006_countrysupervisiondetail.py
+administration\migrations\0007_nsikayadminrole_nsikaypermission.py
+administration\migrations\0008_healthinsurance.py
+ai\migrations\__init__.py
+api\migrations\__init__.py
+api\migrations\0001_initial.py
+api_nsikay\migrations\__init__.py
+api_nsikay\migrations\0001_initial.py
+api_nsikay\migrations\0002_remove_settlementaccount_bank_delete_bankdeposit_and_more.py
+api_nsikay\migrations\0003_securityprofile_userrole.py
+api_nsikay\migrations\0004_tvchannel_virtualgift_advertisingcampaign_and_more.py
+api_nsikay\migrations\0005_adminanalytics_contentanalytics_adcampaigncenter_and_more.py
+api_nsikay\migrations\0006_countryconfiguration_apigatewaylog_cloudfile_and_more.py
+api_nsikay\migrations\0007_rename_active_tvchannel_is_active_and_more.py
+api_nsikay\migrations\0008_alter_pagepromotionslot_page_type.py
+app_center\migrations\__init__.py
+association\migrations\__init__.py
+association\migrations\0001_initial.py
+audit\migrations\__init__.py
+bank_dashboard\migrations\__init__.py
+banking\migrations\__init__.py
+banking\migrations\0001_initial.py
+banking\migrations\0002_remove_bankservice_bank_remove_creditrequest_bank_and_more.py
+banking\migrations\0003_bankcountry_bankcredit_bankcurrency_bankinsurance_and_more.py
+banking\migrations\0004_accountnumbergenerator_accountopeningrequest.py
+banking\migrations\0005_bankuserprofile.py
+banking\migrations\0006_bankbalance_banktransaction.py
+banking\migrations\0007_partnerapproval.py
+banking\migrations\0008_cashdeposit_partnertransaction.py
+banking\migrations\0009_onlinebankaccountrequest_bankcustomerservice.py
+banking\migrations\0010_bankcountryaccess_bankcurrencyaccess.py
+business\migrations\__init__.py
+business\migrations\0001_initial.py
+certification\migrations\__init__.py
+certification\migrations\0001_initial.py
+certification\migrations\0002_certificationagent_and_more.py
+certification\migrations\0003_nsikaycertification_certificationhistory.py
+core\migrations\__init__.py
+core\migrations\0001_initial.py
+dashboard\migrations\__init__.py
+finance\migrations\__init__.py
+finance\migrations\0001_initial.py
+finance\migrations\0002_currency_remove_payment_transaction_and_more.py
+finance\migrations\0003_alter_wallet_user_alter_wallettransaction_wallet.py
+finance\migrations\0004_exchangeratehistory_financialledger.py
+finance\migrations\0005_bankreconciliation_merchantpayment_and_more.py
+finance\migrations\0006_auditlog_frauddetectionevent_kyccompliance_and_more.py
+finance\migrations\0007_marketplaceproduct_marketplaceorder_and_more.py
+finance\migrations\0008_alter_marketplacecommission_rate.py
+financial_routing\migrations\__init__.py
+financial_routing\migrations\0001_initial.py
+financial_routing\migrations\0002_financialpartner.py
+financial_routing\migrations\0003_alter_financialfeerule_fee_type.py
+jobs\migrations\__init__.py
+marketing\migrations\__init__.py
+marketing\migrations\0001_initial.py
+media\migrations\__init__.py
+media\migrations\0001_initial.py
+nsikay_core\migrations\__init__.py
+operations\migrations\__init__.py
+operations\migrations\0001_initial.py
+partner_finance\migrations\__init__.py
+partner_finance\migrations\0001_initial.py
+partner_finance\migrations\0002_partnerdeposit_supplytransaction.py
+partner_finance\migrations\0003_alter_partnerapplication_user_and_more.py
+service_control\migrations\__init__.py
+service_control\migrations\0001_initial.py
+service_control\migrations\0002_servicerule.py
+service_control\migrations\0003_countryservicestatus_is_operational_and_more.py
+service_dashboard\migrations\__init__.py
+service_dashboard\migrations\0001_initial.py
+service_dashboard\migrations\0002_operationalcountryconfigurationlog.py
+service_dashboard\migrations\0003_configuration_rollback.py
+service_dashboard\migrations\0004_serviceactivationrequest.py
+service_dashboard\migrations\0005_serviceactivationrequest_beneficiary_user.py
+transactions\migrations\__init__.py
+transactions\migrations\0001_initial.py
+tv_regie\migrations\__init__.py
+tv_regie\migrations\0001_initial.py
+tv_regie\migrations\0002_broadcastschedule_camerasystem_livestream_regiescene_and_more.py
+venv\Lib\site-packages\django\contrib\admin\migrations\__init__.py
+venv\Lib\site-packages\django\contrib\admin\migrations\0001_initial.py
+venv\Lib\site-packages\django\contrib\admin\migrations\0002_logentry_remove_auto_add.py
+venv\Lib\site-packages\django\contrib\admin\migrations\0003_logentry_add_action_flag_choices.py
+venv\Lib\site-packages\django\contrib\auth\migrations\__init__.py
+venv\Lib\site-packages\django\contrib\auth\migrations\0001_initial.py
+venv\Lib\site-packages\django\contrib\auth\migrations\0002_alter_permission_name_max_length.py
+venv\Lib\site-packages\django\contrib\auth\migrations\0003_alter_user_email_max_length.py
+venv\Lib\site-packages\django\contrib\auth\migrations\0004_alter_user_username_opts.py
+venv\Lib\site-packages\django\contrib\auth\migrations\0005_alter_user_last_login_null.py
+venv\Lib\site-packages\django\contrib\auth\migrations\0006_require_contenttypes_0002.py
+venv\Lib\site-packages\django\contrib\auth\migrations\0007_alter_validators_add_error_messages.py
+venv\Lib\site-packages\django\contrib\auth\migrations\0008_alter_user_username_max_length.py
+venv\Lib\site-packages\django\contrib\auth\migrations\0009_alter_user_last_name_max_length.py
+venv\Lib\site-packages\django\contrib\auth\migrations\0010_alter_group_name_max_length.py
+venv\Lib\site-packages\django\contrib\auth\migrations\0011_update_proxy_permissions.py
+venv\Lib\site-packages\django\contrib\auth\migrations\0012_alter_user_first_name_max_length.py
+venv\Lib\site-packages\django\contrib\contenttypes\migrations\__init__.py
+venv\Lib\site-packages\django\contrib\contenttypes\migrations\0001_initial.py
+venv\Lib\site-packages\django\contrib\contenttypes\migrations\0002_remove_content_type_name.py
+venv\Lib\site-packages\django\contrib\flatpages\migrations\__init__.py
+venv\Lib\site-packages\django\contrib\flatpages\migrations\0001_initial.py
+venv\Lib\site-packages\django\contrib\redirects\migrations\__init__.py
+venv\Lib\site-packages\django\contrib\redirects\migrations\0001_initial.py
+venv\Lib\site-packages\django\contrib\redirects\migrations\0002_alter_redirect_new_path_help_text.py
+venv\Lib\site-packages\django\contrib\sessions\migrations\__init__.py
+venv\Lib\site-packages\django\contrib\sessions\migrations\0001_initial.py
+venv\Lib\site-packages\django\contrib\sites\migrations\__init__.py
+venv\Lib\site-packages\django\contrib\sites\migrations\0001_initial.py
+venv\Lib\site-packages\django\contrib\sites\migrations\0002_alter_domain_unique.py
+venv\Lib\site-packages\django\db\migrations\__init__.py
+venv\Lib\site-packages\django\db\migrations\autodetector.py
+venv\Lib\site-packages\django\db\migrations\exceptions.py
+venv\Lib\site-packages\django\db\migrations\executor.py
+venv\Lib\site-packages\django\db\migrations\graph.py
+venv\Lib\site-packages\django\db\migrations\loader.py
+venv\Lib\site-packages\django\db\migrations\migration.py
+venv\Lib\site-packages\django\db\migrations\operations\__init__.py
+venv\Lib\site-packages\django\db\migrations\operations\base.py
+venv\Lib\site-packages\django\db\migrations\operations\fields.py
+venv\Lib\site-packages\django\db\migrations\operations\models.py
+venv\Lib\site-packages\django\db\migrations\operations\special.py
+venv\Lib\site-packages\django\db\migrations\optimizer.py
+venv\Lib\site-packages\django\db\migrations\questioner.py
+venv\Lib\site-packages\django\db\migrations\recorder.py
+venv\Lib\site-packages\django\db\migrations\serializer.py
+venv\Lib\site-packages\django\db\migrations\state.py
+venv\Lib\site-packages\django\db\migrations\utils.py
+venv\Lib\site-packages\django\db\migrations\writer.py
+venv\Lib\site-packages\rest_framework\authtoken\migrations\__init__.py
+venv\Lib\site-packages\rest_framework\authtoken\migrations\0001_initial.py
+venv\Lib\site-packages\rest_framework\authtoken\migrations\0002_auto_20160226_1747.py
+venv\Lib\site-packages\rest_framework\authtoken\migrations\0003_tokenproxy.py
+venv\Lib\site-packages\rest_framework\authtoken\migrations\0004_alter_tokenproxy_options.py
+venv\Lib\site-packages\rest_framework_simplejwt\token_blacklist\migrations\__init__.py
+venv\Lib\site-packages\rest_framework_simplejwt\token_blacklist\migrations\0001_initial.py
+venv\Lib\site-packages\rest_framework_simplejwt\token_blacklist\migrations\0002_outstandingtoken_jti_hex.py
+venv\Lib\site-packages\rest_framework_simplejwt\token_blacklist\migrations\0003_auto_20171017_2007.py
+venv\Lib\site-packages\rest_framework_simplejwt\token_blacklist\migrations\0004_auto_20171017_2013.py
+venv\Lib\site-packages\rest_framework_simplejwt\token_blacklist\migrations\0005_remove_outstandingtoken_jti.py
+venv\Lib\site-packages\rest_framework_simplejwt\token_blacklist\migrations\0006_auto_20171017_2113.py
+venv\Lib\site-packages\rest_framework_simplejwt\token_blacklist\migrations\0007_auto_20171017_2214.py
+venv\Lib\site-packages\rest_framework_simplejwt\token_blacklist\migrations\0008_migrate_to_bigautofield.py
+venv\Lib\site-packages\rest_framework_simplejwt\token_blacklist\migrations\0010_fix_migrate_to_bigautofield.py
+venv\Lib\site-packages\rest_framework_simplejwt\token_blacklist\migrations\0011_linearizes_history.py
+venv\Lib\site-packages\rest_framework_simplejwt\token_blacklist\migrations\0012_alter_outstandingtoken_user.py
+venv\Lib\site-packages\rest_framework_simplejwt\token_blacklist\migrations\0013_alter_blacklistedtoken_options_and_more.py
+wallet\migrations\__init__.py
+wallet\migrations\0001_initial.py
+wallet\migrations\0002_alter_wallet_user.py
+wallet\migrations\0003_walletcommission_walletoperation.py
+wallet\migrations\0004_walletauditlog.py
+wallet\migrations\0005_walletkycprofile_walletcurrencybalance.py
+wallet\migrations\0006_walletbankaccount.py
+wenze\migrations\__init__.py
+wenze\migrations\0001_initial.py
+wenze\migrations\0002_wenzeorder_paid_at_wenzeorder_payment_fee_and_more.py
+
+============================================================
+7. TEST DJANGO
+============================================================
+
+CODE RETOUR : 0
+=== ALIASES DASHBOARD NSIKAY FINALISES ===
+=== API NSIKAY VIEWS COMPATIBILITE CHARGEES ===
+System check identified no issues (0 silenced).
+
+
+============================================================
+8. VERIFICATION DES REGLES DU CYCLE
+============================================================
+
+[24] DETECTE
+[3] DETECTE
+[7] DETECTE
+[3 mois] NON DETECTE
+[reward] DETECTE
+[gift] DETECTE
+[cadeau] DETECTE
+[60] DETECTE
+
+============================================================
+9. CONCLUSION AUTOMATIQUE
+============================================================
+
+Cet audit ne crée aucun modèle et ne modifie aucune donnée.
+
+ETAPE SUIVANTE :
+- identifier les modèles existants à conserver ;
+- identifier les éléments manquants ;
+- créer uniquement les composants manquants ;
+- ajouter le cycle 24H / 3J / 7J / 3M ;
+- ajouter les contraintes anti-double attribution ;
+- connecter les cadeaux à la Direction financière ;
+- ajouter les tests automatiques avec rollback.
+
+FIN AUDIT

@@ -1,0 +1,58 @@
+
+======================================================================
+NSIKAY - AUDIT COMPTES CADEAUX 09
+======================================================================
+LECTURE SEULE - AUCUNE MODIFICATION
+
+======================================================================
+FINANCIAL ACCOUNTS
+======================================================================
+ID=7 | CODE=NSIKAY-FEES-CDF | NOM=Compte commissions et frais NSIKAY - CDF | TYPE=FEES | DEVISE=CDF | STATUT=PLANNED | SOLDE=0.00 | PARTENAIRE= | INTERNE=True
+ID=9 | CODE=NSIKAY-FEES-EUR | NOM=Compte commissions et frais NSIKAY - EUR | TYPE=FEES | DEVISE=EUR | STATUT=PLANNED | SOLDE=0.00 | PARTENAIRE= | INTERNE=True
+ID=8 | CODE=NSIKAY-FEES-USD | NOM=Compte commissions et frais NSIKAY - USD | TYPE=FEES | DEVISE=USD | STATUT=PLANNED | SOLDE=0.00 | PARTENAIRE= | INTERNE=True
+ID=4 | CODE=NSIKAY-GIFTS-CDF | NOM=Compte cadeaux NSIKAY - CDF | TYPE=GIFTS | DEVISE=CDF | STATUT=PLANNED | SOLDE=0.00 | PARTENAIRE= | INTERNE=True
+ID=6 | CODE=NSIKAY-GIFTS-EUR | NOM=Compte cadeaux NSIKAY - EUR | TYPE=GIFTS | DEVISE=EUR | STATUT=PLANNED | SOLDE=0.00 | PARTENAIRE= | INTERNE=True
+ID=5 | CODE=NSIKAY-GIFTS-USD | NOM=Compte cadeaux NSIKAY - USD | TYPE=GIFTS | DEVISE=USD | STATUT=PLANNED | SOLDE=0.00 | PARTENAIRE= | INTERNE=True
+ID=10 | CODE=NSIKAY-PAYOUT-CDF | NOM=Compte retraits NSIKAY - CDF | TYPE=PAYOUT | DEVISE=CDF | STATUT=PLANNED | SOLDE=0.00 | PARTENAIRE= | INTERNE=True
+ID=12 | CODE=NSIKAY-PAYOUT-EUR | NOM=Compte retraits NSIKAY - EUR | TYPE=PAYOUT | DEVISE=EUR | STATUT=PLANNED | SOLDE=0.00 | PARTENAIRE= | INTERNE=True
+ID=11 | CODE=NSIKAY-PAYOUT-USD | NOM=Compte retraits NSIKAY - USD | TYPE=PAYOUT | DEVISE=USD | STATUT=PLANNED | SOLDE=0.00 | PARTENAIRE= | INTERNE=True
+ID=1 | CODE=NSIKAY-PRINCIPAL-CDF | NOM=Compte principal NSIKAY - CDF | TYPE=PRINCIPAL | DEVISE=CDF | STATUT=PLANNED | SOLDE=0.00 | PARTENAIRE= | INTERNE=True
+ID=3 | CODE=NSIKAY-PRINCIPAL-EUR | NOM=Compte principal NSIKAY - EUR | TYPE=PRINCIPAL | DEVISE=EUR | STATUT=PLANNED | SOLDE=0.00 | PARTENAIRE= | INTERNE=True
+ID=2 | CODE=NSIKAY-PRINCIPAL-USD | NOM=Compte principal NSIKAY - USD | TYPE=PRINCIPAL | DEVISE=USD | STATUT=PLANNED | SOLDE=0.00 | PARTENAIRE= | INTERNE=True
+
+TOTAL COMPTES : 12
+GIFTS EUR : 1
+GIFTS USD : 1
+GIFTS CDF : 1
+
+======================================================================
+GIFT FINANCIAL LEDGER
+======================================================================
+TOTAL ECRITURES CADEAUX : 0
+
+======================================================================
+FINANCE WALLET
+======================================================================
+WALLETS : 3
+CURRENCIES : 3
+WALLET TRANSACTIONS : 0
+WALLET ID=1 | USER=admin_test_nsikay | CURRENCY=USD | BALANCE=10000.00 | ACTIVE=True
+WALLET ID=2 | USER=finance_test_nsikay | CURRENCY=EUR | BALANCE=5000.00 | ACTIVE=True
+WALLET ID=3 | USER=banque_test_nsikay | CURRENCY=CDF | BALANCE=25000000.00 | ACTIVE=True
+
+======================================================================
+VIRTUAL GIFTS
+======================================================================
+CATALOGUE CADEAUX : 0
+TRANSACTIONS CADEAUX : 0
+
+======================================================================
+DEVISES
+======================================================================
+ID=1 | OBJET=USD
+ID=2 | OBJET=EUR
+ID=3 | OBJET=CDF
+
+======================================================================
+FIN
+======================================================================

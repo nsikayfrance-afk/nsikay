@@ -1,0 +1,195 @@
+﻿from django.contrib import messages
+from django.contrib.auth.decorators import user_passes_test
+from django.db import transaction
+from django.shortcuts import get_object_or_404, redirect
+
+from service_control.models import ServiceActivation
+
+from service_control.services import (
+    CountryServiceActivationValidator,
+)
+
+from service_dashboard.models import (
+    ServiceDashboardLog,
+)
+
+
+def _is_nsikay_admin(user):
+    if not user or not user.is_authenticated:
+        return False
+
+    return (
+        user.is_superuser
+        or str(user.username).strip().lower() == "constantdoriskayembe"
+        or user.groups.filter(
+            name__in=[
+                "Super Administrateur",
+                "Administration Pays",
+            ]
+        ).exists()
+    )
+
+
+def _write_activation_log(
+    activation,
+    admin_user,
+    action,
+    details,
+):
+    """
+    Journalisation centralisée des opérations
+    d'activation/désactivation.
+    """
+
+    service_name = activation.service.name
+    country_name = activation.country.country_name
+
+    return ServiceDashboardLog.objects.create(
+        action=action,
+        service=service_name,
+        country=country_name,
+        admin_user=(
+            getattr(admin_user, "username", None)
+            or "Administration NSIKAY"
+        ),
+        details=details,
+    )
+
+
+@user_passes_test(_is_nsikay_admin)
+def final_activate_service(request, activation_id):
+
+    if request.method != "POST":
+        messages.error(
+            request,
+            "L'activation finale doit obligatoirement être exécutée par POST."
+        )
+        return redirect(
+            "service_dashboard:service_country_control"
+        )
+
+    with transaction.atomic():
+
+        activation = (
+            ServiceActivation.objects
+            .select_for_update()
+            .select_related(
+                "service",
+                "country",
+            )
+            .get(
+                id=activation_id
+            )
+        )
+
+        service = activation.service
+        country = activation.country
+
+        # ----------------------------------------------------
+        # VALIDATION CENTRALE
+        # ----------------------------------------------------
+
+        validation = CountryServiceActivationValidator.validate(
+            service,
+            country,
+        )
+
+        if isinstance(validation, tuple):
+
+            valid, reason = validation
+
+        else:
+
+            valid = bool(validation)
+
+            reason = (
+                "Validation réussie."
+                if valid
+                else "Validation refusée."
+            )
+
+        # ----------------------------------------------------
+        # REFUS
+        # ----------------------------------------------------
+
+        if not valid:
+
+            activation.active = False
+            activation.validated_by_admin = False
+            activation.reason = (
+                f"Activation refusée : {reason}"
+            )
+
+            activation.save(
+                update_fields=[
+                    "active",
+                    "validated_by_admin",
+                    "reason",
+                ]
+            )
+
+            _write_activation_log(
+                activation=activation,
+                admin_user=request.user,
+                action="activate_refused",
+                details=(
+                    f"Activation refusée. "
+                    f"Service={service.name}; "
+                    f"Pays={country.country_name}; "
+                    f"Motif={reason}"
+                ),
+            )
+
+            messages.error(
+                request,
+                (
+                    "Activation refusée : "
+                    f"{reason}"
+                ),
+            )
+
+            return redirect(
+                "service_dashboard:service_country_control"
+            )
+
+        # ----------------------------------------------------
+        # ACTIVATION
+        # ----------------------------------------------------
+
+        activation.active = True
+        activation.validated_by_admin = True
+        activation.reason = (
+            "Activation finale validée par administration NSIKAY."
+        )
+
+        activation.save(
+            update_fields=[
+                "active",
+                "validated_by_admin",
+                "reason",
+            ]
+        )
+
+        _write_activation_log(
+            activation=activation,
+            admin_user=request.user,
+            action="activate",
+            details=(
+                f"Activation finale validée. "
+                f"Service={service.name}; "
+                f"Pays={country.country_name}; "
+                f"Motif={reason}"
+            ),
+        )
+
+    messages.success(
+        request,
+        (
+            f"Service {service.name} activé pour "
+            f"{country.country_name}."
+        ),
+    )
+
+    return redirect(
+        "service_dashboard:service_country_control"
+    )

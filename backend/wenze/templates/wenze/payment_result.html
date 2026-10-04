@@ -1,0 +1,188 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paiement WENZE - NSIKAY</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7fb;
+            color: #111827;
+        }
+
+        .container {
+            max-width: 760px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 8px 30px rgba(0,0,0,.08);
+        }
+
+        .title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .success {
+            border-left: 6px solid #16a34a;
+            background: #f0fdf4;
+            padding: 18px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .error {
+            border-left: 6px solid #dc2626;
+            background: #fef2f2;
+            padding: 18px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .info {
+            background: #f8fafc;
+            padding: 18px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 8px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .row:last-child {
+            border-bottom: none;
+        }
+
+        .label {
+            color: #64748b;
+        }
+
+        .value {
+            font-weight: 700;
+        }
+
+        .button {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 13px 20px;
+            background: #111827;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="card">
+
+        {% if success %}
+
+            <div class="title">
+                Paiement WENZE confirmé
+            </div>
+
+            <div class="success">
+                <strong>Paiement effectué avec succès.</strong><br>
+                Le vendeur a été crédité et la commande est maintenant confirmée.
+            </div>
+
+            <div class="info">
+
+                <div class="row">
+                    <span class="label">Commande</span>
+                    <span class="value">{{ order.reference }}</span>
+                </div>
+
+                <div class="row">
+                    <span class="label">Montant</span>
+                    <span class="value">{{ result.amount }} {{ result.currency }}</span>
+                </div>
+
+                <div class="row">
+                    <span class="label">Commission WENZE</span>
+                    <span class="value">{{ result.fee_amount }} {{ result.currency }}</span>
+                </div>
+
+                <div class="row">
+                    <span class="label">Montant vendeur</span>
+                    <span class="value">{{ result.net_amount }} {{ result.currency }}</span>
+                </div>
+
+                <div class="row">
+                    <span class="label">Méthode</span>
+                    <span class="value">Portefeuille NSIKAY</span>
+                </div>
+
+                <div class="row">
+                    <span class="label">Statut</span>
+                    <span class="value">{{ order.status }}</span>
+                </div>
+
+                <div class="row">
+                    <span class="label">Référence paiement</span>
+                    <span class="value">{{ result.payment_reference }}</span>
+                </div>
+
+            </div>
+
+        {% else %}
+
+            <div class="title">
+                Paiement WENZE
+            </div>
+
+            <div class="error">
+                <strong>Paiement non effectué.</strong><br>
+                {{ error }}
+            </div>
+
+            <div class="info">
+
+                <div class="row">
+                    <span class="label">Commande</span>
+                    <span class="value">{{ order.reference }}</span>
+                </div>
+
+                <div class="row">
+                    <span class="label">Montant</span>
+                    <span class="value">{{ order.total_amount }} {{ order.currency }}</span>
+                </div>
+
+                <div class="row">
+                    <span class="label">Statut</span>
+                    <span class="value">{{ order.status }}</span>
+                </div>
+
+            </div>
+
+        {% endif %}
+
+        <a class="button" href="/wenze/">
+            Retour à WENZE
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>

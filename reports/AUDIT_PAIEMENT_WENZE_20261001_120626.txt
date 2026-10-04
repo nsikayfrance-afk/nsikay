@@ -1,0 +1,494 @@
+﻿============================================================
+ NSIKAY - AUDIT PAIEMENT WENZE
+============================================================
+Date : 2026-10-01 12:06:26
+
+=== 1. ARCHITECTURES WALLET ===
+
+--- finance\models.py ---
+34 : class Wallet(models.Model):
+61 : class WalletTransaction(models.Model):
+510 : class WalletSecurityStatus(models.Model):
+
+--- finance\wallet_models.py ---
+5 : class Wallet(models.Model):
+69 : class WalletOperation(models.Model):
+
+--- finance\wallet_service.py ---
+7 : def credit_wallet(wallet, amount, reference):
+34 : def debit_wallet(wallet, amount, reference):
+71 : def transfer_wallet(sender, receiver, amount, reference):
+
+--- wallet\models.py ---
+5 : class Wallet(models.Model):
+34 : class WalletBalance(models.Model):
+69 : class WalletTransaction(models.Model):
+140 : class WalletSecurityEvent(models.Model):
+170 : class WalletOperation(models.Model):
+223 : class WalletCommission(models.Model):
+244 : class WalletAuditLog(models.Model):
+290 : class WalletKYCProfile(models.Model):
+352 : class WalletBankAccount(models.Model):
+
+--- wallet\services.py ---
+
+=== 2. LEDGER / TRANSACTIONS ===
+61 : class WalletTransaction(models.Model):
+132 : class FinancialLedger(models.Model):
+257 : class MerchantPayment(models.Model):
+401 : class PlatformCommission(models.Model):
+859 : class MarketplaceCommission(models.Model):
+
+=== 3. SERVICES FINANCIERS ===
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\update_real_dashboards.py:147 : "transactions_wallet": WalletTransaction.objects.count()
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\finance_admin_views.py:22 : ledger_count = FinancialLedger.objects.count()
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\finance_admin_views.py:25 : commissions = PlatformCommission.objects.all()
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\finance_admin_views.py:41 : for item in FinancialLedger.objects.all():
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\finance_admin_views.py:57 : for entry in FinancialLedger.objects.order_by(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\wallet_api_views.py:24 : queryset = WalletTransaction.objects.all()
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\dashboard\views.py:208 : "transactions_wallet": WalletTransaction.objects.count()
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\ledger.py:45 : return FinancialLedger.objects.create(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\wallet_service.py:7 : def credit_wallet(wallet, amount, reference):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\wallet_service.py:14 : WalletTransaction.objects.create(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\wallet_service.py:34 : def debit_wallet(wallet, amount, reference):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\wallet_service.py:51 : WalletTransaction.objects.create(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\wallet_service.py:71 : def transfer_wallet(sender, receiver, amount, reference):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\wallet_service.py:93 : WalletTransaction.objects.create(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\wallet_service.py:108 : WalletTransaction.objects.create(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\operations\services.py:33 : credit_wallet(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\operations\services.py:85 : debit_wallet(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\views.py:28 : transactions = WalletTransaction.objects.all()
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\views_secure.py:65 : transaction = WalletTransaction.objects.create(
+
+=== 4. CODE WENZE ACTUEL ===
+
+--- C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\models.py ---
+from decimal import Decimal
+
+from django.conf import settings
+from django.db import models
+from django.utils import timezone
+
+
+class WenzeProduct(models.Model):
+    STATUS_CHOICES = (
+        ("DRAFT", "Brouillon"),
+        ("ACTIVE", "Actif"),
+        ("PAUSED", "Suspendu"),
+        ("ARCHIVED", "Archivé"),
+    )
+
+    seller = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="wenze_products",
+    )
+    name = models.CharField(max_length=255)
+    description = models.TextField(blank=True)
+    price = models.DecimalField(max_digits=14, decimal_places=2)
+    currency = models.CharField(max_length=3, default="EUR")
+    stock = models.PositiveIntegerField(default=0)
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default="DRAFT",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return self.name
+
+    @property
+    def active_buka_prix(self):
+        now = timezone.now()
+        return self.buka_prix_campaigns.filter(
+            active=True,
+            start_at__lte=now,
+            end_at__gte=now,
+        ).order_by("-created_at").first()
+
+    @property
+    def current_price(self):
+        campaign = self.active_buka_prix
+        if campaign:
+            return campaign.promotion_price
+        return self.price
+
+
+class WenzeOrder(models.Model):
+    STATUS_CHOICES = (
+        ("PENDING", "En attente"),
+        ("PAID", "Payée"),
+        ("PROCESSING", "En traitement"),
+        ("SHIPPED", "Expédiée"),
+        ("COMPLETED", "Terminée"),
+        ("CANCELLED", "Annulée"),
+    )
+
+    buyer = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="wenze_orders",
+    )
+    product = models.ForeignKey(
+        WenzeProduct,
+        on_delete=models.PROTECT,
+        related_name="orders",
+    )
+    quantity = models.PositiveIntegerField(default=1)
+    unit_price = models.DecimalField(max_digits=14, decimal_places=2)
+    currency = models.CharField(max_length=3, default="EUR")
+    total_amount = models.DecimalField(max_digits=14, decimal_places=2)
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default="PENDING",
+    )
+    reference = models.CharField(max_length=80, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return self.reference
+
+
+class BukaPrixCampaign(models.Model):
+    product = models.ForeignKey(
+        WenzeProduct,
+        on_delete=models.CASCADE,
+        related_name="buka_prix_campaigns",
+    )
+    title = models.CharField(max_length=255)
+    promotion_price = models.DecimalField(
+        max_digits=14,
+        decimal_places=2,
+    )
+    start_at = models.DateTimeField()
+    end_at = models.DateTimeField()
+    active = models.BooleanField(default=False)
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        related_name="buka_prix_campaigns_created",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return self.title
+
+    @property
+    def is_running(self):
+        now = timezone.now()
+        return (
+            self.active
+            and self.start_at <= now <= self.end_at
+        )
+
+    def save(self, *args, **kwargs):
+        if self.promotion_price < Decimal("0.00"):
+            self.promotion_price = Decimal("0.00")
+        super().save(*args, **kwargs)
+
+--- C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\views.py ---
+from decimal import Decimal
+from uuid import uuid4
+
+from django.contrib.auth.decorators import login_required
+from django.db import transaction
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, render
+
+from .models import BukaPrixCampaign, WenzeOrder, WenzeProduct
+
+
+def index(request):
+    products = WenzeProduct.objects.filter(status="ACTIVE").select_related("seller")
+    campaigns = BukaPrixCampaign.objects.filter(active=True).select_related("product")
+
+    return render(
+        request,
+        "wenze/index.html",
+        {
+            "products": products,
+            "campaigns": campaigns,
+        },
+    )
+
+
+@login_required
+@transaction.atomic
+def create_order(request, product_id):
+    product = get_object_or_404(
+        WenzeProduct.objects.select_for_update(),
+        id=product_id,
+        status="ACTIVE",
+    )
+
+    if request.method != "POST":
+        return HttpResponse("Méthode non autorisée", status=405)
+
+    quantity = int(request.POST.get("quantity", "1"))
+
+    if quantity < 1:
+        return HttpResponse("Quantité invalide", status=400)
+
+    if product.stock < quantity:
+        return HttpResponse("Stock insuffisant", status=400)
+
+    unit_price = product.current_price
+    total = unit_price * Decimal(quantity)
+
+    order = WenzeOrder.objects.create(
+        buyer=request.user,
+        product=product,
+        quantity=quantity,
+        unit_price=unit_price,
+        currency=product.currency,
+        total_amount=total,
+        reference=f"WENZE-{uuid4().hex[:16].upper()}",
+    )
+
+    product.stock -= quantity
+    product.save(update_fields=["stock", "updated_at"])
+
+    return render(
+        request,
+        "wenze/order_created.html",
+        {"order": order},
+    )
+
+=== 5. COMMISSIONS ===
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\update_finance_dashboard_real.py:121 : "0.50%"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\finance_admin_views.py:9 : PlatformCommission
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\finance_admin_views.py:25 : commissions = PlatformCommission.objects.all()
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\finance_admin_views.py:28 : total_commission = sum(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\finance_admin_views.py:32 : for c in commissions
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\finance_admin_views.py:92 : "commission_total":
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\finance_admin_views.py:93 : total_commission,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\wallet_operations_views.py:60 : "commission":fee
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\models.py:549 : commission = models.DecimalField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\dashboard\views.py:462 : "0.50%"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\fees.py:4 : TRANSFER_COMMISSION = Decimal("0.0025")
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\fees.py:6 : WITHDRAW_FEE = Decimal("0.005")
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\fees.py:10 : def calculate_platform_commission(amount):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\fees.py:12 : return Decimal(amount) * TRANSFER_COMMISSION
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\ledger.py:5 : WITHDRAW_FEE_RATE = Decimal("0.005")
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\marketplace.py:5 : # Aucune commission de vente WENZE n'est appliquée.
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\marketplace.py:6 : MARKETPLACE_COMMISSION = Decimal("0.00")
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py:401 : class PlatformCommission(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py:410 : related_name="platform_commissions"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py:859 : class MarketplaceCommission(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py:868 : related_name="commission"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\transactions\services.py:16 : return amount * Decimal("0.0050")
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\models.py:223 : class WalletCommission(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\services.py:33 : "commission": fee,
+
+=== 6. SECURITE PAIEMENT ===
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\build_certification_centrale_nsikay.py:48 : reference = models.CharField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\build_certification_module.py:58 : document_reference = models.CharField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\fix_certification_model.py:37 : reference = models.CharField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\fix_seed_certifications_nsikay.py:23 : "document_reference": "CERT-BANK-RDC-001",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\fix_seed_certifications_nsikay.py:30 : "document_reference": "CERT-BANK-INT-001",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\fix_seed_certifications_nsikay.py:37 : "document_reference": "CERT-WALLET-001",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\fix_seed_certifications_owner.py:33 : "document_reference": "NSK-CERT-BANK-001",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\fix_seed_certifications_owner.py:40 : "document_reference": "NSK-CERT-BUS-001",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\fix_seed_certifications_owner.py:47 : "document_reference": "NSK-CERT-SPORT-001",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\fix_seed_certifications_owner.py:54 : "document_reference": "NSK-CERT-HEALTH-001",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\fix_seed_certifications_owner.py:65 : document_reference=item["document_reference"],
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\seed_certifications_nsikay.py:23 : "reference": "CERT-BANK-RDC-001",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\seed_certifications_nsikay.py:31 : "reference": "CERT-BANK-INT-001",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\seed_certifications_nsikay.py:39 : "reference": "CERT-SERVICE-WALLET-001",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\seed_certifications_nsikay.py:51 : reference=item["reference"],
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\update_certification_dashboard_real.py:38 : "document": cert.document_reference,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\bank_models.py:62 : account_reference = models.CharField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\bank_models.py:109 : reference = models.CharField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\finance_admin_views.py:63 : "reference":
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\finance_admin_views.py:64 : entry.reference,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\finance_models.py:49 : reference = models.CharField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\finance_models.py:100 : transaction_reference = models.CharField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\models.py:357 : reference = models.CharField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\models.py:485 : deposit_reference = models.CharField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\services.py:16 : reference
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\services.py:29 : reference=reference,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\services.py:84 : reference
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\services.py:87 : with transaction.atomic():
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\services.py:115 : reference + "-OUT"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\services.py:130 : reference + "-IN"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\certification\models.py:165 : document_reference = models.CharField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\ledger.py:39 : reference
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\ledger.py:55 : reference=reference
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py:20 : reference_nsikay = models.BooleanField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py:86 : reference = models.CharField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py:185 : reference = models.CharField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py:210 : return self.reference
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py:316 : reference = models.CharField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py:375 : bank_reference = models.CharField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\wallet_models.py:108 : reference = models.CharField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\wallet_service.py:7 : def credit_wallet(wallet, amount, reference):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\wallet_service.py:22 : reference=reference,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\wallet_service.py:34 : def debit_wallet(wallet, amount, reference):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\wallet_service.py:59 : reference=reference,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\wallet_service.py:71 : def transfer_wallet(sender, receiver, amount, reference):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\wallet_service.py:101 : reference=reference+"-OUT",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\wallet_service.py:116 : reference=reference+"-IN",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\operations\models.py:67 : reference = models.CharField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\operations\models.py:149 : reference = models.CharField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\operations\services.py:39 : deposit.reference
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\operations\services.py:91 : withdrawal.reference
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\partner_finance\models.py:198 : reference = models.CharField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\scripts\apply_official_240_countries.py:149 : with transaction.atomic():
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\scripts\apply_official_240_countries.py:154 : .select_for_update()
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\scripts\create_official_240_countries_log.py:36 : with transaction.atomic():
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management_helpers.py:85 : with transaction.atomic():
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management_helpers.py:123 : with transaction.atomic():
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_control\management\commands\complete_service_matrix.py:48 : with transaction.atomic():
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\activation_request_views.py:75 : with transaction.atomic():
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\activation_request_views.py:131 : with transaction.atomic():
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\activation_request_views.py:135 : .select_for_update()
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\activation_request_views.py:265 : with transaction.atomic():
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\activation_request_views.py:269 : .select_for_update()
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\activation_workflow_service.py:165 : @transaction.atomic
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\activation_workflow_service.py:176 : existing = ServiceActivationRequest.objects.select_for_update().filter(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\activation_workflow_service.py:240 : @transaction.atomic
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\activation_workflow_service.py:243 : locked = ServiceActivationRequest.objects.select_for_update().select_related(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\activation_workflow_service.py:346 : @transaction.atomic
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\activation_workflow_service.py:349 : locked_request = ServiceActivationRequest.objects.select_for_update().select_related(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\activation_workflow_service.py:386 : activation = ServiceActivation.objects.select_for_update().filter(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\activation_workflow_service.py:461 : @transaction.atomic
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\activation_workflow_service.py:464 : locked = ServiceActivationRequest.objects.select_for_update().filter(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\final_activation_views.py:27 : with transaction.atomic():
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\final_activation_views.py:29 : ServiceActivation.objects.select_for_update().select_related(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\final_activation_views.py:155 : with transaction.atomic():
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\final_activation_views.py:157 : ServiceActivation.objects.select_for_update().select_related(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\final_deactivation_views.py:35 : with transaction.atomic():
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\final_deactivation_views.py:39 : .select_for_update()
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\operational_countries_views.py:82 : with transaction.atomic():
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\operational_countries_views.py:90 : .select_for_update()
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\operational_countries_views.py:250 : with transaction.atomic():
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\operational_countries_views.py:258 : .select_for_update()
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\operational_countries_views.py:283 : .select_for_update()
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\operational_countries_views.py:299 : .select_for_update()
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\operational_validation_service.py:131 : @transaction.atomic
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\operational_validation_service.py:134 : request = ServiceActivationRequest.objects.select_for_update().select_related(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\operational_validation_service.py:206 : @transaction.atomic
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\operational_validation_service.py:209 : request = ServiceActivationRequest.objects.select_for_update().select_related(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\operational_validation_service.py:222 : activation = ServiceActivation.objects.select_for_update().filter(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\workflow_admin_views.py:219 : @transaction.atomic
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\workflow_admin_views.py:260 : @transaction.atomic
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\service_dashboard\workflow_admin_views.py:312 : @transaction.atomic
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\transactions\models.py:80 : reference = models.CharField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\transactions\services.py:42 : "reference":
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\transactions\services.py:43 : transaction.reference,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\models.py:100 : reference = models.CharField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\views_secure.py:77 : reference=str(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\views_secure.py:93 : "reference":transaction.reference
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\admin.py:24 : "reference",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\admin.py:35 : "reference",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\admin.py:40 : "reference",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\models.py:86 : reference = models.CharField(max_length=80, unique=True)
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\models.py:94 : return self.reference
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\views.py:27 : @transaction.atomic
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\views.py:30 : WenzeProduct.objects.select_for_update(),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\views.py:56 : reference=f"WENZE-{uuid4().hex[:16].upper()}",
+
+=== 7. DEVISES ===
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\add_finance_dashboard.py:10 : from finance.models import Wallet, Currency, ExchangeRate
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\add_finance_dashboard.py:42 : ExchangeRate.objects.count(),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\build_secure_api_nsikay.py:76 : "CDF",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\build_secure_api_nsikay.py:77 : "USD",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\build_secure_api_nsikay.py:78 : "EUR"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\create_nsikay_banks.py:26 : "currencies":["CDF","USD"],
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\create_nsikay_banks.py:40 : "currencies":["EUR","USD"],
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\seed_country_supervision_nsikay.py:50 : "CDF",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\seed_country_supervision_nsikay.py:51 : "USD"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\seed_country_supervision_nsikay.py:83 : "EUR",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\seed_country_supervision_nsikay.py:84 : "USD"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\update_finance_dashboard_real.py:28 : from finance.models import Currency, ExchangeRate
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\update_finance_dashboard_real.py:49 : for rate in ExchangeRate.objects.all():
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\update_real_dashboards.py:143 : "taux_change": ExchangeRate.objects.count(),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api\views.py:32 : "CDF",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api\views.py:33 : "USD",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api\views.py:34 : "EUR"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\finance_models.py:21 : default="USD"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models.py:384 : default="USD"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup.py:383 : default="USD"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup_encoding.py:382 : default="USD"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\views.py:92 : "currency": "CDF"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\views.py:97 : "currency": "USD"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\views.py:102 : "currency": "EUR"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\views.py:154 : "currency": "USD"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\views.py:180 : "USD",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\views.py:181 : "EUR",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\views.py:182 : "CDF"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\wallet_bank_views.py:28 : "USD"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\serializers\wallet_operation_serializer.py:15 : default="USD"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\association\models.py:73 : default="USD"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\association\models.py:102 : default="USD"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\dashboard\views.py:204 : "taux_change": ExchangeRate.objects.count(),
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\dashboard\views.py:369 : from finance.models import Currency, ExchangeRate
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\dashboard\views.py:390 : for rate in ExchangeRate.objects.all():
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py:101 : class ExchangeRate(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py:214 : class ExchangeRateHistory(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py:768 : default="USD"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\models.py:115 : class ExchangeRate(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\models.py:196 : default="USD"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\models.py:408 : default="USD"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\serializers.py:6 : ExchangeRate,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\serializers.py:35 : class ExchangeRateSerializer(serializers.ModelSerializer):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\serializers.py:38 : model = ExchangeRate
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\signals.py:25 : "USD",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\signals.py:26 : "EUR",
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\signals.py:27 : "CDF"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\views_secure.py:56 : "USD"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\models.py:24 : currency = models.CharField(max_length=3, default="EUR")
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\models.py:79 : currency = models.CharField(max_length=3, default="EUR")
+
+=== 8. MIGRATIONS FINANCE / WALLET ===
+
+--- finance ---
+__init__.py
+0001_initial.py
+0002_currency_remove_payment_transaction_and_more.py
+0003_alter_wallet_user_alter_wallettransaction_wallet.py
+0004_exchangeratehistory_financialledger.py
+0005_bankreconciliation_merchantpayment_and_more.py
+0006_auditlog_frauddetectionevent_kyccompliance_and_more.py
+0007_marketplaceproduct_marketplaceorder_and_more.py
+
+--- wallet ---
+__init__.py
+0001_initial.py
+0002_alter_wallet_user.py
+0003_walletcommission_walletoperation.py
+0004_walletauditlog.py
+0005_walletkycprofile_walletcurrencybalance.py
+0006_walletbankaccount.py
+
+=== 9. DJANGO CHECK ===
+=== ALIASES DASHBOARD NSIKAY FINALISES ===
+=== API NSIKAY VIEWS COMPATIBILITE CHARGEES ===
+System check identified no issues (0 silenced).
+DJANGO_CHECK=OK
+
+=== 10. MAKEMIGRATIONS CHECK ===
+=== ALIASES DASHBOARD NSIKAY FINALISES ===
+=== API NSIKAY VIEWS COMPATIBILITE CHARGEES ===
+No changes detected
+MAKEMIGRATIONS_CHECK=OK
+
+=== CONCLUSION ===
+AUDIT UNIQUEMENT - AUCUNE MODIFICATION EFFECTUEE.
+AUCUN WALLET MODIFIE.
+AUCUNE TRANSACTION CREEE.
+AUCUNE MIGRATION CREEE.

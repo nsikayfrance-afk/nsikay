@@ -1,0 +1,30 @@
+﻿============================================================
+ NSIKAY - DESIGN 15 - AUDIT STOCKAGE PROPRE
+============================================================
+
+REGLES OFFICIELLES
+------------------
+Stockage gratuit : NON
+10 Go : 10 EUR
+100 Go : 50 EUR
+
+UTILISATION
+-----------
+Le stockage NSIKAY est un service cloud payant.
+Il est accessible depuis le telephone et le PC.
+Le stockage est rattache au compte NSIKAY et non a l'appareil.
+
+VERIFICATION
+------------
+Anciennes formules gratuites detectees : 0
+Fichiers contenant 10 Go / 10 EUR : 1
+Fichiers contenant 100 Go / 50 EUR : 1
+
+DJANGO
+------
+check : OK
+migrations : OK
+
+============================================================
+ FIN AUDIT DESIGN 15
+============================================================

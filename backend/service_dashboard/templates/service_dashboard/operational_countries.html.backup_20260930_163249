@@ -1,0 +1,379 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NSIKAY - Pays opérationnels</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f4f6f9;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #1f2937;
+        }
+
+        .container {
+            width: 94%;
+            max-width: 1400px;
+            margin: 30px auto;
+        }
+
+        .header {
+            background: #111827;
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            margin: 0 0 8px 0;
+        }
+
+        .header p {
+            margin: 0;
+            opacity: 0.85;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .stat strong {
+            display: block;
+            font-size: 28px;
+            margin-top: 8px;
+        }
+
+        .warning {
+            background: #fff7ed;
+            border-left: 5px solid #f97316;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .messages {
+            margin-bottom: 20px;
+        }
+
+        .message {
+            background: #ecfdf5;
+            border-left: 5px solid #10b981;
+            padding: 14px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+
+        .message.error {
+            background: #fef2f2;
+            border-left-color: #ef4444;
+        }
+
+        .panel {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            min-width: 250px;
+            padding: 11px;
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
+        }
+
+        button {
+            border: 0;
+            padding: 11px 18px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .save {
+            background: #111827;
+            color: white;
+        }
+
+        .select {
+            background: #e5e7eb;
+        }
+
+        .country-list {
+            max-height: 650px;
+            overflow-y: auto;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+        }
+
+        .country {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 15px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .country:last-child {
+            border-bottom: 0;
+        }
+
+        .country:hover {
+            background: #f9fafb;
+        }
+
+        .country-code {
+            width: 55px;
+            font-weight: bold;
+        }
+
+        .country-name {
+            flex: 1;
+        }
+
+        .status {
+            font-size: 12px;
+            font-weight: bold;
+            padding: 5px 9px;
+            border-radius: 20px;
+        }
+
+        .status.on {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status.off {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+
+        .footer-note {
+            margin-top: 20px;
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        @media (max-width: 900px) {
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>NSIKAY — Pays opérationnels</h1>
+        <p>
+            Gestion administrative des pays ISO principaux.
+            Les lignes historiques ne sont pas modifiées.
+        </p>
+    </div>
+
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="message {% if message.tags == 'error' %}error{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="stats">
+
+        <div class="stat">
+            Pays ISO principaux
+            <strong>{{ countries|length }}</strong>
+        </div>
+
+        <div class="stat">
+            Pays opérationnels
+            <strong>{{ operational_count }}</strong>
+        </div>
+
+        <div class="stat">
+            Pays encore disponibles
+            <strong>{{ remaining_slots }}</strong>
+        </div>
+
+        <div class="stat">
+            Limite NSIKAY
+            <strong>{{ maximum_operational }}</strong>
+        </div>
+
+    </div>
+
+    <div class="warning">
+        <strong>Règle NSIKAY :</strong>
+        maximum 240 pays peuvent être marqués comme opérationnels.
+        Les 249 pays ISO principaux restent conservés.
+        Les doublons historiques ne sont jamais modifiés.
+    </div>
+
+    <div class="panel">
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="toolbar">
+
+                <input
+                    type="text"
+                    id="countrySearch"
+                    placeholder="Rechercher un pays ou un code ISO3..."
+                >
+
+                <button
+                    type="button"
+                    class="select"
+                    onclick="selectVisible(true)"
+                >
+                    Sélectionner visibles
+                </button>
+
+                <button
+                    type="button"
+                    class="select"
+                    onclick="selectVisible(false)"
+                >
+                    Désélectionner visibles
+                </button>
+
+                <button
+                    type="submit"
+                    class="save"
+                >
+                    Enregistrer les 240 pays
+                </button>
+
+            </div>
+
+            <div class="country-list" id="countryList">
+
+                {% for country in countries %}
+
+                    <label
+                        class="country"
+                        data-search="{{ country.country_name|lower }} {{ country.country_code|lower }}"
+                    >
+
+                        <input
+                            type="checkbox"
+                            name="operational_countries"
+                            value="{{ country.country_code }}"
+                            {% if country.is_operational %}checked{% endif %}
+                        >
+
+                        <span class="country-code">
+                            {{ country.country_code }}
+                        </span>
+
+                        <span class="country-name">
+                            {{ country.country_name }}
+                        </span>
+
+                        <span
+                            class="status {% if country.is_operational %}on{% else %}off{% endif %}"
+                        >
+                            {% if country.is_operational %}
+                                OPÉRATIONNEL
+                            {% else %}
+                                NON OPÉRATIONNEL
+                            {% endif %}
+                        </span>
+
+                    </label>
+
+                {% endfor %}
+
+            </div>
+
+        </form>
+
+        <div class="footer-note">
+            La sélection concerne uniquement les 249 lignes
+            <strong>is_primary=True</strong>.
+            Les 125 lignes historiques supplémentaires restent
+            conservées dans la base de données.
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    const search = document.getElementById("countrySearch");
+    const countries = document.querySelectorAll(".country");
+
+    search.addEventListener("input", function () {
+
+        const value = this.value.toLowerCase().trim();
+
+        countries.forEach(function (country) {
+
+            const text = country.dataset.search;
+
+            country.style.display =
+                text.includes(value)
+                    ? "flex"
+                    : "none";
+
+        });
+
+    });
+
+    function selectVisible(value) {
+
+        countries.forEach(function (country) {
+
+            if (country.style.display !== "none") {
+
+                const checkbox =
+                    country.querySelector(
+                        'input[type="checkbox"]'
+                    );
+
+                checkbox.checked = value;
+            }
+
+        });
+
+    }
+</script>
+
+</body>
+</html>

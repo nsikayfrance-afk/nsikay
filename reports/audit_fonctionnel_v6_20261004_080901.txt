@@ -1,0 +1,185 @@
+
+============================================================
+ NSIKAY - AUDIT FONCTIONNEL V6
+============================================================
+Date : 2026-10-04 08:09:01
+Projet : C:\Users\DELL Technologies\Desktop\nsikay nante
+
+------------------------------------------------------------
+1. STRUCTURE DU PROJET
+------------------------------------------------------------
+OK : C:\Users\DELL Technologies\Desktop\nsikay nante
+OK : C:\Users\DELL Technologies\Desktop\nsikay nante\frontend
+OK : C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\src
+OK : C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\src\pages
+OK : C:\Users\DELL Technologies\Desktop\nsikay nante\backend
+OK : C:\Users\DELL Technologies\Desktop\nsikay nante\backups
+
+------------------------------------------------------------
+2. ROUTES FRONTEND
+------------------------------------------------------------
+ROUTE OK : /mot-de-passe-oublie
+ROUTE OK : /reinitialiser-mot-de-passe
+ROUTE OK : /
+ROUTE OK : /connexion
+ROUTE OK : /inscription
+ROUTE OK : /espace
+ROUTE OK : /profils
+ROUTE OK : /certification-activites
+ROUTE OK : /mon-profil
+ROUTE OK : /activities
+ROUTE OK : /metiers
+ROUTE OK : /certification
+ROUTE OK : /wenze
+ROUTE OK : /libenga
+ROUTE OK : /events
+ROUTE OK : /tv
+ROUTE OK : /tv-regie
+ROUTE OK : /publicite
+ROUTE OK : /transport
+ROUTE OK : /transport/marchandises
+ROUTE OK : /transport/personnes
+ROUTE OK : /transport/inscription
+ROUTE OK : /admin
+ROUTE OK : /adhesion
+ROUTE OK : /finance
+ROUTE OK : /camera
+ROUTE OK : /media-library
+
+ROUTES_PRESENTES=27
+ROUTES_ABSENTES=0
+
+------------------------------------------------------------
+3. PAGES PRINCIPALES
+------------------------------------------------------------
+PAGE OK : Home -> Home.jsx
+PAGE OK : Login -> Login.jsx
+PAGE OK : Register -> Register.jsx
+PAGE OK : ForgotPassword -> ForgotPassword.jsx
+PAGE OK : ResetPassword -> ResetPassword.jsx
+PAGE OK : Dashboard -> Dashboard.jsx
+PAGE OK : Profiles -> Profiles.jsx
+PAGE OK : MyProfile -> MyProfile.jsx
+PAGE OK : Activities -> Activities.jsx
+PAGE OK : ActivityCertificationAuthority -> ActivityCertificationAuthority.jsx
+PAGE OK : Finance -> Finance.jsx
+PAGE OK : Membership -> Membership.jsx
+PAGE OK : Transport -> Transport.jsx
+PAGE OK : TransportOnboarding -> TransportOnboarding.jsx
+PAGE OK : TV -> TV.jsx
+PAGE OK : TVRegie -> TVRegie.jsx
+PAGE OK : MediaLibrary -> MediaLibrary.jsx
+PAGE OK : Admin -> Admin.jsx
+PAGE OK : NSIKAYCamera -> NSIKAYCamera.jsx
+
+PAGES_OK=19
+PAGES_MANQUANTES=0
+
+------------------------------------------------------------
+4. IMPORTS DES PAGES
+------------------------------------------------------------
+IMPORT OK : Home
+IMPORT OK : Login
+IMPORT OK : Register
+IMPORT OK : ForgotPassword
+IMPORT OK : ResetPassword
+IMPORT OK : Dashboard
+IMPORT OK : Profiles
+IMPORT OK : MyProfile
+IMPORT OK : Activities
+IMPORT OK : ActivityCertificationAuthority
+IMPORT OK : Finance
+IMPORT OK : Membership
+IMPORT OK : Transport
+IMPORT OK : TransportOnboarding
+IMPORT OK : TV
+IMPORT OK : TVRegie
+IMPORT OK : MediaLibrary
+IMPORT OK : Admin
+IMPORT OK : NSIKAYCamera
+
+IMPORTS_OK=19
+IMPORTS_A_VERIFIER=0
+
+------------------------------------------------------------
+5. CARTOGRAPHIE API / FETCH
+------------------------------------------------------------
+
+PAGE : Admin.jsx
+  FETCH : /service-dashboard/statistics/
+
+PAGE : Transport.jsx
+
+PAGE : TransportOnboarding.jsx
+  FETCH : /transport/onboarding/
+
+FETCH_TOTAL=2
+API_REFERENCES_UNIQUES=2
+
+------------------------------------------------------------
+6. ROUTES METIER NSIKAY
+------------------------------------------------------------
+MODULE OK : /wenze
+MODULE OK : /libenga
+MODULE OK : /finance
+MODULE OK : /transport
+MODULE OK : /transport/marchandises
+MODULE OK : /transport/personnes
+MODULE OK : /transport/inscription
+MODULE OK : /events
+MODULE OK : /publicite
+MODULE OK : /tv
+MODULE OK : /tv-regie
+MODULE OK : /media-library
+MODULE OK : /certification-activites
+MODULE OK : /admin
+MODULE OK : /profils
+MODULE OK : /activities
+MODULE OK : /mon-profil
+MODULE OK : /adhesion
+
+MODULES_METIER_OK=18/18
+
+------------------------------------------------------------
+7. REGLES FINANCIERES VISIBLES
+------------------------------------------------------------
+REGLE/TARIF NON DETECTE DANS FRONTEND : 0.50
+REGLE/TARIF NON DETECTE DANS FRONTEND : 1.20
+REGLE/TARIF NON DETECTE DANS FRONTEND : 0.85
+REGLE/TARIF DETECTE : WENZE
+
+------------------------------------------------------------
+8. CONTROLE DES ELEMENTS OBSOLETES
+------------------------------------------------------------
+SECAS : ABSENT / OK
+
+------------------------------------------------------------
+9. BUILD FRONTEND
+------------------------------------------------------------
+
+BUILD_FRONTEND=OK
+
+------------------------------------------------------------
+10. DJANGO SYSTEM CHECK
+------------------------------------------------------------
+DJANGO_CHECK=OK
+
+------------------------------------------------------------
+11. TESTS DJANGO
+------------------------------------------------------------
+DJANGO_TESTS=ERREUR_OU_TESTS_EN_ECHEC
+
+============================================================
+ NSIKAY - RESULTAT AUDIT FONCTIONNEL V6
+============================================================
+ROUTES=OK
+PAGES=OK
+IMPORTS=OK
+FETCH_TOTAL=2
+MODULES_METIER=18/18
+RAPPORT=C:\Users\DELL Technologies\Desktop\nsikay nante\reports\audit_fonctionnel_v6_20261004_080901.txt
+
+============================================================
+ AUDIT V6 TERMINE
+ PowerShell reste ouvert.
+============================================================

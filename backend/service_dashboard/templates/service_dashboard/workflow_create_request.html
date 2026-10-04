@@ -1,0 +1,136 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="utf-8">
+
+<title>Nouvelle demande NSIKAY</title>
+
+<style>
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 30px;
+    background: #f5f7fa;
+}
+
+.box {
+    max-width: 700px;
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+}
+
+label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+select,
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+}
+
+button {
+    margin-top: 20px;
+    padding: 10px 15px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="box">
+
+<h1>Nouvelle demande d'activation</h1>
+
+<p>
+Création d'une demande administrative NSIKAY.
+</p>
+
+<form method="post">
+
+{% csrf_token %}
+
+<label>
+Service
+</label>
+
+<select
+    name="service_id"
+    required
+>
+
+<option value="">
+Sélectionner
+</option>
+
+{% for service in services %}
+
+<option value="{{ service.id }}">
+{{ service.name }}
+</option>
+
+{% endfor %}
+
+</select>
+
+<label>
+Pays opérationnel
+</label>
+
+<select
+    name="country_id"
+    required
+>
+
+<option value="">
+Sélectionner
+</option>
+
+{% for country in countries %}
+
+<option value="{{ country.id }}">
+{{ country.country_name }}
+</option>
+
+{% endfor %}
+
+</select>
+
+<label>
+Motif / commentaire
+</label>
+
+<textarea
+    name="reason"
+    rows="6"
+    placeholder="Motif de la demande..."
+></textarea>
+
+<button type="submit">
+Créer la demande
+</button>
+
+</form>
+
+<p>
+
+<a href="{% url 'workflow_admin_dashboard' %}">
+Retour
+</a>
+
+</p>
+
+</div>
+
+</body>
+
+</html>
+

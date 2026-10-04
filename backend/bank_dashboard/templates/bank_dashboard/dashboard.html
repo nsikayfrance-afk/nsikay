@@ -1,0 +1,84 @@
+﻿<h1>NSIKAY - Dashboard Banque</h1>
+
+
+<h2>Demandes ouverture comptes</h2>
+
+{% for account in accounts %}
+
+<p>
+{{ account }}
+</p>
+
+<a href="/bank-dashboard/account/accept/{{account.id}}/">
+Accepter
+</a>
+
+<a href="/bank-dashboard/account/activate/{{account.id}}/">
+Activer compte
+</a>
+
+<a href="/bank-dashboard/account/reject/{{account.id}}/">
+Refuser
+</a>
+
+<hr>
+
+{% empty %}
+
+<p>Aucune demande</p>
+
+{% endfor %}
+
+
+
+<h2>Dépôts partenaires</h2>
+
+
+{% for deposit in deposits %}
+
+<p>
+{{ deposit.amount }}
+{{ deposit.currency }}
+</p>
+
+
+<a href="/bank-dashboard/deposit/{{deposit.id}}/validate/">
+Valider dépôt
+</a>
+
+
+{% endfor %}
+
+
+
+<h2>Retraits clients</h2>
+
+
+{% for withdrawal in withdrawals %}
+
+<p>
+{{ withdrawal.amount }}
+{{ withdrawal.currency }}
+</p>
+
+
+<a href="/bank-dashboard/withdrawal/{{withdrawal.id}}/validate/">
+Valider retrait
+</a>
+
+
+{% endfor %}
+
+
+
+<h2>Rapports bancaires</h2>
+
+
+{% for report in reports %}
+
+<p>
+{{ report }}
+</p>
+
+{% endfor %}
+

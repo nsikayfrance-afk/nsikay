@@ -1,0 +1,673 @@
+============================================================
+ NSIKAY - INSPECTION MODELES CADEAUX / PUBLICATIONS
+============================================================
+
+DATE : 2026-10-01 15:19:34
+MODE : LECTURE SEULE - AUCUNE MODIFICATION
+
+============================================================
+1. MODELES EXISTANTS
+============================================================
+
+------------------------------------------------------------
+### MODELE : CreatorProfile
+### LIGNES : 121 - 156
+------------------------------------------------------------
+  121 | class CreatorProfile(models.Model):
+  122 | 
+  123 |     user = models.OneToOneField(
+  124 | 
+  125 |         User,
+  126 | 
+  127 |         on_delete=models.CASCADE,
+  128 | 
+  129 |         related_name="creator_profile"
+  130 | 
+  131 |     )
+  132 | 
+  133 |     verified = models.BooleanField(
+  134 | 
+  135 |         default=False
+  136 | 
+  137 |     )
+  138 | 
+  139 |     followers = models.IntegerField(
+  140 | 
+  141 |         default=0
+  142 | 
+  143 |     )
+  144 | 
+  145 |     earnings = models.DecimalField(
+  146 | 
+  147 |         max_digits=20,
+  148 | 
+  149 |         decimal_places=2,
+  150 | 
+  151 |         default=0
+  152 | 
+  153 |     )
+  154 | 
+  155 | 
+  156 | 
+
+------------------------------------------------------------
+### MODELE : SocialPost
+### LIGNES : 157 - 190
+------------------------------------------------------------
+  157 | class SocialPost(models.Model):
+  158 | 
+  159 |     author = models.ForeignKey(
+  160 | 
+  161 |         User,
+  162 | 
+  163 |         on_delete=models.CASCADE,
+  164 | 
+  165 |         related_name="posts"
+  166 | 
+  167 |     )
+  168 | 
+  169 |     content = models.TextField()
+  170 | 
+  171 |     image = models.URLField(
+  172 | 
+  173 |         blank=True
+  174 | 
+  175 |     )
+  176 | 
+  177 |     likes = models.IntegerField(
+  178 | 
+  179 |         default=0
+  180 | 
+  181 |     )
+  182 | 
+  183 |     created_at = models.DateTimeField(
+  184 | 
+  185 |         auto_now_add=True
+  186 | 
+  187 |     )
+  188 | 
+  189 | 
+  190 | 
+
+------------------------------------------------------------
+### MODELE : VirtualGift
+### LIGNES : 364 - 389
+------------------------------------------------------------
+  364 | class VirtualGift(models.Model):
+  365 | 
+  366 |     name = models.CharField(
+  367 | 
+  368 |         max_length=255
+  369 | 
+  370 |     )
+  371 | 
+  372 |     value = models.DecimalField(
+  373 | 
+  374 |         max_digits=20,
+  375 | 
+  376 |         decimal_places=2
+  377 | 
+  378 |     )
+  379 | 
+  380 |     currency = models.CharField(
+  381 | 
+  382 |         max_length=10,
+  383 | 
+  384 |         default="USD"
+  385 | 
+  386 |     )
+  387 | 
+  388 | 
+  389 | 
+
+------------------------------------------------------------
+### MODELE : GiftTransaction
+### LIGNES : 390 - 427
+------------------------------------------------------------
+  390 | class GiftTransaction(models.Model):
+  391 | 
+  392 |     sender = models.ForeignKey(
+  393 | 
+  394 |         User,
+  395 | 
+  396 |         on_delete=models.CASCADE,
+  397 | 
+  398 |         related_name="sent_gifts"
+  399 | 
+  400 |     )
+  401 | 
+  402 |     receiver = models.ForeignKey(
+  403 | 
+  404 |         User,
+  405 | 
+  406 |         on_delete=models.CASCADE,
+  407 | 
+  408 |         related_name="received_gifts"
+  409 | 
+  410 |     )
+  411 | 
+  412 |     gift = models.ForeignKey(
+  413 | 
+  414 |         VirtualGift,
+  415 | 
+  416 |         on_delete=models.CASCADE
+  417 | 
+  418 |     )
+  419 | 
+  420 |     created_at = models.DateTimeField(
+  421 | 
+  422 |         auto_now_add=True
+  423 | 
+  424 |     )
+  425 | 
+  426 | 
+  427 | 
+
+------------------------------------------------------------
+### MODELE : CreatorSubscription
+### LIGNES : 428 - 464
+------------------------------------------------------------
+  428 | class CreatorSubscription(models.Model):
+  429 | 
+  430 |     creator = models.ForeignKey(
+  431 | 
+  432 |         CreatorProfile,
+  433 | 
+  434 |         on_delete=models.CASCADE
+  435 | 
+  436 |     )
+  437 | 
+  438 |     subscriber = models.ForeignKey(
+  439 | 
+  440 |         User,
+  441 | 
+  442 |         on_delete=models.CASCADE
+  443 | 
+  444 |     )
+  445 | 
+  446 |     monthly_price = models.DecimalField(
+  447 | 
+  448 |         max_digits=20,
+  449 | 
+  450 |         decimal_places=2
+  451 | 
+  452 |     )
+  453 | 
+  454 |     active = models.BooleanField(
+  455 | 
+  456 |         default=True
+  457 | 
+  458 |     )
+  459 | 
+  460 | from django.db import models
+  461 | from django.contrib.auth.models import User
+  462 | 
+  463 | 
+  464 | 
+
+------------------------------------------------------------
+### MODELE : ContentRecommendation
+### LIGNES : 465 - 507
+------------------------------------------------------------
+  465 | class ContentRecommendation(models.Model):
+  466 | 
+  467 | 
+  468 |     user = models.ForeignKey(
+  469 | 
+  470 |         User,
+  471 | 
+  472 |         on_delete=models.CASCADE,
+  473 | 
+  474 |         related_name="recommendations"
+  475 | 
+  476 |     )
+  477 | 
+  478 | 
+  479 |     content_type = models.CharField(
+  480 | 
+  481 |         max_length=100
+  482 | 
+  483 |     )
+  484 | 
+  485 | 
+  486 |     content_id = models.IntegerField()
+  487 | 
+  488 | 
+  489 |     score = models.DecimalField(
+  490 | 
+  491 |         max_digits=5,
+  492 | 
+  493 |         decimal_places=2,
+  494 | 
+  495 |         default=0
+  496 | 
+  497 |     )
+  498 | 
+  499 | 
+  500 |     generated_at = models.DateTimeField(
+  501 | 
+  502 |         auto_now_add=True
+  503 | 
+  504 |     )
+  505 | 
+  506 | 
+  507 | 
+
+------------------------------------------------------------
+### MODELE : ContentAnalytics
+### LIGNES : 567 - 619
+------------------------------------------------------------
+  567 | class ContentAnalytics(models.Model):
+  568 | 
+  569 | 
+  570 |     content_type = models.CharField(
+  571 | 
+  572 |         max_length=100
+  573 | 
+  574 |     )
+  575 | 
+  576 | 
+  577 |     content_id = models.IntegerField()
+  578 | 
+  579 | 
+  580 |     views = models.IntegerField(
+  581 | 
+  582 |         default=0
+  583 | 
+  584 |     )
+  585 | 
+  586 | 
+  587 |     likes = models.IntegerField(
+  588 | 
+  589 |         default=0
+  590 | 
+  591 |     )
+  592 | 
+  593 | 
+  594 |     shares = models.IntegerField(
+  595 | 
+  596 |         default=0
+  597 | 
+  598 |     )
+  599 | 
+  600 | 
+  601 |     revenue = models.DecimalField(
+  602 | 
+  603 |         max_digits=20,
+  604 | 
+  605 |         decimal_places=2,
+  606 | 
+  607 |         default=0
+  608 | 
+  609 |     )
+  610 | 
+  611 | 
+  612 |     updated_at = models.DateTimeField(
+  613 | 
+  614 |         auto_now=True
+  615 | 
+  616 |     )
+  617 | 
+  618 | 
+  619 | 
+
+============================================================
+2. UTILISATIONS DES MODELES DANS LE CODE ACTIF
+============================================================
+
+------------------------------------------------------------
+### REFERENCES : CreatorProfile
+------------------------------------------------------------
+Aucune référence trouvée dans les fichiers principaux.
+
+------------------------------------------------------------
+### REFERENCES : SocialPost
+------------------------------------------------------------
+Aucune référence trouvée dans les fichiers principaux.
+
+------------------------------------------------------------
+### REFERENCES : VirtualGift
+------------------------------------------------------------
+Aucune référence trouvée dans les fichiers principaux.
+
+------------------------------------------------------------
+### REFERENCES : GiftTransaction
+------------------------------------------------------------
+Aucune référence trouvée dans les fichiers principaux.
+
+------------------------------------------------------------
+### REFERENCES : CreatorSubscription
+------------------------------------------------------------
+Aucune référence trouvée dans les fichiers principaux.
+
+------------------------------------------------------------
+### REFERENCES : ContentRecommendation
+------------------------------------------------------------
+Aucune référence trouvée dans les fichiers principaux.
+
+------------------------------------------------------------
+### REFERENCES : ContentAnalytics
+------------------------------------------------------------
+Aucune référence trouvée dans les fichiers principaux.
+
+============================================================
+3. REFERENCES DANS TOUT api_nsikay ACTIF
+============================================================
+
+------------------------------------------------------------
+### RECHERCHE : VirtualGift
+------------------------------------------------------------
+api_nsikay\models.py : ligne 364
+    class VirtualGift(models.Model):
+api_nsikay\models.py : ligne 414
+    VirtualGift,
+api_nsikay\models_backup.py : ligne 363
+    class VirtualGift(models.Model):
+api_nsikay\models_backup.py : ligne 413
+    VirtualGift,
+api_nsikay\models_backup_encoding.py : ligne 362
+    class VirtualGift(models.Model):
+api_nsikay\models_backup_encoding.py : ligne 412
+    VirtualGift,
+
+------------------------------------------------------------
+### RECHERCHE : GiftTransaction
+------------------------------------------------------------
+api_nsikay\models.py : ligne 390
+    class GiftTransaction(models.Model):
+api_nsikay\models_backup.py : ligne 389
+    class GiftTransaction(models.Model):
+api_nsikay\models_backup_encoding.py : ligne 388
+    class GiftTransaction(models.Model):
+
+------------------------------------------------------------
+### RECHERCHE : CreatorSubscription
+------------------------------------------------------------
+api_nsikay\models.py : ligne 428
+    class CreatorSubscription(models.Model):
+api_nsikay\models_backup.py : ligne 427
+    class CreatorSubscription(models.Model):
+api_nsikay\models_backup_encoding.py : ligne 426
+    class CreatorSubscription(models.Model):
+
+------------------------------------------------------------
+### RECHERCHE : SocialPost
+------------------------------------------------------------
+api_nsikay\models.py : ligne 157
+    class SocialPost(models.Model):
+api_nsikay\models.py : ligne 195
+    SocialPost,
+api_nsikay\models_backup.py : ligne 155
+    class SocialPost(models.Model):
+api_nsikay\models_backup.py : ligne 193
+    SocialPost,
+api_nsikay\models_backup_encoding.py : ligne 155
+    class SocialPost(models.Model):
+api_nsikay\models_backup_encoding.py : ligne 193
+    SocialPost,
+api_nsikay\superapp_views.py : ligne 4
+    from api_nsikay.models import SocialPost
+api_nsikay\superapp_views.py : ligne 11
+    posts = SocialPost.objects.all().order_by(
+
+------------------------------------------------------------
+### RECHERCHE : CreatorProfile
+------------------------------------------------------------
+api_nsikay\models.py : ligne 121
+    class CreatorProfile(models.Model):
+api_nsikay\models.py : ligne 432
+    CreatorProfile,
+api_nsikay\models_backup.py : ligne 119
+    class CreatorProfile(models.Model):
+api_nsikay\models_backup.py : ligne 431
+    CreatorProfile,
+api_nsikay\models_backup_encoding.py : ligne 119
+    class CreatorProfile(models.Model):
+api_nsikay\models_backup_encoding.py : ligne 430
+    CreatorProfile,
+
+------------------------------------------------------------
+### RECHERCHE : \bLive\b
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+### RECHERCHE : \blive\b
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+### RECHERCHE : livestream
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+### RECHERCHE : broadcast
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+### RECHERCHE : Favori
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+### RECHERCHE : favorite
+------------------------------------------------------------
+NON DETECTE
+
+============================================================
+4. MIGRATION 0004 - STRUCTURE DES CADEAUX
+============================================================
+
+------------------------------------------------------------
+### MIGRATION MODEL : VirtualGift
+------------------------------------------------------------
+   24 |         ),
+   25 |         migrations.CreateModel(
+   26 |             name='VirtualGift',
+   27 |             fields=[
+   28 |                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+   29 |                 ('name', models.CharField(max_length=255)),
+   30 |                 ('value', models.DecimalField(decimal_places=2, max_digits=20)),
+   31 |                 ('currency', models.CharField(default='USD', max_length=10)),
+   32 |             ],
+   33 |         ),
+   34 |         migrations.CreateModel(
+   35 |             name='AdvertisingCampaign',
+   36 |             fields=[
+   37 |                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+   38 |                 ('title', models.CharField(max_length=255)),
+   39 |                 ('budget', models.DecimalField(decimal_places=2, max_digits=20)),
+   40 |                 ('active', models.BooleanField(default=True)),
+   41 |                 ('views', models.IntegerField(default=0)),
+   42 |                 ('owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+   43 |             ],
+   44 |         ),
+   45 |         migrations.CreateModel(
+   46 |             name='AdvertisementPlacement',
+   47 |             fields=[
+   48 |                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+   49 |                 ('position', models.CharField(max_length=100)),
+   50 |                 ('campaign', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='placements', to='api_nsikay.advertisingcampaign')),
+   51 |             ],
+   52 |         ),
+   53 |         migrations.CreateModel(
+   54 |             name='CreatorProfile',
+   55 |             fields=[
+   56 |                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+   57 |                 ('verified', models.BooleanField(default=False)),
+   58 |                 ('followers', models.IntegerField(default=0)),
+   59 |                 ('earnings', models.DecimalField(decimal_places=2, default=0, max_digits=20)),
+   60 |                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='creator_profile', to=settings.AUTH_USER_MODEL)),
+   61 |             ],
+
+------------------------------------------------------------
+### MIGRATION MODEL : GiftTransaction
+------------------------------------------------------------
+  121 |         ),
+  122 |         migrations.CreateModel(
+  123 |             name='GiftTransaction',
+  124 |             fields=[
+  125 |                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+  126 |                 ('created_at', models.DateTimeField(auto_now_add=True)),
+  127 |                 ('receiver', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='received_gifts', to=settings.AUTH_USER_MODEL)),
+  128 |                 ('sender', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='sent_gifts', to=settings.AUTH_USER_MODEL)),
+  129 |                 ('gift', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api_nsikay.virtualgift')),
+  130 |             ],
+  131 |         ),
+  132 |     ]
+
+------------------------------------------------------------
+### MIGRATION MODEL : CreatorProfile
+------------------------------------------------------------
+   52 |         ),
+   53 |         migrations.CreateModel(
+   54 |             name='CreatorProfile',
+   55 |             fields=[
+   56 |                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+   57 |                 ('verified', models.BooleanField(default=False)),
+   58 |                 ('followers', models.IntegerField(default=0)),
+   59 |                 ('earnings', models.DecimalField(decimal_places=2, default=0, max_digits=20)),
+   60 |                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='creator_profile', to=settings.AUTH_USER_MODEL)),
+   61 |             ],
+   62 |         ),
+   63 |         migrations.CreateModel(
+   64 |             name='CreatorSubscription',
+   65 |             fields=[
+   66 |                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+   67 |                 ('monthly_price', models.DecimalField(decimal_places=2, max_digits=20)),
+   68 |                 ('active', models.BooleanField(default=True)),
+   69 |                 ('creator', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api_nsikay.creatorprofile')),
+   70 |                 ('subscriber', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+   71 |             ],
+   72 |         ),
+   73 |         migrations.CreateModel(
+   74 |             name='NsikayEvent',
+   75 |             fields=[
+   76 |                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+   77 |                 ('title', models.CharField(max_length=255)),
+   78 |                 ('description', models.TextField()),
+   79 |                 ('date', models.DateTimeField()),
+   80 |                 ('location', models.CharField(max_length=255)),
+   81 |                 ('organizer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+   82 |             ],
+   83 |         ),
+   84 |         migrations.CreateModel(
+   85 |             name='EventParticipant',
+   86 |             fields=[
+   87 |                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+   88 |                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+   89 |                 ('event', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api_nsikay.nsikayevent')),
+
+------------------------------------------------------------
+### MIGRATION MODEL : CreatorSubscription
+------------------------------------------------------------
+   62 |         ),
+   63 |         migrations.CreateModel(
+   64 |             name='CreatorSubscription',
+   65 |             fields=[
+   66 |                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+   67 |                 ('monthly_price', models.DecimalField(decimal_places=2, max_digits=20)),
+   68 |                 ('active', models.BooleanField(default=True)),
+   69 |                 ('creator', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api_nsikay.creatorprofile')),
+   70 |                 ('subscriber', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+   71 |             ],
+   72 |         ),
+   73 |         migrations.CreateModel(
+   74 |             name='NsikayEvent',
+   75 |             fields=[
+   76 |                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+   77 |                 ('title', models.CharField(max_length=255)),
+   78 |                 ('description', models.TextField()),
+   79 |                 ('date', models.DateTimeField()),
+   80 |                 ('location', models.CharField(max_length=255)),
+   81 |                 ('organizer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+   82 |             ],
+   83 |         ),
+   84 |         migrations.CreateModel(
+   85 |             name='EventParticipant',
+   86 |             fields=[
+   87 |                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+   88 |                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+   89 |                 ('event', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api_nsikay.nsikayevent')),
+   90 |             ],
+   91 |         ),
+   92 |         migrations.CreateModel(
+   93 |             name='SocialPost',
+   94 |             fields=[
+   95 |                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+   96 |                 ('content', models.TextField()),
+   97 |                 ('image', models.URLField(blank=True)),
+   98 |                 ('likes', models.IntegerField(default=0)),
+   99 |                 ('created_at', models.DateTimeField(auto_now_add=True)),
+
+============================================================
+5. URLS API NSIKAY
+============================================================
+
+------------------------------------------------------------
+### api_nsikay\urls.py
+------------------------------------------------------------
+    6 |     path(
+    8 |         include("api_nsikay.banks_urls")
+   11 |     path(
+   13 |         include("api_nsikay.countries_urls")
+   16 |     path(
+   18 |         include("api_nsikay.transactions_urls")
+   21 |     path(
+   23 |         include("api_nsikay.finance_urls")
+   26 |     path(
+   28 |         include("api_nsikay.wallet_api_urls")
+   33 | path(
+   35 |     include("api_nsikay.wallet_operations_urls")
+   39 | path(
+   41 |     include("api_nsikay.wallet_dashboard_urls")
+   45 | path(
+   47 |     include("api_nsikay.wallet_bank_urls")
+   51 | path(
+   53 |     include("api_nsikay.finance_admin_urls")
+   57 | path(
+   59 |     include("api_nsikay.security_urls")
+   63 | path(
+   65 |     include("api_nsikay.superapp_urls")
+   69 | path(
+   71 |     include("api_nsikay.analytics_urls")
+   75 | path(
+   77 |     include("api_nsikay.enterprise_urls")
+   82 | path("tv/", include("api_nsikay.tv.urls")),
+
+------------------------------------------------------------
+### api_nsikay\transactions_urls.py
+------------------------------------------------------------
+    7 |     path("", views.transactions_list, name="transactions-list"),
+
+------------------------------------------------------------
+### api_nsikay\superapp_urls.py
+------------------------------------------------------------
+    9 |     path(
+
+------------------------------------------------------------
+### api_nsikay\security_urls.py
+------------------------------------------------------------
+   19 | path(
+   28 | path(
+   37 | path(
+
+------------------------------------------------------------
+### api_nsikay\tv\urls.py
+------------------------------------------------------------
+    8 |     path(
+
+============================================================
+6. ETAT DJANGO
+============================================================
+
+CODE RETOUR : 0
+=== ALIASES DASHBOARD NSIKAY FINALISES ===
+=== API NSIKAY VIEWS COMPATIBILITE CHARGEES ===
+System check identified no issues (0 silenced).
+
+============================================================
+ FIN INSPECTION
+============================================================

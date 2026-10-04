@@ -1,0 +1,379 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Services par pays - NSIKAY</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 24px;
+            background: #f4f6f8;
+        }
+
+        h1 {
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+            min-width: 170px;
+            box-shadow: 0 2px 8px rgba(0,0,0,.08);
+        }
+
+        .card strong {
+            display: block;
+            font-size: 24px;
+            margin-top: 5px;
+        }
+
+        .filters {
+            background: white;
+            padding: 18px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,.08);
+        }
+
+        select,
+        button {
+            padding: 9px;
+            margin-right: 8px;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 8px;
+            overflow-x: auto;
+            box-shadow: 0 2px 8px rgba(0,0,0,.08);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background: #eef1f4;
+        }
+
+        .active {
+            font-weight: bold;
+        }
+
+        .inactive {
+            color: #777;
+        }
+
+        .yes {
+            font-weight: bold;
+        }
+
+        .no {
+            color: #777;
+        }
+
+        .nav {
+            margin-bottom: 20px;
+        }
+
+        .nav a {
+            display: inline-block;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            padding: 8px 12px;
+            background: #1f2937;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .empty {
+            padding: 30px;
+            text-align: center;
+            color: #666;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<h1>Gestion des services par pays</h1>
+
+<div class="subtitle">
+    Centre administratif NSIKAY de contrôle des relations
+    Service × Pays et de leurs conditions d'activation.
+</div>
+
+<div class="nav">
+
+    <a href="{% url 'service_dashboard:control_center' %}">
+        Centre de contrôle
+    </a>
+
+    <a href="{% url 'service_dashboard:country_statistics' %}">
+        Statistiques pays
+    </a>
+
+    <a href="{% url 'service_dashboard:administrative_history' %}">
+        Historique
+    </a>
+
+</div>
+
+<div class="cards">
+
+    <div class="card">
+        Pays opérationnels
+        <strong>{{ operational_count }}</strong>
+    </div>
+
+    <div class="card">
+        Relations Service × Pays
+        <strong>{{ total_relations }}</strong>
+    </div>
+
+    <div class="card">
+        Activations actives
+        <strong>{{ active_count }}</strong>
+    </div>
+
+    <div class="card">
+        Activations validées
+        <strong>{{ validated_count }}</strong>
+    </div>
+
+</div>
+
+<div class="filters">
+
+    <form method="get">
+
+        <label>
+            Pays :
+        </label>
+
+        <select name="country">
+
+            <option value="">
+                Tous / aucun pays sélectionné
+            </option>
+
+            {% for country in countries %}
+
+                <option
+                    value="{{ country.country_code }}"
+                    {% if selected_country and selected_country.id == country.id %}
+                        selected
+                    {% endif %}
+                >
+                    {{ country.country_name }}
+                    ({{ country.country_code }})
+                </option>
+
+            {% endfor %}
+
+        </select>
+
+        <label>
+            Service :
+        </label>
+
+        <select name="service">
+
+            <option value="">
+                Tous / aucun service sélectionné
+            </option>
+
+            {% for service in services %}
+
+                <option
+                    value="{{ service.id }}"
+                    {% if selected_service and selected_service.id == service.id %}
+                        selected
+                    {% endif %}
+                >
+                    {{ service.name }}
+                </option>
+
+            {% endfor %}
+
+        </select>
+
+        <button type="submit">
+            Afficher
+        </button>
+
+    </form>
+
+</div>
+
+<div class="table-container">
+
+<table>
+
+    <thead>
+
+        <tr>
+            <th>Pays</th>
+            <th>Service</th>
+            <th>Catégorie</th>
+            <th>Pays opérationnel</th>
+            <th>Activation</th>
+            <th>Validation admin</th>
+            <th>Certification</th>
+            <th>Partenaire bancaire</th>
+            <th>Assurance santé</th>
+            <th>Activation distante</th>
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+    {% for row in rows %}
+
+        <tr>
+
+            <td>
+                {{ row.country.country_name }}
+                <br>
+                <small>{{ row.country.country_code }}</small>
+            </td>
+
+            <td>
+                {{ row.service.name }}
+            </td>
+
+            <td>
+                {{ row.service.category }}
+            </td>
+
+            <td>
+
+                {% if row.country.is_operational %}
+                    <span class="yes">OUI</span>
+                {% else %}
+                    <span class="no">NON</span>
+                {% endif %}
+
+            </td>
+
+            <td>
+
+                {% if row.activation and row.activation.active %}
+                    <span class="active">ACTIVE</span>
+                {% else %}
+                    <span class="inactive">INACTIVE</span>
+                {% endif %}
+
+            </td>
+
+            <td>
+
+                {% if row.activation and row.activation.validated_by_admin %}
+                    OUI
+                {% else %}
+                    NON
+                {% endif %}
+
+            </td>
+
+            <td>
+
+                {% if row.rule and row.rule.certification_required %}
+                    REQUISE
+                {% else %}
+                    NON
+                {% endif %}
+
+            </td>
+
+            <td>
+
+                {% if row.rule and row.rule.partner_bank_required %}
+                    REQUIS
+                {% else %}
+                    NON
+                {% endif %}
+
+            </td>
+
+            <td>
+
+                {% if row.rule and row.rule.health_insurance_required %}
+                    REQUISE
+                {% else %}
+                    NON
+                {% endif %}
+
+            </td>
+
+            <td>
+
+                {% if row.rule and row.rule.remote_activation_allowed %}
+                    AUTORISÉE
+                {% else %}
+                    NON
+                {% endif %}
+
+            </td>
+
+        </tr>
+
+    {% empty %}
+
+        <tr>
+
+            <td colspan="10" class="empty">
+                Sélectionnez un pays ou un service pour afficher
+                les relations Service × Pays.
+            </td>
+
+        </tr>
+
+    {% endfor %}
+
+    </tbody>
+
+</table>
+
+</div>
+
+</body>
+
+</html>
+

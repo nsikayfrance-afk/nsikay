@@ -1,0 +1,42 @@
+﻿================================================================
+NSIKAY - RAPPORT SECURITE PRODUCTION
+================================================================
+
+Date :
+2026-09-30 19:33:11
+
+CONFIGURATION
+-------------
+
+DJANGO_SECRET_KEY_ENV=OK
+
+DJANGO_DEBUG_ENV=OK
+
+DEBUG_TRUE_LITERAL=NON_DETECTE
+
+ALLOWED_HOSTS=PRESENT
+
+STATIC_ROOT=PRESENT
+
+DJANGO_CHECK=OK
+
+SECURITE
+--------
+
+La SECRET_KEY de production a ete regeneree.
+
+La valeur de la SECRET_KEY n'est volontairement
+PAS inscrite dans ce rapport.
+
+La configuration utilise :
+DJANGO_SECRET_KEY
+
+La configuration DEBUG utilise :
+DJANGO_DEBUG
+
+Le domaine final devra etre ajoute a ALLOWED_HOSTS
+lors de la configuration de l'hebergement.
+
+================================================================
+FIN DU RAPPORT
+================================================================

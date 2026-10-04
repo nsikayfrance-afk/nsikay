@@ -1,0 +1,31 @@
+﻿NSIKAY - PREPARATION POSTGRESQL
+Date : 2026-10-01 14:05:08
+
+Projet :
+C:\Users\DELL Technologies\Desktop\nsikay nante
+
+Backend :
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend
+
+Python :
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Scripts\python.exe
+
+Objectif :
+Remplacer l'environnement SQLite de test par PostgreSQL
+afin de valider reellement les verrouillages select_for_update()
+du paiement WENZE.
+
+Etat :
+- SQLite actuel conserve
+- aucune suppression effectuee
+- aucune migration destructive effectuee
+- verification Django effectuee
+- inventaire des migrations effectue
+- inventaire des donnees effectue
+- detection PostgreSQL effectuee
+
+Validation concurrence :
+EN ATTENTE D'UNE BASE POSTGRESQL
+
+Le test concurrent ne doit etre considere comme valide
+qu'apres execution sur PostgreSQL.

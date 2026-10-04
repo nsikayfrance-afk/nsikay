@@ -1,0 +1,250 @@
+﻿ISO3;ISO2;NUMERIQUE;PAYS;OPERATIONNEL
+AFG;AF;004;Afghanistan;OUI
+ZAF;ZA;710;Afrique du Sud;OUI
+ALB;AL;008;Albanie;OUI
+DZA;DZ;012;Algérie;OUI
+DEU;DE;276;Allemagne;OUI
+ASM;AS;016;American Samoa;OUI
+AND;AD;020;Andorre;OUI
+AGO;AO;024;Angola;OUI
+AIA;AI;660;Anguilla;OUI
+ATA;AQ;010;Antarctica;NON
+ATG;AG;028;Antigua-et-Barbuda;OUI
+SAU;SA;682;Arabie saoudite;OUI
+ARG;AR;032;Argentine;OUI
+ARM;AM;051;Arménie;OUI
+ABW;AW;533;Aruba;OUI
+AUS;AU;036;Australie;OUI
+AUT;AT;040;Autriche;OUI
+AZE;AZ;031;Azerbaïdjan;OUI
+BHS;BS;044;Bahamas;OUI
+BHR;BH;048;Bahreïn;OUI
+BGD;BD;050;Bangladesh;OUI
+BRB;BB;052;Barbade;OUI
+BEL;BE;056;Belgique;OUI
+BLZ;BZ;084;Belize;OUI
+BMU;BM;060;Bermuda;OUI
+BTN;BT;064;Bhoutan;OUI
+BLR;BY;112;Biélorussie;OUI
+BOL;BO;068;Bolivie;OUI
+BES;BQ;535;Bonaire, Sint Eustatius and Saba;OUI
+BIH;BA;070;Bosnie-Herzégovine;OUI
+BWA;BW;072;Botswana;OUI
+BVT;BV;074;Bouvet Island;NON
+IOT;IO;086;British Indian Ocean Territory;NON
+BRN;BN;096;Brunei;OUI
+BRA;BR;076;Brésil;OUI
+BGR;BG;100;Bulgarie;OUI
+BFA;BF;854;Burkina Faso;OUI
+BDI;BI;108;Burundi;OUI
+BEN;BJ;204;Bénin;OUI
+KHM;KH;116;Cambodge;OUI
+CMR;CM;120;Cameroun;OUI
+CAN;CA;124;Canada;OUI
+CPV;CV;132;Cap-Vert;OUI
+CYM;KY;136;Cayman Islands;OUI
+CHL;CL;152;Chili;OUI
+CHN;CN;156;Chine;OUI
+CXR;CX;162;Christmas Island;OUI
+CYP;CY;196;Chypre;OUI
+CCK;CC;166;Cocos (Keeling) Islands;OUI
+COL;CO;170;Colombie;OUI
+COM;KM;174;Comores;OUI
+COG;CG;178;Congo;OUI
+COK;CK;184;Cook Islands;OUI
+KOR;KR;410;Corée du Sud;OUI
+CRI;CR;188;Costa Rica;OUI
+HRV;HR;191;Croatie;OUI
+CUB;CU;192;Cuba;OUI
+CUW;CW;531;Curaçao;OUI
+CIV;CI;384;Côte d'Ivoire;OUI
+DNK;DK;208;Danemark;OUI
+DJI;DJ;262;Djibouti;OUI
+DMA;DM;212;Dominique;OUI
+ESP;ES;724;Espagne;OUI
+EST;EE;233;Estonie;OUI
+SWZ;SZ;748;Eswatini;OUI
+FLK;FK;238;Falkland Islands (Malvinas);OUI
+FRO;FO;234;Faroe Islands;OUI
+FJI;FJ;242;Fidji;OUI
+FIN;FI;246;Finlande;OUI
+FRA;FR;250;France;OUI
+GUF;GF;254;French Guiana;OUI
+PYF;PF;258;French Polynesia;OUI
+ATF;TF;260;French Southern Territories;NON
+GAB;GA;266;Gabon;OUI
+GMB;GM;270;Gambie;OUI
+GHA;GH;288;Ghana;OUI
+GIB;GI;292;Gibraltar;OUI
+GRL;GL;304;Greenland;OUI
+GRD;GD;308;Grenade;OUI
+GRC;GR;300;Grèce;OUI
+GLP;GP;312;Guadeloupe;OUI
+GUM;GU;316;Guam;OUI
+GTM;GT;320;Guatemala;OUI
+GGY;GG;831;Guernsey;OUI
+GIN;GN;324;Guinée;OUI
+GNQ;GQ;226;Guinée équatoriale;OUI
+GNB;GW;624;Guinée-Bissau;OUI
+GUY;GY;328;Guyana;OUI
+GEO;GE;268;Géorgie;OUI
+HTI;HT;332;Haïti;OUI
+HMD;HM;334;Heard Island and McDonald Islands;NON
+VAT;VA;336;Holy See (Vatican City State);OUI
+HND;HN;340;Honduras;OUI
+HKG;HK;344;Hong Kong;OUI
+HUN;HU;348;Hongrie;OUI
+IND;IN;356;Inde;OUI
+IDN;ID;360;Indonésie;OUI
+IRQ;IQ;368;Irak;OUI
+IRN;IR;364;Iran;OUI
+IRL;IE;372;Irlande;OUI
+ISL;IS;352;Islande;OUI
+IMN;IM;833;Isle of Man;OUI
+ISR;IL;376;Israël;OUI
+ITA;IT;380;Italie;OUI
+JAM;JM;388;Jamaïque;OUI
+JPN;JP;392;Japon;OUI
+JEY;JE;832;Jersey;OUI
+JOR;JO;400;Jordanie;OUI
+KAZ;KZ;398;Kazakhstan;OUI
+KEN;KE;404;Kenya;OUI
+KGZ;KG;417;Kirghizistan;OUI
+KIR;KI;296;Kiribati;OUI
+PRK;KP;408;Korea, Democratic People's Republic of;OUI
+KWT;KW;414;Koweït;OUI
+LAO;LA;418;Laos;OUI
+LSO;LS;426;Lesotho;OUI
+LVA;LV;428;Lettonie;OUI
+LBN;LB;422;Liban;OUI
+LBR;LR;430;Liberia;OUI
+LBY;LY;434;Libye;OUI
+LIE;LI;438;Liechtenstein;OUI
+LTU;LT;440;Lituanie;OUI
+LUX;LU;442;Luxembourg;OUI
+MAC;MO;446;Macao;OUI
+MKD;MK;807;Macédoine du Nord;OUI
+MDG;MG;450;Madagascar;OUI
+MYS;MY;458;Malaisie;OUI
+MWI;MW;454;Malawi;OUI
+MDV;MV;462;Maldives;OUI
+MLI;ML;466;Mali;OUI
+MLT;MT;470;Malte;OUI
+MAR;MA;504;Maroc;OUI
+MHL;MH;584;Marshall Islands;OUI
+MTQ;MQ;474;Martinique;OUI
+MUS;MU;480;Maurice;OUI
+MRT;MR;478;Mauritanie;OUI
+MYT;YT;175;Mayotte;OUI
+MEX;MX;484;Mexique;OUI
+FSM;FM;583;Micronesia, Federated States of;OUI
+MDA;MD;498;Moldavie;OUI
+MCO;MC;492;Monaco;OUI
+MNG;MN;496;Mongolie;OUI
+MSR;MS;500;Montserrat;OUI
+MNE;ME;499;Monténégro;OUI
+MOZ;MZ;508;Mozambique;OUI
+MMR;MM;104;Myanmar;OUI
+NAM;NA;516;Namibie;OUI
+NRU;NR;520;Nauru;OUI
+NCL;NC;540;New Caledonia;OUI
+NIC;NI;558;Nicaragua;OUI
+NER;NE;562;Niger;OUI
+NGA;NG;566;Nigeria;OUI
+NIU;NU;570;Niue;OUI
+NFK;NF;574;Norfolk Island;OUI
+MNP;MP;580;Northern Mariana Islands;OUI
+NOR;NO;578;Norvège;OUI
+NZL;NZ;554;Nouvelle-Zélande;OUI
+NPL;NP;524;Népal;OUI
+OMN;OM;512;Oman;OUI
+UGA;UG;800;Ouganda;OUI
+UZB;UZ;860;Ouzbékistan;OUI
+PAK;PK;586;Pakistan;OUI
+PLW;PW;585;Palau;OUI
+PSE;PS;275;Palestine, State of;OUI
+PAN;PA;591;Panama;OUI
+PNG;PG;598;Papouasie-Nouvelle-Guinée;OUI
+PRY;PY;600;Paraguay;OUI
+NLD;NL;528;Pays-Bas;OUI
+PHL;PH;608;Philippines;OUI
+PCN;PN;612;Pitcairn;NON
+POL;PL;616;Pologne;OUI
+PRT;PT;620;Portugal;OUI
+PRI;PR;630;Puerto Rico;OUI
+PER;PE;604;Pérou;OUI
+QAT;QA;634;Qatar;OUI
+ROU;RO;642;Roumanie;OUI
+GBR;GB;826;Royaume-Uni;OUI
+RUS;RU;643;Russie;OUI
+RWA;RW;646;Rwanda;OUI
+CAF;CF;140;République centrafricaine;OUI
+DOM;DO;214;République dominicaine;OUI
+COD;CD;180;République démocratique du Congo;OUI
+CZE;CZ;203;République tchèque;OUI
+REU;RE;638;Réunion;OUI
+BLM;BL;652;Saint Barthélemy;OUI
+SHN;SH;654;Saint Helena, Ascension and Tristan da Cunha;OUI
+KNA;KN;659;Saint Kitts and Nevis;OUI
+LCA;LC;662;Saint Lucia;OUI
+MAF;MF;663;Saint Martin (French part);OUI
+SPM;PM;666;Saint Pierre and Miquelon;OUI
+VCT;VC;670;Saint Vincent and the Grenadines;OUI
+SLV;SV;222;Salvador;OUI
+WSM;WS;882;Samoa;OUI
+SMR;SM;674;San Marino;OUI
+STP;ST;678;Sao Tome and Principe;OUI
+SRB;RS;688;Serbie;OUI
+SYC;SC;690;Seychelles;OUI
+SLE;SL;694;Sierra Leone;OUI
+SGP;SG;702;Singapour;OUI
+SXM;SX;534;Sint Maarten (Dutch part);OUI
+SVK;SK;703;Slovaquie;OUI
+SVN;SI;705;Slovénie;OUI
+SLB;SB;090;Solomon Islands;OUI
+SOM;SO;706;Somalie;OUI
+SDN;SD;729;Soudan;OUI
+SSD;SS;728;Soudan du Sud;OUI
+SGS;GS;239;South Georgia and the South Sandwich Islands;NON
+LKA;LK;144;Sri Lanka;OUI
+CHE;CH;756;Suisse;OUI
+SUR;SR;740;Suriname;OUI
+SWE;SE;752;Suède;OUI
+SJM;SJ;744;Svalbard and Jan Mayen;NON
+SYR;SY;760;Syrie;OUI
+SEN;SN;686;Sénégal;OUI
+TJK;TJ;762;Tadjikistan;OUI
+TZA;TZ;834;Tanzanie;OUI
+TWN;TW;158;Taïwan;OUI
+TCD;TD;148;Tchad;OUI
+THA;TH;764;Thaïlande;OUI
+TLS;TL;626;Timor oriental;OUI
+TGO;TG;768;Togo;OUI
+TKL;TK;772;Tokelau;OUI
+TON;TO;776;Tonga;OUI
+TTO;TT;780;Trinité-et-Tobago;OUI
+TUN;TN;788;Tunisie;OUI
+TKM;TM;795;Turkménistan;OUI
+TCA;TC;796;Turks and Caicos Islands;OUI
+TUR;TR;792;Turquie;OUI
+TUV;TV;798;Tuvalu;OUI
+UKR;UA;804;Ukraine;OUI
+UMI;UM;581;United States Minor Outlying Islands;NON
+URY;UY;858;Uruguay;OUI
+VUT;VU;548;Vanuatu;OUI
+VEN;VE;862;Venezuela;OUI
+VNM;VN;704;Vietnam;OUI
+VGB;VG;092;Virgin Islands, British;OUI
+VIR;VI;850;Virgin Islands, U.S.;OUI
+WLF;WF;876;Wallis and Futuna;OUI
+ESH;EH;732;Western Sahara;OUI
+YEM;YE;887;Yémen;OUI
+ZMB;ZM;894;Zambie;OUI
+ZWE;ZW;716;Zimbabwe;OUI
+ALA;AX;248;Åland Islands;OUI
+EGY;EG;818;Égypte;OUI
+ARE;AE;784;Émirats arabes unis;OUI
+ECU;EC;218;Équateur;OUI
+ERI;ER;232;Érythrée;OUI
+USA;US;840;États-Unis;OUI
+ETH;ET;231;Éthiopie;OUI

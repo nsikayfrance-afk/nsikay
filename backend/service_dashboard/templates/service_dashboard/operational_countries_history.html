@@ -1,0 +1,327 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        NSIKAY - Historique des configurations pays
+    </title>
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f6f8;
+            color: #17202a;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .header {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,.08);
+        }
+
+        h1 {
+            margin: 0 0 8px 0;
+        }
+
+        .subtitle {
+            color: #667085;
+        }
+
+        .table-wrapper {
+            background: #ffffff;
+            border-radius: 10px;
+            overflow: auto;
+            box-shadow: 0 2px 8px rgba(0,0,0,.06);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1100px;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #edf0f2;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background: #f8fafb;
+        }
+
+        .count {
+            font-weight: bold;
+        }
+
+        .iso-list {
+            max-width: 600px;
+            word-break: break-word;
+            font-family: monospace;
+            font-size: 12px;
+        }
+
+        .empty {
+            padding: 30px;
+            text-align: center;
+            color: #667085;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-active {
+            background: #e8f7ed;
+            color: #19733a;
+        }
+
+        .status-cancelled {
+            background: #fdecec;
+            color: #a93226;
+        }
+
+        .rollback-form {
+            margin: 0;
+        }
+
+        .rollback-button {
+            border: 0;
+            border-radius: 7px;
+            padding: 9px 13px;
+            background: #c0392b;
+            color: #ffffff;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .rollback-button:hover {
+            background: #a93226;
+        }
+
+        .not-available {
+            color: #8a8f98;
+            font-size: 12px;
+        }
+
+        .rollback-info {
+            margin-top: 6px;
+            font-size: 12px;
+            color: #667085;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+
+        <h1>
+            NSIKAY — Historique des pays opérationnels
+        </h1>
+
+        <div class="subtitle">
+            Journal administratif des configurations
+            officielles des pays NSIKAY.
+        </div>
+
+    </div>
+
+    <div class="table-wrapper">
+
+        {% if logs %}
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Date</th>
+                    <th>Administrateur</th>
+                    <th>Action</th>
+                    <th>Nombre</th>
+                    <th>Codes ISO3</th>
+                    <th>État</th>
+                    <th>Rollback</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for log in logs %}
+
+                <tr>
+
+                    <td>
+                        {{ log.created_at|date:"d/m/Y H:i:s" }}
+                    </td>
+
+                    <td>
+                        <strong>
+                            {{ log.admin_user }}
+                        </strong>
+                    </td>
+
+                    <td>
+                        {{ log.action }}
+                    </td>
+
+                    <td class="count">
+                        {{ log.selected_count }} / 240
+                    </td>
+
+                    <td class="iso-list">
+                        {{ log.selected_codes }}
+                    </td>
+
+                    <td>
+
+                        {% if log.rolled_back %}
+
+                            <span class="status status-cancelled">
+                                ANNULÉE
+                            </span>
+
+                            {% if log.rolled_back_at %}
+                                <div class="rollback-info">
+                                    Annulée le
+                                    {{ log.rolled_back_at|date:"d/m/Y H:i:s" }}
+                                </div>
+                            {% endif %}
+
+                            {% if log.rolled_back_by %}
+                                <div class="rollback-info">
+                                    Par :
+                                    {{ log.rolled_back_by }}
+                                </div>
+                            {% endif %}
+
+                        {% else %}
+
+                            <span class="status status-active">
+                                ACTIVE
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+
+                        {% if forloop.first and not log.rolled_back %}
+
+                            {% if log.snapshot %}
+
+                                <form
+                                    method="post"
+                                    action="{% url 'service_dashboard:rollback_last_configuration' %}"
+                                    class="rollback-form"
+                                    onsubmit="return confirmRollback();"
+                                >
+
+                                    {% csrf_token %}
+
+                                    <button
+                                        type="submit"
+                                        class="rollback-button"
+                                    >
+                                        Annuler la dernière configuration
+                                    </button>
+
+                                </form>
+
+                            {% else %}
+
+                                <span class="not-available">
+                                    Snapshot indisponible
+                                </span>
+
+                            {% endif %}
+
+                        {% elif log.rolled_back %}
+
+                            <span class="not-available">
+                                Configuration déjà annulée
+                            </span>
+
+                        {% else %}
+
+                            <span class="not-available">
+                                Réservé à la dernière configuration
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        {% else %}
+
+        <div class="empty">
+            Aucune configuration des 240 pays n'a encore
+            été enregistrée.
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+<script>
+
+function confirmRollback() {
+
+    return confirm(
+        "ATTENTION\n\n" +
+        "Vous allez annuler la dernière configuration officielle " +
+        "des 240 pays.\n\n" +
+        "Les pays seront restaurés selon le snapshot enregistré.\n\n" +
+        "Les relations Service × Pays ne seront pas supprimées.\n\n" +
+        "Voulez-vous réellement continuer ?"
+    );
+
+}
+
+</script>
+
+</body>
+
+</html>
+

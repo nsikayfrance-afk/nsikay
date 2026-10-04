@@ -1,0 +1,15 @@
+NSIKAY MIGRATION REPORT v2.0
+DATE : 20260929_054809
+
+ETAPE : schemas
+MANQUANT : schemas
+ETAPE : tables
+OK : C:\Users\DELL Technologies\Desktop\nsikay nante\migrations\postgresql\NSIKAY_TABLES_20260929_054337.sql
+ETAPE : foreign_keys
+MANQUANT : foreign_keys
+ETAPE : indexes
+MANQUANT : indexes
+ETAPE : security_audit
+MANQUANT : security_audit
+
+Migration Matrix : OK

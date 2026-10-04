@@ -1,0 +1,464 @@
+﻿
+============================================================
+ NSIKAY - RESUME AUDIT DJANGO -> API -> REACT
+============================================================
+
+### 1. TEST DES ROUTES API PRINCIPALES
+
+C:\Users\DELL Technologies\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\base.py:368: RuntimeWarning: Model 'finance.financialoperation' was already registered. Reloading models is not advised as it can lead to inconsistencies, most notably with related models.
+  new_class._meta.apps.register_model(new_class._meta.app_label, new_class)
+C:\Users\DELL Technologies\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\base.py:368: RuntimeWarning: Model 'finance.feeconfiguration' was already registered. Reloading models is not advised as it can lead to inconsistencies, most notably with related models.
+  new_class._meta.apps.register_model(new_class._meta.app_label, new_class)
+=== ALIASES DASHBOARD NSIKAY FINALISES ===
+=== API NSIKAY VIEWS COMPATIBILITE CHARGEES ===
+[404]  / -> Resolver404
+[OK]   /admin/ -> admin:index
+[OK]   /api/ -> activities-list-create
+[OK]   /api/auth/register/ -> api-register
+[OK]   /api/auth/login/ -> api-login
+[OK]   /api/auth/me/ -> api-me
+[OK]   /api/profile/ -> api-profile
+[OK]   /api/users/ -> api-users
+[OK]   /api/banks/ -> api-banks
+[OK]   /api/countries/ -> api-countries
+[OK]   /api/certifications/ -> api-certifications
+[OK]   /api/transactions/ -> api-transactions
+[OK]   /api/finance/ -> api-finance
+[404]  /api/activities/ -> Resolver404
+[404]  /api/activities/1/ -> Resolver404
+[OK]   /api/dashboard/ -> activities-dashboard
+[OK]   /api/services/ -> services-list-create
+[OK]   /api/services/1/ -> service-detail
+[OK]   /api/projects/ -> projects-list-create
+[OK]   /api/projects/1/ -> project-detail
+[404]  /banking/ -> Resolver404
+[404]  /certification/ -> Resolver404
+[404]  /dashboard/ -> Resolver404
+[OK]   /wenze/ -> wenze:index
+
+### 2. APPELS REACT API
+
+
+[/api/] 4 occurrence(s)
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_frontend_20261002_095853\nsikay.js:10
+  return API.get("/api/tv-regie/");
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\src\services\nsikay.js:8
+  return API.get("/api/tv-regie/");
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\src\services\nsikay.js:26
+  return API.post("/api/auth/register/", formData, {
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\src\services\nsikay.js:34
+  return API.post("/api/auth/login/", payload);
+
+[axios] 4 occurrence(s)
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_frontend_20261002_095853\api.js:1
+  import axios from "axios";
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_frontend_20261002_095853\api.js:3
+  const API = axios.create({
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_frontend_visual_20261002_133951\src\services\api.js:1
+  import axios from "axios";
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_frontend_visual_20261002_133951\src\services\api.js:3
+  const API = axios.create({
+
+[fetch(] 15 occurrence(s)
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_api_direct_cleanup_20261002_141644\api.js:15
+  const response = await fetch(`${API_BASE}${url}`, {
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_profiles_api_final_20261002_141434\api.js:15
+  const response = await fetch(`${API_BASE}${url}`, {
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_profiles_api_final_20261002_141434\api.js:106
+  const response = await fetch(`${API_BASE}/profiles/`, {
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_profiles_api_final_20261002_141434\api.js:119
+  const response = await fetch(`${API_BASE}/profiles/`, {
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_profiles_api_final_20261002_141434\api.js:142
+  const response = await fetch(`${API_BASE}/profiles/${id}/`, {
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_profiles_api_final_20261002_141434\api.js:164
+  const response = await fetch(`${API_BASE}/profiles/${id}/`, {
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_profiles_api_final_20261002_141556\api.js:15
+  const response = await fetch(`${API_BASE}${url}`, {
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_profiles_api_fix_20261002_141239\api.js:15
+  const response = await fetch(`${API_BASE}${url}`, {
+  ... 7 autres occurrences
+
+[activities] 1 occurrence(s)
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\src\pages\Profiles.jsx:131
+  ["activities", "Activités"],
+
+[services] 38 occurrence(s)
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backups\frontend_ui_20261002_100708\App.jsx:209
+  <h4>Services</h4>
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backups\frontend_ui_20261002_100708\App.jsx:339
+  Commerce et présentation des produits et services au sein de
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_frontend_visual_20261002_133951\src\App.jsx:7
+  } from "./services/nsikay";
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_frontend_visual_20261002_133951\src\App.jsx:330
+  <small>Identité et services</small>
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_frontend_visual_20261002_133951\src\App.jsx:834
+  Vos activités, services, projets et
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_profiles_v2_20261002_141113\Profiles.jsx:23
+  "Présentez votre métier, vos compétences, vos services, votre expérience et vos activités professionnelles.",
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_profiles_v2_20261002_141113\Profiles.jsx:43
+  id: "services",
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_profiles_v2_20261002_141113\Profiles.jsx:44
+  title: "Services spécialisés",
+  ... 30 autres occurrences
+
+[projects] 1 occurrence(s)
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\src\pages\Profiles.jsx:93
+  ["projects", "Projets"],
+
+[wenze] 25 occurrence(s)
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backups\frontend_ui_20261002_100708\App.jsx:73
+  <button onClick={() => setPage("wenze")}>WENZE</button>
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backups\frontend_ui_20261002_100708\App.jsx:210
+  <button onClick={() => setPage("wenze")}>WENZE</button>
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backups\frontend_ui_20261002_100708\App.jsx:335
+  <button className="module-card" onClick={() => setPage("wenze")}>
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backups\frontend_ui_20261002_100708\App.jsx:337
+  <h3>WENZE</h3>
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backups\frontend_ui_20261002_100708\App.jsx:493
+  Accueil • NSIKAY TV • Événements • WENZE • Espaces partenaires
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backups\frontend_ui_20261002_100708\App.jsx:665
+  if (page === "wenze")
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backups\frontend_ui_20261002_100708\App.jsx:668
+  title="WENZE"
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_dashboard_v2_20261002_135409\Dashboard.jsx:28
+  <Link to="/wenze">WENZE</Link>
+  ... 17 autres occurrences
+
+[finance] 24 occurrence(s)
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_api_direct_cleanup_20261002_141644\api.js:97
+  finance() {
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_api_direct_cleanup_20261002_141644\api.js:98
+  return request("/finance/");
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_frontend_20261002_095853\nsikay.js:14
+  export const getFinance = () => {
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_frontend_20261002_095853\nsikay.js:15
+  return API.get("/finance/");
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_frontend_visual_20261002_133951\src\App.jsx:308
+  onClick={() => setMessage("Espace Finance")}
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_frontend_visual_20261002_133951\src\App.jsx:311
+  <strong>Finance</strong>
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_frontend_visual_20261002_133951\src\App.jsx:857
+  <div>💳 Finance</div>
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_profiles_api_final_20261002_141434\api.js:97
+  finance() {
+  ... 16 autres occurrences
+
+[certification] 45 occurrence(s)
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backups\frontend_ui_20261002_100708\App.jsx:212
+  <button onClick={() => setPage("register")}>Certification</button>
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backups\frontend_ui_20261002_100708\App.jsx:391
+  <h3>CERTIFICATION</h3>
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backups\frontend_ui_20261002_100708\App.jsx:393
+  Un système de certification adapté aux personnes, activités et
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_api_direct_cleanup_20261002_141644\api.js:89
+  certifications() {
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_api_direct_cleanup_20261002_141644\api.js:90
+  return request("/certifications/");
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_frontend_visual_20261002_133951\src\App.jsx:326
+  onClick={() => setMessage("Espace Certification")}
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_frontend_visual_20261002_133951\src\App.jsx:329
+  <strong>Certification</strong>
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_frontend_visual_20261002_133951\src\App.jsx:859
+  <div>✓ Certification</div>
+  ... 37 autres occurrences
+
+[bank] 23 occurrence(s)
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_api_direct_cleanup_20261002_141644\api.js:81
+  banks() {
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_api_direct_cleanup_20261002_141644\api.js:82
+  return request("/banks/");
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_profiles_api_final_20261002_141434\api.js:81
+  banks() {
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_profiles_api_final_20261002_141434\api.js:82
+  return request("/banks/");
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_profiles_api_final_20261002_141556\api.js:81
+  banks() {
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_profiles_api_final_20261002_141556\api.js:82
+  return request("/banks/");
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_profiles_api_fix_20261002_141239\api.js:81
+  banks() {
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_profiles_api_fix_20261002_141239\api.js:82
+  return request("/banks/");
+  ... 15 autres occurrences
+
+### 3. ROUTES REACT
+
+Nombre d'occurrences : 29
+
+C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\src\App.jsx:47
+  <Routes>
+C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\src\App.jsx:48
+  <Route
+C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\src\App.jsx:49
+  path="/"
+C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\src\App.jsx:58
+  <Route
+C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\src\App.jsx:59
+  path="/connexion"
+C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\src\App.jsx:63
+  <Route
+C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\src\App.jsx:64
+  path="/inscription"
+C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\src\App.jsx:68
+  <Route
+C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\src\App.jsx:69
+  path="/espace"
+C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\src\App.jsx:77
+  <Route
+C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\src\App.jsx:78
+  path="/profils"
+C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\src\App.jsx:86
+  <Route
+C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\src\App.jsx:87
+  path="/mon-profil"
+C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\src\App.jsx:95
+  <Route
+C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\src\App.jsx:96
+  path="/metiers"
+C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\src\App.jsx:107
+  <Route
+C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\src\App.jsx:108
+  path="/certification"
+C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\src\App.jsx:119
+  <Route
+C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\src\App.jsx:120
+  path="/wenze"
+C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\src\App.jsx:131
+  <Route
+C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\src\App.jsx:132
+  path="/libenga"
+C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\src\App.jsx:143
+  <Route
+C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\src\App.jsx:144
+  path="/events"
+C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\src\App.jsx:155
+  <Route
+C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\src\App.jsx:156
+  path="/tv"
+C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\src\App.jsx:167
+  <Route
+C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\src\App.jsx:168
+  path="/admin"
+C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\src\App.jsx:179
+  <Route
+C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\src\App.jsx:180
+  path="*"
+
+### 4. MODELES POTENTIELLEMENT DUPLIQUES
+
+[DOUBLON] FinancialOperation : 15 définitions
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py:907
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py:991
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models_avant_fix_indentation.py:907
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models_avant_fix_indentation.py:991
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models_backup_avant_correction.py:907
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models_backup_avant_correction.py:991
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models_backup_avant_nettoyage.py:907
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models_backup_avant_nettoyage.py:991
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models_backup_module8.py:907
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models_backup_module8.py:991
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models_erreur_1398.py:907
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models_erreur_1398.py:991
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance_backup_avance\models.py:907
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance_backup_module5\models.py:907
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance_backup_module5\models.py:991
+[DOUBLON] FeeConfiguration : 15 définitions
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py:966
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py:1046
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models_avant_fix_indentation.py:966
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models_avant_fix_indentation.py:1046
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models_backup_avant_correction.py:966
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models_backup_avant_correction.py:1046
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models_backup_avant_nettoyage.py:966
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models_backup_avant_nettoyage.py:1046
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models_backup_module8.py:966
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models_backup_module8.py:1046
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models_erreur_1398.py:966
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models_erreur_1398.py:1046
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance_backup_avance\models.py:966
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance_backup_module5\models.py:966
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance_backup_module5\models.py:1046
+[DOUBLON] Activity : 2 définitions
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\nsikay_activities\models.py:4
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\nsikay_activities\backup_v2_20261002_150508\models.py:4
+[DOUBLON] Service : 2 définitions
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\nsikay_activities\models.py:99
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\nsikay_activities\backup_v2_20261002_150508\models.py:99
+[DOUBLON] Project : 2 définitions
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\nsikay_activities\models.py:160
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\nsikay_activities\backup_v2_20261002_150508\models.py:160
+[DOUBLON] Wallet : 18 définitions
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\finance_migration_0008_20261001_131432\models.py:34
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\financial_clean_20261001_130349\models.py:34
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py:34
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models_avant_fix_indentation.py:34
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models_backup_avant_correction.py:34
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models_backup_avant_nettoyage.py:34
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models_backup_module8.py:34
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models_erreur_1398.py:34
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\wallet_models.py:5
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance_backup_avance\models.py:34
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance_backup_avance\wallet_models.py:5
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance_backup_etape3\models.py:34
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance_backup_etape3\wallet_models.py:5
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance_backup_etape3\finance\models.py:34
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance_backup_etape3\finance\wallet_models.py:5
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance_backup_module5\models.py:34
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance_backup_module5\wallet_models.py:5
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\models.py:5
+[DOUBLON] WalletTransaction : 13 définitions
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\finance_migration_0008_20261001_131432\models.py:61
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\financial_clean_20261001_130349\models.py:61
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py:61
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models_avant_fix_indentation.py:61
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models_backup_avant_correction.py:61
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models_backup_avant_nettoyage.py:61
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models_backup_module8.py:61
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models_erreur_1398.py:61
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance_backup_avance\models.py:61
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance_backup_etape3\models.py:61
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance_backup_etape3\finance\models.py:61
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance_backup_module5\models.py:61
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wallet\models.py:69
+[OK] CertificationAgent
+[OK] CertificationCertificate
+[DOUBLON] Bank : 2 définitions
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\models.py:6
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking_backup_module5\models.py:6
+[DOUBLON] BankAccount : 2 définitions
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking\models.py:30
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\banking_backup_module5\models.py:30
+[OK] WenzeProduct
+[DOUBLON] VirtualGift : 7 définitions
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\_install_gift_catalog_11.py:49
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\_install_gift_catalog_11.py:59
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models.py:365
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup.py:363
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup_encoding.py:362
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups\gift_integration\models_before_gift_integration_20261001_162433.py:365
+  C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models_module7_gifts.py:4
+
+### 5. PAGES / COMPOSANTS FRONTEND
+
+
+[Profile]
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_profiles_v1_20261002_135744\Profiles.jsx
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_profiles_v2_20261002_141113\Profiles.jsx
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_profiles_v3_build_20261002_143927\Profiles.jsx
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\src\pages\MyProfile.jsx
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\src\pages\Profiles.jsx
+
+[Dashboard]
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\backup_dashboard_v2_20261002_135409\Dashboard.jsx
+  C:\Users\DELL Technologies\Desktop\nsikay nante\frontend\src\pages\Dashboard.jsx
+
+### 6. TODO / INCOMPLET
+
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\asgiref\server.py:82
+  raise NotImplementedError("You must implement handle()")
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\asgiref\server.py:88
+  raise NotImplementedError("You must implement application_send()")
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\admin\checks.py:765
+  # Skip ordering in the format field1__field2 (FIXME: checking
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\admin\filters.py:45
+  raise NotImplementedError(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\admin\filters.py:55
+  raise NotImplementedError(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\admin\filters.py:63
+  raise NotImplementedError(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\admin\filters.py:72
+  raise NotImplementedError(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\admin\filters.py:79
+  raise NotImplementedError(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\admin\filters.py:126
+  raise NotImplementedError(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\admin\options.py:489
+  # TODO: this should be handled by some parameter to the ChangeList.
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\auth\hashers.py:253
+  raise NotImplementedError(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\auth\hashers.py:270
+  raise NotImplementedError(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\auth\hashers.py:282
+  raise NotImplementedError(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\auth\hashers.py:293
+  raise NotImplementedError(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\auth\mixins.py:120
+  raise NotImplementedError(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\auth\models.py:560
+  raise NotImplementedError(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\auth\models.py:565
+  raise NotImplementedError(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\auth\models.py:570
+  raise NotImplementedError(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\auth\models.py:575
+  raise NotImplementedError(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\auth\management\__init__.py:237
+  # TODO: Drop ImportError and KeyError when dropping support for PY312.
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\gis\measure.py:96
+  return NotImplemented
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\gis\measure.py:105
+  return NotImplemented
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\gis\db\backends\base\operations.py:86
+  raise NotImplementedError(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\gis\db\backends\base\operations.py:91
+  raise NotImplementedError(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\gis\db\backends\base\operations.py:105
+  raise NotImplementedError(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\gis\db\backends\base\operations.py:114
+  raise NotImplementedError(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\gis\db\backends\base\operations.py:156
+  raise NotImplementedError(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\gis\db\backends\base\operations.py:169
+  raise NotImplementedError(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\gis\db\backends\base\operations.py:175
+  raise NotImplementedError(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\gis\db\backends\base\operations.py:189
+  raise NotImplementedError(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\gis\db\backends\base\operations.py:198
+  raise NotImplementedError(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\gis\db\backends\oracle\introspection.py:35
+  # TODO: Research way to find a more specific geometry field type
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\gis\db\backends\oracle\models.py:21
+  # TODO: Add support for `diminfo` column (type MDSYS.SDO_DIM_ARRAY).
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\gis\db\backends\oracle\operations.py:109
+  ),  # TODO: Is this really the same as ST_Intersects()?
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\gis\db\backends\postgis\base.py:80
+  raise NotImplementedError
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\gis\db\backends\postgis\operations.py:255
+  # TODO: Support 'M' extension.
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\gis\db\models\fields.py:47
+  except NotImplementedError:
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\gis\gdal\envelope.py:193
+  # TODO: Fix significant figures.
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\gis\gdal\field.py:189
+  # TODO: Adapt timezone information. See:
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\gis\gdal\geometries.py:261
+  # TODO: Fix Envelope() for Point geometries.
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\gis\geos\coordseq.py:23
+  # TODO when dropping support for GEOS 3.13 the z argument can be
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\gis\geos\coordseq.py:235
+  raise NotImplementedError(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\gis\utils\layermapping.py:199
+  # TODO: Support more than one geometry field / model. However, this
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\gis\utils\layermapping.py:469
+  # TODO: It is expensive to retrieve a model for every record --
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\gis\utils\ogrinspect.py:243
+  # TODO: Autodetection of multigeometry types (see #7218).
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\messages\storage\base.py:30
+  return NotImplemented
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\messages\storage\base.py:104
+  raise NotImplementedError(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\messages\storage\base.py:117
+  raise NotImplementedError(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\sessions\base_session.py:44
+  raise NotImplementedError
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\venv\Lib\site-packages\django\contrib\sessions\backends\base.py:459
+  raise NotImplementedError(
+
+============================================================
+ FIN DU RESUME
+============================================================
+
+Fichier résumé :
+C:\Users\DELL Technologies\Desktop\nsikay nante\reports\AUDIT_RESUME_20261002_153720.txt
+

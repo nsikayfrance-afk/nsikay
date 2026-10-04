@@ -1,0 +1,904 @@
+============================================================
+NSIKAY - INSPECTION FINANCE / ROLES / CADEAUX
+============================================================
+DATE : 2026-10-01 15:24:37
+MODE : LECTURE SEULE - AUCUNE MODIFICATION
+
+
+============================================================
+1. FINANCE - MODELES PRINCIPAUX
+FICHIER : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py
+============================================================
+
+------------------------------------------------------------
+RECHERCHE : class Wallet
+------------------------------------------------------------
+34 | class Wallet(models.Model):
+61 | class WalletTransaction(models.Model):
+510 | class WalletSecurityStatus(models.Model):
+
+------------------------------------------------------------
+RECHERCHE : class WalletTransaction
+------------------------------------------------------------
+61 | class WalletTransaction(models.Model):
+
+------------------------------------------------------------
+RECHERCHE : class Currency
+------------------------------------------------------------
+5 | class Currency(models.Model):
+
+------------------------------------------------------------
+RECHERCHE : class ExchangeRate
+------------------------------------------------------------
+101 | class ExchangeRate(models.Model):
+214 | class ExchangeRateHistory(models.Model):
+
+------------------------------------------------------------
+RECHERCHE : class FinancialLedger
+------------------------------------------------------------
+132 | class FinancialLedger(models.Model):
+
+------------------------------------------------------------
+RECHERCHE : reward
+------------------------------------------------------------
+68 | ("reward","Récompense"),
+
+------------------------------------------------------------
+RECHERCHE : purchase
+------------------------------------------------------------
+67 | ("purchase","Achat"),
+
+------------------------------------------------------------
+RECHERCHE : transfer
+------------------------------------------------------------
+66 | ("transfer","Transfert"),
+140 | ("TRANSFER","Transfert"),
+
+------------------------------------------------------------
+RECHERCHE : withdraw
+------------------------------------------------------------
+65 | ("withdraw","Retrait"),
+138 | ("WITHDRAW","Retrait"),
+
+------------------------------------------------------------
+RECHERCHE : deposit
+------------------------------------------------------------
+64 | ("deposit","Dépôt"),
+136 | ("DEPOSIT","Dépôt"),
+
+============================================================
+2. TRANSACTIONS - MODELES
+FICHIER : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\transactions\models.py
+============================================================
+
+------------------------------------------------------------
+RECHERCHE : class Transaction
+------------------------------------------------------------
+5 | class Transaction(models.Model):
+
+------------------------------------------------------------
+RECHERCHE : transaction_type
+------------------------------------------------------------
+67 | transaction_type = models.CharField(
+
+------------------------------------------------------------
+RECHERCHE : amount
+------------------------------------------------------------
+55 | amount = models.DecimalField(
+
+------------------------------------------------------------
+RECHERCHE : fee
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+RECHERCHE : wallet
+------------------------------------------------------------
+48 | "partner_finance.PartnerWallet",
+
+------------------------------------------------------------
+RECHERCHE : status
+------------------------------------------------------------
+20 | STATUS = [
+73 | status = models.CharField(
+75 | choices=STATUS,
+
+------------------------------------------------------------
+RECHERCHE : reference
+------------------------------------------------------------
+80 | reference = models.CharField(
+
+------------------------------------------------------------
+RECHERCHE : created_at
+------------------------------------------------------------
+86 | created_at = models.DateTimeField(
+
+============================================================
+3. PARTNER FINANCE - MODELES
+FICHIER : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\partner_finance\models.py
+============================================================
+
+------------------------------------------------------------
+RECHERCHE : class
+------------------------------------------------------------
+6 | class PartnerApplication(models.Model):
+64 | class PartnerCertification(models.Model):
+95 | class PartnerSupply(models.Model):
+134 | class PartnerWallet(models.Model):
+157 | class PartnerDeposit(models.Model):
+217 | class SupplyTransaction(models.Model):
+
+------------------------------------------------------------
+RECHERCHE : partner
+------------------------------------------------------------
+6 | class PartnerApplication(models.Model):
+24 | related_name="partner_finance_relation"
+64 | class PartnerCertification(models.Model):
+66 | partner = models.OneToOneField(
+67 | PartnerApplication,
+69 | related_name="partner_certification_relation"
+95 | class PartnerSupply(models.Model):
+97 | partner = models.ForeignKey(
+98 | PartnerApplication,
+100 | related_name="partner_supply_relation"
+134 | class PartnerWallet(models.Model):
+136 | partner = models.ForeignKey(
+137 | PartnerApplication,
+139 | related_name="partner_wallet_relation"
+157 | class PartnerDeposit(models.Model):
+172 | partner = models.ForeignKey(
+173 | "partner_finance.PartnerWallet",
+175 | related_name="partner_deposit_relation"
+182 | related_name="bank_partner_deposit_relation"
+219 | partner = models.ForeignKey(
+220 | "partner_finance.PartnerWallet",
+227 | PartnerDeposit,
+
+------------------------------------------------------------
+RECHERCHE : bank
+------------------------------------------------------------
+104 | bank = models.ForeignKey(
+105 | "banking.Bank",
+179 | bank = models.ForeignKey(
+180 | "banking.Bank",
+182 | related_name="bank_partner_deposit_relation"
+239 | approved_by_bank = models.BooleanField(
+
+------------------------------------------------------------
+RECHERCHE : financial
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+RECHERCHE : country
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+RECHERCHE : currency
+------------------------------------------------------------
+110 | currency = models.ForeignKey(
+111 | "finance.Currency",
+143 | currency = models.ForeignKey(
+144 | "finance.Currency",
+192 | currency = models.ForeignKey(
+193 | "finance.Currency",
+
+------------------------------------------------------------
+RECHERCHE : status
+------------------------------------------------------------
+8 | STATUS = [
+51 | status = models.CharField(
+53 | choices=STATUS,
+122 | status = models.CharField(
+159 | STATUS = [
+204 | status = models.CharField(
+206 | choices=STATUS,
+
+============================================================
+4. FINANCIAL ROUTING - MODELES
+FICHIER : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\financial_routing\models.py
+============================================================
+
+------------------------------------------------------------
+RECHERCHE : class FinancialRoutingRule
+------------------------------------------------------------
+5 | class FinancialRoutingRule(models.Model):
+
+------------------------------------------------------------
+RECHERCHE : class FinancialRoutingLog
+------------------------------------------------------------
+187 | class FinancialRoutingLog(models.Model):
+
+------------------------------------------------------------
+RECHERCHE : class FinancialFeeRule
+------------------------------------------------------------
+229 | class FinancialFeeRule(models.Model):
+
+------------------------------------------------------------
+RECHERCHE : TRANSFER_INTERNAL
+------------------------------------------------------------
+231 | TRANSFER_INTERNAL = "TRANSFER_INTERNAL"
+240 | (TRANSFER_INTERNAL, "Transfert interne NSIKAY"),
+
+------------------------------------------------------------
+RECHERCHE : TRANSFER_EXTERNAL
+------------------------------------------------------------
+232 | TRANSFER_EXTERNAL = "TRANSFER_EXTERNAL"
+241 | (TRANSFER_EXTERNAL, "Transfert externe"),
+
+------------------------------------------------------------
+RECHERCHE : TRANSFER_MOBILE_MONEY
+------------------------------------------------------------
+236 | TRANSFER_MOBILE_MONEY = "TRANSFER_MOBILE_MONEY"
+242 | (TRANSFER_MOBILE_MONEY, "Transfert Mobile Money"),
+
+------------------------------------------------------------
+RECHERCHE : TRANSFER_VISA
+------------------------------------------------------------
+237 | TRANSFER_VISA = "TRANSFER_VISA"
+243 | (TRANSFER_VISA, "Transfert Visa"),
+
+------------------------------------------------------------
+RECHERCHE : WITHDRAWAL
+------------------------------------------------------------
+23 | ("WITHDRAWAL", "Retrait"),
+233 | WITHDRAWAL = "WITHDRAWAL"
+244 | (WITHDRAWAL, "Retrait"),
+
+------------------------------------------------------------
+RECHERCHE : WENZE
+------------------------------------------------------------
+8 | ("WENZE", "WENZE"),
+234 | WENZE = "WENZE"
+245 | (WENZE, "Vente WENZE"),
+
+============================================================
+5. FINANCIAL PARTNER - MODELE
+FICHIER : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\financial_routing\partner_models.py
+============================================================
+
+------------------------------------------------------------
+RECHERCHE : class FinancialPartner
+------------------------------------------------------------
+5 | class FinancialPartner(models.Model):
+
+------------------------------------------------------------
+RECHERCHE : partner_type
+------------------------------------------------------------
+6 | PARTNER_TYPES = [
+25 | partner_type = models.CharField(
+27 | choices=PARTNER_TYPES,
+94 | models.Index(fields=["partner_type", "active"]),
+
+------------------------------------------------------------
+RECHERCHE : certified
+------------------------------------------------------------
+61 | certified = models.BooleanField(default=False)
+
+------------------------------------------------------------
+RECHERCHE : approved_by
+------------------------------------------------------------
+80 | approved_by = models.ForeignKey(
+
+------------------------------------------------------------
+RECHERCHE : active
+------------------------------------------------------------
+62 | active = models.BooleanField(default=True)
+94 | models.Index(fields=["partner_type", "active"]),
+95 | models.Index(fields=["country_code", "active"]),
+96 | models.Index(fields=["status", "active"]),
+
+------------------------------------------------------------
+RECHERCHE : status
+------------------------------------------------------------
+14 | STATUS_CHOICES = [
+64 | status = models.CharField(
+66 | choices=STATUS_CHOICES,
+96 | models.Index(fields=["status", "active"]),
+
+============================================================
+6. ROLES NSIKAY
+FICHIER : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models.py
+============================================================
+
+------------------------------------------------------------
+RECHERCHE : class UserRole
+------------------------------------------------------------
+13 | class UserRole(models.Model):
+
+------------------------------------------------------------
+RECHERCHE : class SecurityProfile
+------------------------------------------------------------
+66 | class SecurityProfile(models.Model):
+
+------------------------------------------------------------
+RECHERCHE : DIRECTEUR
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+RECHERCHE : GENERAL
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+RECHERCHE : FINANCIER
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+RECHERCHE : ADMIN
+------------------------------------------------------------
+24 | ("ADMIN","Administrateur"),
+750 | class AdminAnalytics(models.Model):
+
+------------------------------------------------------------
+RECHERCHE : role
+------------------------------------------------------------
+13 | class UserRole(models.Model):
+16 | ROLE_CHOICES = (
+35 | related_name="nsikay_role"
+40 | role = models.CharField(
+44 | choices=ROLE_CHOICES,
+
+------------------------------------------------------------
+RECHERCHE : permission
+------------------------------------------------------------
+NON DETECTE
+
+============================================================
+7. RECHERCHE GLOBALE ROLES / AUTORISATIONS
+============================================================
+
+------------------------------------------------------------
+TERME : Directeur général
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+TERME : Directeur Général
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+TERME : directeur_general
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+TERME : directeur_general
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+TERME : Directeur financier
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+TERME : Directeur Financier
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+TERME : directeur_financier
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+TERME : DG
+------------------------------------------------------------
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\finance_admin_views.py:8 | FinancialLedger,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\finance_admin_views.py:22 | ledger_count = FinancialLedger.objects.count()
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\finance_admin_views.py:41 | for item in FinancialLedger.objects.all():
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\finance_admin_views.py:57 | for entry in FinancialLedger.objects.order_by(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\finance_admin_views.py:89 | "ledger_entries":
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\finance_admin_views.py:90 | ledger_count,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models.py:285 | budget = models.DecimalField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models.py:653 | budget = models.DecimalField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup.py:283 | budget = models.DecimalField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup.py:652 | budget = models.DecimalField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup_encoding.py:283 | budget = models.DecimalField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup_encoding.py:651 | budget = models.DecimalField(
+
+------------------------------------------------------------
+TERME : DF
+------------------------------------------------------------
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models.py:903 | class CloudFile(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup.py:902 | class CloudFile(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup_encoding.py:901 | class CloudFile(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\views.py:92 | "currency": "CDF"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\views.py:182 | "CDF"
+
+------------------------------------------------------------
+TERME : Super Administrateur
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+TERME : permission
+------------------------------------------------------------
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\bank_views.py:3 | from rest_framework.permissions import IsAuthenticated
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\bank_views.py:10 | permission_classes = [
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\finance_admin_views.py:1 | from rest_framework.decorators import api_view, permission_classes
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\finance_admin_views.py:2 | from rest_framework.permissions import IsAdminUser
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\finance_admin_views.py:15 | @permission_classes([IsAdminUser])
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\finance_views.py:3 | from rest_framework.permissions import IsAuthenticated
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\finance_views.py:8 | permission_classes = [
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\security_views.py:1 | from rest_framework.decorators import api_view, permission_classes
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\security_views.py:3 | from rest_framework.permissions import IsAuthenticated
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\security_views.py:11 | @permission_classes([IsAuthenticated])
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\views.py:4 | from rest_framework.permissions import IsAuthenticated
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\views.py:8 | permission_classes=[IsAuthenticated]
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\views.py:20 | "permissions"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\views.py:79 | from rest_framework.decorators import api_view, permission_classes
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\views.py:80 | from rest_framework.permissions import IsAuthenticated
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\views.py:85 | @permission_classes([IsAuthenticated])
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\wallet_api_views.py:10 | from api_nsikay.permissions.wallet_permissions import WalletAccessPermission
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\wallet_api_views.py:18 | permission_classes = [WalletAccessPermission]
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\wallet_api_views.py:26 | permission_classes = [WalletAccessPermission]
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\wallet_api_views.py:34 | permission_classes = [WalletAccessPermission]
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\wallet_dashboard_views.py:1 | from rest_framework.decorators import api_view, permission_classes
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\wallet_dashboard_views.py:2 | from rest_framework.permissions import IsAuthenticated
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\wallet_dashboard_views.py:11 | @permission_classes([IsAuthenticated])
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\permissions\kyc.py:1 | from rest_framework.permissions import BasePermission
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\permissions\kyc.py:4 | class KYCVerifiedPermission(BasePermission):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\permissions\kyc.py:7 | def has_permission(self, request, view):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\permissions\roles.py:1 | from rest_framework.permissions import BasePermission
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\permissions\roles.py:5 | class IsNSIKAYAdmin(BasePermission):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\permissions\roles.py:8 | def has_permission(self, request, view):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\permissions\roles.py:29 | class IsBankUser(BasePermission):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\permissions\roles.py:32 | def has_permission(self, request, view):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\permissions\roles.py:53 | class IsAgentUser(BasePermission):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\permissions\roles.py:56 | def has_permission(self, request, view):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\permissions\wallet_permissions.py:1 | from rest_framework.permissions import BasePermission
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\permissions\wallet_permissions.py:4 | class WalletAccessPermission(BasePermission):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\permissions\wallet_permissions.py:6 | def has_permission(self, request, view):
+
+------------------------------------------------------------
+TERME : UserRole
+------------------------------------------------------------
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models.py:13 | class UserRole(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup.py:11 | class UserRole(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup_encoding.py:11 | class UserRole(models.Model):
+
+============================================================
+8. SERVICES FINANCIERS
+FICHIER : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\fees.py
+============================================================
+
+------------------------------------------------------------
+RECHERCHE : calculate_fee
+------------------------------------------------------------
+3 | from financial_routing.services import calculate_fee
+8 | result = calculate_fee(
+
+------------------------------------------------------------
+RECHERCHE : TRANSFER
+------------------------------------------------------------
+40 | "TRANSFER_INTERNAL",
+44 | def calculate_transfer_fee(amount):
+47 | "TRANSFER_INTERNAL",
+68 | "TRANSFER_MOBILE_MONEY",
+75 | "TRANSFER_VISA",
+
+------------------------------------------------------------
+RECHERCHE : WITHDRAWAL
+------------------------------------------------------------
+54 | "WITHDRAWAL",
+58 | def calculate_withdrawal_fee(amount):
+61 | "WITHDRAWAL",
+
+------------------------------------------------------------
+RECHERCHE : MOBILE
+------------------------------------------------------------
+65 | def calculate_mobile_money_fee(amount):
+68 | "TRANSFER_MOBILE_MONEY",
+
+------------------------------------------------------------
+RECHERCHE : VISA
+------------------------------------------------------------
+72 | def calculate_visa_fee(amount):
+75 | "TRANSFER_VISA",
+
+------------------------------------------------------------
+RECHERCHE : WENZE
+------------------------------------------------------------
+79 | def calculate_wenze_fee(amount):
+82 | "WENZE",
+
+------------------------------------------------------------
+RECHERCHE : reward
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+RECHERCHE : gift
+------------------------------------------------------------
+NON DETECTE
+
+============================================================
+9. LEDGER FINANCIER
+FICHIER : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\ledger.py
+============================================================
+
+------------------------------------------------------------
+RECHERCHE : calculate
+------------------------------------------------------------
+3 | from financial_routing.services import calculate_fee
+7 | result = calculate_fee(Decimal(str(amount)), fee_type)
+19 | f"Format inattendu retourné par calculate_fee(): {type(result)}"
+23 | def calculate_transfer_fee(amount):
+27 | def calculate_withdrawal_fee(amount):
+31 | def calculate_mobile_money_fee(amount):
+35 | def calculate_visa_fee(amount):
+39 | def calculate_wenze_fee(amount):
+
+------------------------------------------------------------
+RECHERCHE : WalletTransaction
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+RECHERCHE : FinancialLedger
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+RECHERCHE : reward
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+RECHERCHE : gift
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+RECHERCHE : purchase
+------------------------------------------------------------
+NON DETECTE
+
+============================================================
+10. SERVICES TRANSACTIONS
+FICHIER : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\transactions\services.py
+============================================================
+
+------------------------------------------------------------
+RECHERCHE : calculate_fees
+------------------------------------------------------------
+75 | def calculate_fees(amount, transaction_type):
+112 | fee, net_amount = calculate_fees(
+
+------------------------------------------------------------
+RECHERCHE : process_transaction
+------------------------------------------------------------
+95 | def process_transaction(
+
+------------------------------------------------------------
+RECHERCHE : Transaction
+------------------------------------------------------------
+2 | from django.db import transaction
+5 | from .models import Transaction
+75 | def calculate_fees(amount, transaction_type):
+79 | fee_type = FEE_TYPE_MAP.get(transaction_type)
+94 | @transaction.atomic
+95 | def process_transaction(
+100 | transaction_type="transfer",
+114 | transaction_type,
+117 | transaction_obj = Transaction.objects.create(
+123 | transaction_type=transaction_type,
+129 | "transaction": transaction_obj,
+
+------------------------------------------------------------
+RECHERCHE : reward
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+RECHERCHE : gift
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+RECHERCHE : purchase
+------------------------------------------------------------
+NON DETECTE
+
+============================================================
+11. MODELES CADEAUX EXISTANTS
+FICHIER : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models.py
+============================================================
+
+------------------------------------------------------------
+RECHERCHE : class VirtualGift
+------------------------------------------------------------
+364 | class VirtualGift(models.Model):
+
+------------------------------------------------------------
+RECHERCHE : class GiftTransaction
+------------------------------------------------------------
+390 | class GiftTransaction(models.Model):
+
+------------------------------------------------------------
+RECHERCHE : class CreatorProfile
+------------------------------------------------------------
+121 | class CreatorProfile(models.Model):
+
+------------------------------------------------------------
+RECHERCHE : class SocialPost
+------------------------------------------------------------
+157 | class SocialPost(models.Model):
+
+------------------------------------------------------------
+RECHERCHE : class CreatorSubscription
+------------------------------------------------------------
+428 | class CreatorSubscription(models.Model):
+
+============================================================
+12. ADMIN API NSIKAY
+FICHIER : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\admin.py
+============================================================
+
+------------------------------------------------------------
+RECHERCHE : VirtualGift
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+RECHERCHE : GiftTransaction
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+RECHERCHE : CreatorProfile
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+RECHERCHE : SocialPost
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+RECHERCHE : CreatorSubscription
+------------------------------------------------------------
+NON DETECTE
+
+============================================================
+13. RECHERCHE GLOBALE CADEAUX / PUBLICATIONS
+============================================================
+
+------------------------------------------------------------
+TERME : VirtualGift
+------------------------------------------------------------
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models.py:364 | class VirtualGift(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models.py:414 | VirtualGift,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup.py:363 | class VirtualGift(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup.py:413 | VirtualGift,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup_encoding.py:362 | class VirtualGift(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup_encoding.py:412 | VirtualGift,
+
+------------------------------------------------------------
+TERME : GiftTransaction
+------------------------------------------------------------
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models.py:390 | class GiftTransaction(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup.py:389 | class GiftTransaction(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup_encoding.py:388 | class GiftTransaction(models.Model):
+
+------------------------------------------------------------
+TERME : SocialPost
+------------------------------------------------------------
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models.py:157 | class SocialPost(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models.py:195 | SocialPost,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup.py:155 | class SocialPost(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup.py:193 | SocialPost,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup_encoding.py:155 | class SocialPost(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup_encoding.py:193 | SocialPost,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\superapp_views.py:4 | from api_nsikay.models import SocialPost
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\superapp_views.py:11 | posts = SocialPost.objects.all().order_by(
+
+------------------------------------------------------------
+TERME : creator
+------------------------------------------------------------
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models.py:121 | class CreatorProfile(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models.py:129 | related_name="creator_profile"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models.py:428 | class CreatorSubscription(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models.py:430 | creator = models.ForeignKey(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models.py:432 | CreatorProfile,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup.py:119 | class CreatorProfile(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup.py:127 | related_name="creator_profile"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup.py:427 | class CreatorSubscription(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup.py:429 | creator = models.ForeignKey(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup.py:431 | CreatorProfile,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup_encoding.py:119 | class CreatorProfile(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup_encoding.py:127 | related_name="creator_profile"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup_encoding.py:426 | class CreatorSubscription(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup_encoding.py:428 | creator = models.ForeignKey(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup_encoding.py:430 | CreatorProfile,
+
+------------------------------------------------------------
+TERME : reward
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+TERME : cadeau
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+TERME : gift
+------------------------------------------------------------
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models.py:364 | class VirtualGift(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models.py:390 | class GiftTransaction(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models.py:398 | related_name="sent_gifts"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models.py:408 | related_name="received_gifts"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models.py:412 | gift = models.ForeignKey(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models.py:414 | VirtualGift,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup.py:363 | class VirtualGift(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup.py:389 | class GiftTransaction(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup.py:397 | related_name="sent_gifts"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup.py:407 | related_name="received_gifts"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup.py:411 | gift = models.ForeignKey(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup.py:413 | VirtualGift,
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup_encoding.py:362 | class VirtualGift(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup_encoding.py:388 | class GiftTransaction(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup_encoding.py:396 | related_name="sent_gifts"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup_encoding.py:406 | related_name="received_gifts"
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup_encoding.py:410 | gift = models.ForeignKey(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup_encoding.py:412 | VirtualGift,
+
+------------------------------------------------------------
+TERME : publication
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+TERME : subscriber
+------------------------------------------------------------
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models.py:438 | subscriber = models.ForeignKey(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup.py:437 | subscriber = models.ForeignKey(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup_encoding.py:436 | subscriber = models.ForeignKey(
+
+------------------------------------------------------------
+TERME : followers
+------------------------------------------------------------
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models.py:139 | followers = models.IntegerField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup.py:137 | followers = models.IntegerField(
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models_backup_encoding.py:137 | followers = models.IntegerField(
+
+============================================================
+14. CYCLES DE REMUNERATION
+============================================================
+
+------------------------------------------------------------
+CYCLE / REGLE : 24h
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+CYCLE / REGLE : 24 h
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+CYCLE / REGLE : 24H
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+CYCLE / REGLE : 24 heures
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+CYCLE / REGLE : 3 jours
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+CYCLE / REGLE : 3J
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+CYCLE / REGLE : 7 jours
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+CYCLE / REGLE : 7J
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+CYCLE / REGLE : 3 mois
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+CYCLE / REGLE : 3M
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+CYCLE / REGLE : 60%
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+CYCLE / REGLE : 0.60
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+CYCLE / REGLE : 0.6
+------------------------------------------------------------
+NON DETECTE
+
+============================================================
+15. LIVE / FAVORI
+============================================================
+
+------------------------------------------------------------
+TERME : Live
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+TERME : live
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+TERME : livestream
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+TERME : broadcast
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+TERME : Favori
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+TERME : favorite
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+TERME : favorite_creator
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+TERME : featured
+------------------------------------------------------------
+NON DETECTE
+
+============================================================
+16. DERNIERES MIGRATIONS API_NSikay
+============================================================
+__init__.py
+0001_initial.py
+0002_remove_settlementaccount_bank_delete_bankdeposit_and_more.py
+0003_securityprofile_userrole.py
+0004_tvchannel_virtualgift_advertisingcampaign_and_more.py
+0005_adminanalytics_contentanalytics_adcampaigncenter_and_more.py
+0006_countryconfiguration_apigatewaylog_cloudfile_and_more.py
+0007_rename_active_tvchannel_is_active_and_more.py
+0008_alter_pagepromotionslot_page_type.py
+
+============================================================
+17. ETAT DJANGO
+============================================================
+CODE RETOUR : 0
+=== ALIASES DASHBOARD NSIKAY FINALISES ===
+=== API NSIKAY VIEWS COMPATIBILITE CHARGEES ===
+System check identified no issues (0 silenced).

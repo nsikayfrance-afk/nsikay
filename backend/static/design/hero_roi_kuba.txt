@@ -1,0 +1,8 @@
+﻿NSIKAY IDENTITE VISUELLE
+
+Element :
+hero_roi_kuba.txt
+
+Emplacement reserve pour integration graphique.
+
+

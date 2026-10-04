@@ -1,0 +1,153 @@
+﻿============================================================
+ NSIKAY - CODE ACTIF WENZE + ANCIEN MARKETPLACE
+============================================================
+
+
+============================================================
+FICHIER : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\models.py
+============================================================
+
+============================================================
+FICHIER : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\views.py
+============================================================
+    9: def index(request):
+
+============================================================
+FICHIER : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\urls.py
+============================================================
+    5:     path('', views.index, name='index'),
+
+============================================================
+FICHIER : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\wenze\admin.py
+============================================================
+
+============================================================
+FICHIER : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\marketplace.py
+============================================================
+    5: MARKETPLACE_COMMISSION = Decimal("0.025")
+    9: def calculate_marketplace_fee(amount):
+   17:         MARKETPLACE_COMMISSION
+   23: def authorize_wallet_payment(wallet, amount):
+
+============================================================
+FICHIER : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py
+============================================================
+    5: class Currency(models.Model):
+   29:     def __str__(self):
+   34: class Wallet(models.Model):
+   61: class WalletTransaction(models.Model):
+  101: class ExchangeRate(models.Model):
+  132: class FinancialLedger(models.Model):
+  208:     def __str__(self):
+  214: class ExchangeRateHistory(models.Model):
+  257: class MerchantPayment(models.Model):
+  334: class BankReconciliation(models.Model):
+  401: class PlatformCommission(models.Model):
+  410:         related_name="platform_commissions"
+  448: class AuditLog(models.Model):
+  510: class WalletSecurityStatus(models.Model):
+  561: class FraudDetectionEvent(models.Model):
+  622: class KYCCompliance(models.Model):
+  664:     def is_compliant(self):
+  684: class SellerProfile(models.Model):
+  727: class MarketplaceProduct(models.Model):
+  788: class MarketplaceOrder(models.Model):
+  817:         MarketplaceProduct,
+  859: class MarketplaceCommission(models.Model):
+  864:         MarketplaceOrder,
+  868:         related_name="commission"
+  879:         default=0.025
+
+============================================================
+FICHIER : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\urls.py
+============================================================
+    6:     path(
+    8:         include("api_nsikay.banks_urls")
+   11:     path(
+   13:         include("api_nsikay.countries_urls")
+   16:     path(
+   18:         include("api_nsikay.transactions_urls")
+   21:     path(
+   23:         include("api_nsikay.finance_urls")
+   26:     path(
+   28:         include("api_nsikay.wallet_api_urls")
+   33: path(
+   35:     include("api_nsikay.wallet_operations_urls")
+   39: path(
+   41:     include("api_nsikay.wallet_dashboard_urls")
+   45: path(
+   47:     include("api_nsikay.wallet_bank_urls")
+   51: path(
+   53:     include("api_nsikay.finance_admin_urls")
+   57: path(
+   59:     include("api_nsikay.security_urls")
+   63: path(
+   64:     "marketplace/",
+   65:     include("api_nsikay.marketplace_urls")
+   69: path(
+   71:     include("api_nsikay.superapp_urls")
+   75: path(
+   77:     include("api_nsikay.analytics_urls")
+   81: path(
+   83:     include("api_nsikay.enterprise_urls")
+   88: path("tv/", include("api_nsikay.tv.urls")),
+
+============================================================
+FICHIER : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models.py
+============================================================
+   13: class UserRole(models.Model):
+   66: class SecurityProfile(models.Model):
+  121: class CreatorProfile(models.Model):
+  157: class SocialPost(models.Model):
+  191: class SocialComment(models.Model):
+  221: class NsikayEvent(models.Model):
+  249: class EventParticipant(models.Model):
+  269: class AdvertisingCampaign(models.Model):
+  307: class AdvertisementPlacement(models.Model):
+  344: class TVContent(models.Model):
+  364: class VirtualGift(models.Model):
+  390: class GiftTransaction(models.Model):
+  428: class CreatorSubscription(models.Model):
+  465: class ContentRecommendation(models.Model):
+  508: class ModerationRecord(models.Model):
+  567: class ContentAnalytics(models.Model):
+  620: class AdCampaignCenter(models.Model):
+  684: class PagePromotionSlot(models.Model):
+  697:         ("MARKETPLACE","Marketplace"),
+  728: class EventPromotion(models.Model):
+  750: class AdminAnalytics(models.Model):
+  787: class CountryConfiguration(models.Model):
+  828: class UserNotification(models.Model):
+  867: class InternalMessage(models.Model):
+  903: class CloudFile(models.Model):
+  954: class APIGatewayLog(models.Model):
+
+============================================================
+FICHIER : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\marketplace_urls.py
+============================================================
+    3: from api_nsikay.marketplace_views import (
+    5:     marketplace_products
+   14: path(
+   18:     marketplace_products
+
+============================================================
+RECHERCHE DES IMPORTS MARKETPLACE ACTIFS
+============================================================
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\marketplace_views.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\urls.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\migrations\0007_marketplaceproduct_marketplaceorder_and_more.py
+
+============================================================
+ETAT DJANGO
+============================================================
+=== ALIASES DASHBOARD NSIKAY FINALISES ===
+=== API NSIKAY VIEWS COMPATIBILITE CHARGEES ===
+No changes detected
+=== ALIASES DASHBOARD NSIKAY FINALISES ===
+=== API NSIKAY VIEWS COMPATIBILITE CHARGEES ===
+System check identified no issues (0 silenced).
+
+============================================================
+FIN INSPECTION
+============================================================

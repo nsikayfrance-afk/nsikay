@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NSIKAY — Tableau de bord des services</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #172033;
+        }
+
+        header {
+            background: #ffffff;
+            border-bottom: 1px solid #dfe5ee;
+            padding: 24px;
+        }
+
+        main {
+            padding: 24px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+        }
+
+        .card {
+            background: #ffffff;
+            border: 1px solid #dfe5ee;
+            border-radius: 14px;
+            padding: 20px;
+        }
+
+        .value {
+            font-size: 32px;
+            font-weight: 700;
+            margin-top: 8px;
+        }
+
+        a {
+            color: #174ea6;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>NSIKAY — Tableau de bord des services</h1>
+    <p>Centre de supervision et de contrôle des services NSIKAY.</p>
+</header>
+
+<main>
+
+    <div class="grid">
+
+        <div class="card">
+            <strong>Total des activations</strong>
+            <div class="value">{{ total|default:"0" }}</div>
+        </div>
+
+        <div class="card">
+            <strong>Activations actives</strong>
+            <div class="value">{{ actifs|default:"0" }}</div>
+        </div>
+
+        <div class="card">
+            <strong>Activations validées</strong>
+            <div class="value">{{ valides|default:"0" }}</div>
+        </div>
+
+        <div class="card">
+            <strong>En attente</strong>
+            <div class="value">{{ attente|default:"0" }}</div>
+        </div>
+
+    </div>
+
+    <section style="margin-top:30px;">
+        <h2>Services actifs</h2>
+
+        {% if active_services %}
+            <ul>
+            {% for item in active_services %}
+                <li>
+                    {{ item.service.name }}
+                    —
+                    {{ item.country.country_name }}
+                </li>
+            {% empty %}
+                <li>Aucun service actif.</li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>Aucun service actif.</p>
+        {% endif %}
+    </section>
+
+</main>
+
+</body>
+</html>

@@ -1,0 +1,556 @@
+/* ============================================================
+   NSIKAY GLOBAL DESIGN SYSTEM V1
+   ============================================================ */
+
+:root {
+    --ns-blue-950: #071a33;
+    --ns-blue-900: #0b2345;
+    --ns-blue-800: #10345f;
+    --ns-blue-700: #15529a;
+    --ns-blue-600: #1769c2;
+    --ns-blue-500: #2784df;
+
+    --ns-gold-700: #a86f00;
+    --ns-gold-600: #c68a00;
+    --ns-gold-500: #e0a72d;
+    --ns-gold-400: #f2c55d;
+
+    --ns-red-700: #9e2027;
+    --ns-red-600: #bd2c35;
+    --ns-red-500: #d64048;
+
+    --ns-white: #ffffff;
+    --ns-black: #0b1220;
+
+    --ns-bg: #f4f7fb;
+    --ns-bg-soft: #eef3f9;
+    --ns-surface: #ffffff;
+    --ns-surface-2: #f8fafc;
+
+    --ns-text: #152238;
+    --ns-text-soft: #64748b;
+    --ns-border: #dce4ef;
+
+    --ns-success: #16845b;
+    --ns-warning: #b77900;
+    --ns-danger: #c2363f;
+    --ns-info: #1769c2;
+
+    --ns-radius-sm: 8px;
+    --ns-radius-md: 14px;
+    --ns-radius-lg: 20px;
+    --ns-radius-xl: 28px;
+
+    --ns-shadow-sm: 0 2px 8px rgba(7,26,51,.06);
+    --ns-shadow-md: 0 10px 30px rgba(7,26,51,.09);
+    --ns-shadow-lg: 0 20px 50px rgba(7,26,51,.12);
+
+    --ns-transition: 180ms ease;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    min-width: 320px;
+    background:
+        radial-gradient(
+            circle at 10% 0%,
+            rgba(39,132,223,.06),
+            transparent 28%
+        ),
+        linear-gradient(
+            180deg,
+            #f8fbff 0%,
+            var(--ns-bg) 100%
+        );
+    color: var(--ns-text);
+    font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+a {
+    color: inherit;
+}
+
+#root {
+    min-height: 100vh;
+}
+
+.nsikay-app-shell {
+    min-height: 100vh;
+}
+
+.nsikay-container,
+.ns-container {
+    width: min(1400px, calc(100% - 32px));
+    margin-inline: auto;
+}
+
+.nsikay-main,
+.ns-main {
+    padding: 28px 0 48px;
+}
+
+.ns-grid {
+    display: grid;
+    gap: 20px;
+}
+
+.ns-grid-2 {
+    grid-template-columns: repeat(2, minmax(0,1fr));
+}
+
+.ns-grid-3 {
+    grid-template-columns: repeat(3, minmax(0,1fr));
+}
+
+.ns-grid-4 {
+    grid-template-columns: repeat(4, minmax(0,1fr));
+}
+
+/* HEADER */
+
+.nsikay-header,
+.ns-header {
+    position: relative;
+    z-index: 50;
+    background:
+        linear-gradient(
+            135deg,
+            var(--ns-blue-950),
+            var(--ns-blue-900)
+        );
+    color: white;
+    box-shadow: var(--ns-shadow-md);
+}
+
+.nsikay-header a,
+.ns-header a {
+    text-decoration: none;
+}
+
+.nsikay-nav,
+.ns-nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nsikay-nav a,
+.ns-nav a {
+    border-radius: 10px;
+    padding: 9px 12px;
+    transition:
+        background var(--ns-transition),
+        color var(--ns-transition),
+        transform var(--ns-transition);
+}
+
+.nsikay-nav a:hover,
+.ns-nav a:hover {
+    background: rgba(255,255,255,.10);
+    transform: translateY(-1px);
+}
+
+/* LOGO */
+
+.nsikay-logo,
+.ns-logo {
+    font-weight: 900;
+    letter-spacing: -.03em;
+}
+
+.nsikay-logo-mark,
+.ns-logo-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+    background:
+        linear-gradient(
+            135deg,
+            var(--ns-gold-500),
+            var(--ns-gold-400)
+        );
+    color: var(--ns-blue-950);
+    font-weight: 950;
+}
+
+/* HERO */
+
+.nsikay-hero,
+.ns-hero {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--ns-radius-xl);
+    background:
+        radial-gradient(
+            circle at 85% 15%,
+            rgba(224,167,45,.25),
+            transparent 25%
+        ),
+        linear-gradient(
+            135deg,
+            var(--ns-blue-950),
+            var(--ns-blue-700)
+        );
+    color: white;
+    box-shadow: var(--ns-shadow-lg);
+}
+
+/* CARDS */
+
+.ns-card,
+.nsikay-card,
+.dashboard-card {
+    background: var(--ns-surface);
+    border: 1px solid var(--ns-border);
+    border-radius: var(--ns-radius-lg);
+    box-shadow: var(--ns-shadow-sm);
+    transition:
+        transform var(--ns-transition),
+        box-shadow var(--ns-transition),
+        border-color var(--ns-transition);
+}
+
+.ns-card:hover,
+.nsikay-card:hover,
+.dashboard-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(23,105,194,.24);
+    box-shadow: var(--ns-shadow-md);
+}
+
+.ns-card-header {
+    padding: 20px 22px 12px;
+    font-weight: 800;
+}
+
+.ns-card-body {
+    padding: 18px 22px 22px;
+}
+
+/* STATS */
+
+.ns-stat-card,
+.stat-card,
+.dashboard-stat {
+    position: relative;
+    overflow: hidden;
+    padding: 22px;
+    background: white;
+    border: 1px solid var(--ns-border);
+    border-radius: var(--ns-radius-lg);
+    box-shadow: var(--ns-shadow-sm);
+}
+
+.ns-stat-card::before,
+.stat-card::before,
+.dashboard-stat::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 4px;
+    background:
+        linear-gradient(
+            180deg,
+            var(--ns-blue-600),
+            var(--ns-gold-500)
+        );
+}
+
+.ns-stat-label {
+    color: var(--ns-text-soft);
+    font-size: .82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+}
+
+.ns-stat-value {
+    margin-top: 8px;
+    font-size: 1.9rem;
+    font-weight: 900;
+}
+
+/* BUTTONS */
+
+.ns-btn,
+.nsikay-btn {
+    border-radius: 11px;
+    font-weight: 750;
+    transition:
+        transform var(--ns-transition),
+        box-shadow var(--ns-transition);
+}
+
+.ns-btn:hover,
+.nsikay-btn:hover {
+    transform: translateY(-1px);
+}
+
+.ns-btn-primary {
+    border: 0;
+    background:
+        linear-gradient(
+            135deg,
+            var(--ns-blue-700),
+            var(--ns-blue-500)
+        );
+    color: white;
+}
+
+.ns-btn-gold {
+    border: 0;
+    background:
+        linear-gradient(
+            135deg,
+            var(--ns-gold-600),
+            var(--ns-gold-400)
+        );
+    color: var(--ns-blue-950);
+}
+
+.ns-btn-danger {
+    border: 0;
+    background:
+        linear-gradient(
+            135deg,
+            var(--ns-red-700),
+            var(--ns-red-500)
+        );
+    color: white;
+}
+
+/* FORMS */
+
+.ns-form label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: .88rem;
+    font-weight: 700;
+}
+
+.ns-form input,
+.ns-form select,
+.ns-form textarea {
+    border: 1px solid var(--ns-border);
+    border-radius: 11px;
+    background: white;
+    color: var(--ns-text);
+    outline: none;
+}
+
+.ns-form input:focus,
+.ns-form select:focus,
+.ns-form textarea:focus {
+    border-color: var(--ns-blue-500);
+    box-shadow: 0 0 0 3px rgba(39,132,223,.12);
+}
+
+/* TABLES */
+
+.ns-table,
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: white;
+    border: 1px solid var(--ns-border);
+    border-radius: var(--ns-radius-md);
+}
+
+.ns-table th,
+table th {
+    background: var(--ns-blue-950);
+    color: white;
+    font-size: .78rem;
+    font-weight: 800;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+.ns-table th,
+.ns-table td,
+table th,
+table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--ns-border);
+}
+
+.ns-table tbody tr:hover,
+table tbody tr:hover {
+    background: #f7faff;
+}
+
+/* BADGES */
+
+.ns-badge,
+.badge,
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 9px;
+    border-radius: 999px;
+    font-size: .74rem;
+    font-weight: 800;
+}
+
+.ns-badge-success {
+    background: #e5f6ee;
+    color: var(--ns-success);
+}
+
+.ns-badge-warning {
+    background: #fff4d9;
+    color: var(--ns-warning);
+}
+
+.ns-badge-danger {
+    background: #fde8ea;
+    color: var(--ns-danger);
+}
+
+.ns-badge-info {
+    background: #e7f1fc;
+    color: var(--ns-info);
+}
+
+/* DOMAINES */
+
+.ns-domain-wenze {
+    border-top: 4px solid var(--ns-gold-500);
+}
+
+.ns-domain-finance {
+    border-top: 4px solid var(--ns-blue-600);
+}
+
+.ns-domain-certification {
+    border-top: 4px solid var(--ns-success);
+}
+
+.ns-domain-transport {
+    border-top: 4px solid var(--ns-red-600);
+}
+
+.ns-domain-events {
+    border-top: 4px solid var(--ns-gold-600);
+}
+
+.ns-domain-tv {
+    border-top: 4px solid var(--ns-blue-800);
+}
+
+.ns-domain-admin {
+    border-top: 4px solid var(--ns-blue-950);
+}
+
+/* SIDEBAR */
+
+.ns-sidebar {
+    background:
+        linear-gradient(
+            180deg,
+            var(--ns-blue-950),
+            var(--ns-blue-900)
+        );
+    color: white;
+    border-radius: var(--ns-radius-lg);
+    box-shadow: var(--ns-shadow-md);
+}
+
+.ns-sidebar a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: rgba(255,255,255,.82);
+    text-decoration: none;
+    border-radius: 10px;
+    padding: 10px 12px;
+}
+
+.ns-sidebar a:hover,
+.ns-sidebar a.active {
+    background: rgba(255,255,255,.11);
+    color: white;
+}
+
+.ns-sidebar a.active {
+    box-shadow: inset 3px 0 0 var(--ns-gold-400);
+}
+
+/* TITRES */
+
+.ns-section-title {
+    margin: 0;
+    color: var(--ns-blue-950);
+    font-size: clamp(1.35rem,2vw,2rem);
+    font-weight: 900;
+    letter-spacing: -.035em;
+}
+
+.ns-section-subtitle {
+    margin-top: 6px;
+    color: var(--ns-text-soft);
+    line-height: 1.6;
+}
+
+/* RESPONSIVE */
+
+@media (max-width:1100px) {
+    .ns-grid-4 {
+        grid-template-columns: repeat(2,minmax(0,1fr));
+    }
+
+    .ns-grid-3 {
+        grid-template-columns: repeat(2,minmax(0,1fr));
+    }
+}
+
+@media (max-width:760px) {
+    .nsikay-container,
+    .ns-container {
+        width: min(100% - 20px,1400px);
+    }
+
+    .ns-grid-2,
+    .ns-grid-3,
+    .ns-grid-4 {
+        grid-template-columns: 1fr;
+    }
+
+    .ns-table,
+    table {
+        display: block;
+        overflow-x: auto;
+    }
+}

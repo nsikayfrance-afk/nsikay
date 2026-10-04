@@ -1,0 +1,510 @@
+============================================================
+NSIKAY - INSPECTION WALLET / ROLES / PERMISSIONS
+============================================================
+DATE : 2026-10-01 15:33:35
+MODE : LECTURE SEULE - AUCUNE MODIFICATION
+
+============================================================
+MODELE : Currency
+FICHIER : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py
+============================================================
+    5 | class Currency(models.Model):
+    6 | 
+    7 |     name = models.CharField(
+    8 |         max_length=100
+    9 |     )
+   10 | 
+   11 |     code = models.CharField(
+   12 |         max_length=10,
+   13 |         unique=True
+   14 |     )
+   15 | 
+   16 |     symbol = models.CharField(
+   17 |         max_length=10
+   18 |     )
+   19 | 
+   20 |     reference_nsikay = models.BooleanField(
+   21 |         default=False
+   22 |     )
+   23 | 
+   24 |     approved = models.BooleanField(
+   25 |         default=False
+   26 |     )
+   27 | 
+   28 | 
+   29 |     def __str__(self):
+   30 |         return self.code
+   31 | 
+   32 | 
+   33 | 
+
+============================================================
+MODELE : Wallet
+FICHIER : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py
+============================================================
+   34 | class Wallet(models.Model):
+   35 | 
+   36 |     user = models.ForeignKey(
+   37 |         User,
+   38 |         related_name='finance_wallets', on_delete=models.CASCADE
+   39 |     )
+   40 | 
+   41 |     currency = models.ForeignKey(
+   42 |         Currency,
+   43 |         on_delete=models.PROTECT
+   44 |     )
+   45 | 
+   46 |     balance = models.DecimalField(
+   47 |         max_digits=20,
+   48 |         decimal_places=2,
+   49 |         default=0
+   50 |     )
+   51 | 
+   52 |     active = models.BooleanField(
+   53 |         default=True
+   54 |     )
+   55 | 
+   56 |     created_at = models.DateTimeField(
+   57 |         auto_now_add=True
+   58 |     )
+   59 | 
+   60 | 
+
+============================================================
+MODELE : WalletTransaction
+FICHIER : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py
+============================================================
+   61 | class WalletTransaction(models.Model):
+   62 | 
+   63 |     TYPES = (
+   64 |         ("deposit","Dépôt"),
+   65 |         ("withdraw","Retrait"),
+   66 |         ("transfer","Transfert"),
+   67 |         ("purchase","Achat"),
+   68 |         ("reward","Récompense"),
+   69 |     )
+   70 | 
+   71 |     wallet = models.ForeignKey(
+   72 |         Wallet,
+   73 |         related_name='finance_wallets', on_delete=models.CASCADE
+   74 |     )
+   75 | 
+   76 |     transaction_type = models.CharField(
+   77 |         max_length=50,
+   78 |         choices=TYPES
+   79 |     )
+   80 | 
+   81 |     amount = models.DecimalField(
+   82 |         max_digits=20,
+   83 |         decimal_places=2
+   84 |     )
+   85 | 
+   86 |     reference = models.CharField(
+   87 |         max_length=255,
+   88 |         unique=True
+   89 |     )
+   90 | 
+   91 |     status = models.CharField(
+   92 |         max_length=50,
+   93 |         default="pending"
+   94 |     )
+   95 | 
+   96 |     created_at = models.DateTimeField(
+   97 |         auto_now_add=True
+   98 |     )
+   99 | 
+  100 | 
+
+============================================================
+MODELE : FinancialLedger
+FICHIER : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\models.py
+============================================================
+  132 | class FinancialLedger(models.Model):
+  133 | 
+  134 |     TYPES = (
+  135 | 
+  136 |         ("DEPOSIT","Dépôt"),
+  137 | 
+  138 |         ("WITHDRAW","Retrait"),
+  139 | 
+  140 |         ("TRANSFER","Transfert"),
+  141 | 
+  142 |         ("FEE","Frais"),
+  143 | 
+  144 |         ("EXCHANGE","Change"),
+  145 | 
+  146 |     )
+  147 | 
+  148 | 
+  149 |     wallet = models.ForeignKey(
+  150 | 
+  151 |         "wallet.Wallet",
+  152 | 
+  153 |         on_delete=models.CASCADE,
+  154 | 
+  155 |         related_name="ledger_entries"
+  156 | 
+  157 |     )
+  158 | 
+  159 | 
+  160 |     transaction_type = models.CharField(
+  161 | 
+  162 |         max_length=30,
+  163 | 
+  164 |         choices=TYPES
+  165 | 
+  166 |     )
+  167 | 
+  168 | 
+  169 |     amount = models.DecimalField(
+  170 | 
+  171 |         max_digits=20,
+  172 | 
+  173 |         decimal_places=2
+  174 | 
+  175 |     )
+  176 | 
+  177 | 
+  178 |     currency = models.CharField(
+  179 | 
+  180 |         max_length=10
+  181 | 
+  182 |     )
+  183 | 
+  184 | 
+  185 |     reference = models.CharField(
+  186 | 
+  187 |         max_length=255,
+  188 | 
+  189 |         unique=True
+  190 | 
+  191 |     )
+  192 | 
+  193 | 
+  194 |     metadata = models.JSONField(
+  195 | 
+  196 |         default=dict
+  197 | 
+  198 |     )
+  199 | 
+  200 | 
+  201 |     created_at = models.DateTimeField(
+  202 | 
+  203 |         auto_now_add=True
+  204 | 
+  205 |     )
+  206 | 
+  207 | 
+  208 |     def __str__(self):
+  209 | 
+  210 |         return self.reference
+  211 | 
+  212 | 
+  213 | 
+
+============================================================
+MODELE : UserRole
+FICHIER : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models.py
+============================================================
+   13 | class UserRole(models.Model):
+   14 | 
+   15 | 
+   16 |     ROLE_CHOICES = (
+   17 | 
+   18 |         ("CLIENT","Client"),
+   19 | 
+   20 |         ("AGENT","Agent NSIKAY"),
+   21 | 
+   22 |         ("BANK","Banque"),
+   23 | 
+   24 |         ("ADMIN","Administrateur"),
+   25 | 
+   26 |     )
+   27 | 
+   28 | 
+   29 |     user = models.OneToOneField(
+   30 | 
+   31 |         User,
+   32 | 
+   33 |         on_delete=models.CASCADE,
+   34 | 
+   35 |         related_name="nsikay_role"
+   36 | 
+   37 |     )
+   38 | 
+   39 | 
+   40 |     role = models.CharField(
+   41 | 
+   42 |         max_length=20,
+   43 | 
+   44 |         choices=ROLE_CHOICES,
+   45 | 
+   46 |         default="CLIENT"
+   47 | 
+   48 |     )
+   49 | 
+   50 | 
+   51 |     active = models.BooleanField(
+   52 | 
+   53 |         default=True
+   54 | 
+   55 |     )
+   56 | 
+   57 | 
+   58 |     created_at = models.DateTimeField(
+   59 | 
+   60 |         auto_now_add=True
+   61 | 
+   62 |     )
+   63 | 
+   64 | 
+   65 | 
+
+============================================================
+MODELE : SecurityProfile
+FICHIER : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\api_nsikay\models.py
+============================================================
+   66 | class SecurityProfile(models.Model):
+   67 | 
+   68 | 
+   69 |     user = models.OneToOneField(
+   70 | 
+   71 |         User,
+   72 | 
+   73 |         on_delete=models.CASCADE,
+   74 | 
+   75 |         related_name="security_profile"
+   76 | 
+   77 |     )
+   78 | 
+   79 | 
+   80 |     two_factor_enabled = models.BooleanField(
+   81 | 
+   82 |         default=False
+   83 | 
+   84 |     )
+   85 | 
+   86 | 
+   87 |     last_login_ip = models.GenericIPAddressField(
+   88 | 
+   89 |         null=True,
+   90 | 
+   91 |         blank=True
+   92 | 
+   93 |     )
+   94 | 
+   95 | 
+   96 |     failed_attempts = models.IntegerField(
+   97 | 
+   98 |         default=0
+   99 | 
+  100 |     )
+  101 | 
+  102 | 
+  103 |     locked = models.BooleanField(
+  104 | 
+  105 |         default=False
+  106 | 
+  107 |     )
+  108 | 
+  109 | 
+  110 |     updated_at = models.DateTimeField(
+  111 | 
+  112 |         auto_now=True
+  113 | 
+  114 |     )
+  115 | 
+  116 | from django.db import models
+  117 | from django.contrib.auth.models import User
+  118 | 
+  119 | 
+  120 | 
+
+============================================================
+PERMISSIONS ROLES.PY
+============================================================
+    1 | from rest_framework.permissions import BasePermission
+    2 | 
+    3 | 
+    4 | 
+    5 | class IsNSIKAYAdmin(BasePermission):
+    6 | 
+    7 | 
+    8 |     def has_permission(self, request, view):
+    9 | 
+   10 |         return (
+   11 | 
+   12 |             request.user.is_authenticated
+   13 | 
+   14 |             and
+   15 | 
+   16 |             hasattr(
+   17 |                 request.user,
+   18 |                 "nsikay_role"
+   19 |             )
+   20 | 
+   21 |             and
+   22 | 
+   23 |             request.user.nsikay_role.role == "ADMIN"
+   24 | 
+   25 |         )
+   26 | 
+   27 | 
+   28 | 
+   29 | class IsBankUser(BasePermission):
+   30 | 
+   31 | 
+   32 |     def has_permission(self, request, view):
+   33 | 
+   34 |         return (
+   35 | 
+   36 |             request.user.is_authenticated
+   37 | 
+   38 |             and
+   39 | 
+   40 |             hasattr(
+   41 |                 request.user,
+   42 |                 "nsikay_role"
+   43 |             )
+   44 | 
+   45 |             and
+   46 | 
+   47 |             request.user.nsikay_role.role == "BANK"
+   48 | 
+   49 |         )
+   50 | 
+   51 | 
+   52 | 
+   53 | class IsAgentUser(BasePermission):
+   54 | 
+   55 | 
+   56 |     def has_permission(self, request, view):
+   57 | 
+   58 |         return (
+   59 | 
+   60 |             request.user.is_authenticated
+   61 | 
+   62 |             and
+   63 | 
+   64 |             hasattr(
+   65 |                 request.user,
+   66 |                 "nsikay_role"
+   67 |             )
+   68 | 
+   69 |             and
+   70 | 
+   71 |             request.user.nsikay_role.role == "AGENT"
+   72 | 
+   73 |         )
+   74 | 
+   75 | 
+
+============================================================
+RECHERCHE ROLE_CHOICES / GROUPES
+============================================================
+
+------------------------------------------------------------
+RECHERCHE : ROLE_CHOICES
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+RECHERCHE : Super Administrateur
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+RECHERCHE : Administration Pays
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+RECHERCHE : Autorité Certification
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+RECHERCHE : Banque Partenaire
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+RECHERCHE : Contrôleur Financier
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+RECHERCHE : Gestionnaire WENZE
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+RECHERCHE : Agent Validation
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+RECHERCHE : Superviseur Conformité
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+RECHERCHE : Gestionnaire Publicité
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+RECHERCHE : Gestionnaire Événements
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+RECHERCHE : groups
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+RECHERCHE : Group
+------------------------------------------------------------
+NON DETECTE
+
+------------------------------------------------------------
+RECHERCHE : Permission
+------------------------------------------------------------
+NON DETECTE
+
+============================================================
+GROUPES DJANGO ACTUELS
+============================================================
+CODE RETOUR : 0
+157 objects imported automatically (use -v 2 for details).
+
+GROUPES=
+GROUP|Administration Pays|PERMISSIONS=133
+GROUP|Agent de Validation|PERMISSIONS=124
+GROUP|AutoritÚ de Certification|PERMISSIONS=124
+GROUP|Banque Partenaire|PERMISSIONS=92
+GROUP|Contr¶leur Financier|PERMISSIONS=108
+GROUP|Gestionnaire PublicitÚ|PERMISSIONS=0
+GROUP|Gestionnaire WENZE|PERMISSIONS=84
+GROUP|Gestionnaire ╔vÚnements|PERMISSIONS=0
+GROUP|Super Administrateur|PERMISSIONS=12
+GROUP|Super Administrateur NSIKAY|PERMISSIONS=572
+GROUP|Superviseur ConformitÚ|PERMISSIONS=296
+USERS_WITH_GROUPS=
+USER|admin_test_nsikay|GROUPS=Super Administrateur NSIKAY
+USER|banque_test_nsikay|GROUPS=Banque Partenaire
+USER|certif_test_nsikay|GROUPS=AutoritÚ de Certification
+USER|conformite_test_nsikay|GROUPS=Superviseur ConformitÚ
+USER|finance_test_nsikay|GROUPS=Contr¶leur Financier
+USER|pays_test_nsikay|GROUPS=Administration Pays
+USER|validation_test_nsikay|GROUPS=Agent de Validation
+USER|wenz_test_nsikay|GROUPS=Gestionnaire WENZE
+
+============================================================
+DJANGO CHECK
+============================================================
+CODE RETOUR : 0
+=== ALIASES DASHBOARD NSIKAY FINALISES ===
+=== API NSIKAY VIEWS COMPATIBILITE CHARGEES ===
+System check identified no issues (0 silenced).

@@ -1,0 +1,209 @@
+from django.urls import path
+
+from .operational_countries_views import (
+    operational_countries,
+    rollback_last_configuration,
+)
+
+from .operational_countries_history_views import (
+    operational_countries_history,
+)
+
+from . import dashboard_views
+
+from .country_statistics_views import (
+    country_statistics,
+)
+
+from .administration_control_center_views import (
+    administration_control_center,
+)
+
+from .global_administrative_log_views import (
+    global_administrative_log,
+)
+
+from .service_country_control_views import (
+    service_country_control,
+)
+
+from .activation_request_views import (
+    create_activation_request,
+    validate_activation_request,
+    reject_activation_request,
+)
+
+from .final_activation_views import (
+    final_activate_service,
+)
+
+from .final_deactivation_views import (
+    final_deactivate_service,
+)
+
+urlpatterns = [
+    # ========================================================
+    # ADMINISTRATION PAYS
+    # ========================================================
+
+    path(
+        "operational-countries/",
+        operational_countries,
+        name="operational_countries",
+    ),
+
+    path(
+        "operational-countries/history/",
+        operational_countries_history,
+        name="operational_countries_history",
+    ),
+
+    path(
+        "operational-countries/history/rollback/",
+        rollback_last_configuration,
+        name="rollback_last_configuration",
+    ),
+
+    # ========================================================
+    # TABLEAU DE BORD
+    # ========================================================
+
+    path(
+        "",
+        dashboard_views.dashboard_home,
+        name="dashboard_home",
+    ),
+
+    path(
+        "statistics/",
+        dashboard_views.administration_statistics,
+        name="administration_statistics",
+    ),
+
+    path(
+        "statistics/countries/",
+        country_statistics,
+        name="country_statistics",
+    ),
+
+    # ========================================================
+    # CENTRE DE CONTROLE
+    # ========================================================
+
+    path(
+        "control-center/",
+        administration_control_center,
+        name="control_center",
+    ),
+
+    path(
+        "control-center-filtered/",
+        dashboard_views.control_center_filtered,
+        name="control_center_filtered",
+    ),
+
+    # ========================================================
+    # HISTORIQUE
+    # ========================================================
+
+    path(
+        "history/",
+        dashboard_views.administration_history,
+        name="administration_history",
+    ),
+
+    path(
+        "administrative-log/",
+        global_administrative_log,
+        name="global_administrative_log",
+    ),
+
+    # ========================================================
+    # CONTROLE SERVICE / PAYS
+    # ========================================================
+
+    path(
+        "service-country-control/",
+        service_country_control,
+        name="service_country_control",
+    ),
+
+    # ========================================================
+    # ACTIVATION FINALE
+    # ========================================================
+
+    path(
+        "activate/<int:activation_id>/",
+        dashboard_views.activate_service,
+        name="activate_service",
+    ),
+
+    path(
+        "deactivate/<int:activation_id>/",
+        dashboard_views.deactivate_service,
+        name="deactivate_service",
+    ),
+
+    # ========================================================
+    # BLOC 3 - DEMANDES D'ACTIVATION
+    # ========================================================
+
+    path(
+        "activation-requests/create/",
+        create_activation_request,
+        name="create_activation_request",
+    ),
+
+    path(
+        "activation-requests/<int:request_id>/validate/",
+        validate_activation_request,
+        name="validate_activation_request",
+    ),
+
+    path(
+        "activation-requests/<int:request_id>/reject/",
+        reject_activation_request,
+        name="reject_activation_request",
+    ),
+]
+
+# === NSIKAY BLOC 4 ADMIN DEMANDES ===
+
+from service_dashboard.activation_request_admin_views import (
+    activation_request_admin_list,
+    activation_request_admin_history,
+    activation_request_admin_detail,
+)
+
+urlpatterns += [
+    path(
+        "activation-requests/admin/",
+        activation_request_admin_list,
+        name="activation_request_admin_list",
+    ),
+    path(
+        "activation-requests/history/",
+        activation_request_admin_history,
+        name="activation_request_admin_history",
+    ),
+    path(
+        "activation-requests/<int:request_id>/admin-detail/",
+        activation_request_admin_detail,
+        name="activation_request_admin_detail",
+    ),
+]
+
+# === NSIKAY BLOC 5 ACTIVATION FINALE SECURISEE ===
+
+urlpatterns += [
+    path(
+        "final-activate/<int:activation_id>/",
+        final_activate_service,
+        name="final_activate_service",
+    ),
+    path(
+        "final-deactivate/<int:activation_id>/",
+        final_deactivate_service,
+        name="final_deactivate_service",
+    ),
+]

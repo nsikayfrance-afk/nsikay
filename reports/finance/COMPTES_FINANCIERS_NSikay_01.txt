@@ -1,0 +1,61 @@
+﻿============================================================
+ NSIKAY - COMPTES FINANCIERS
+============================================================
+
+MODULE : financial_accounts
+
+COMPTES CREES :
+
+PRINCIPAL
+- NSIKAY-PRINCIPAL-CDF
+- NSIKAY-PRINCIPAL-USD
+- NSIKAY-PRINCIPAL-EUR
+
+CADEAUX
+- NSIKAY-GIFTS-CDF
+- NSIKAY-GIFTS-USD
+- NSIKAY-GIFTS-EUR
+
+COMMISSIONS / FRAIS
+- NSIKAY-FEES-CDF
+- NSIKAY-FEES-USD
+- NSIKAY-FEES-EUR
+
+RETRAITS
+- NSIKAY-PAYOUT-CDF
+- NSIKAY-PAYOUT-USD
+- NSIKAY-PAYOUT-EUR
+
+STATUT INITIAL :
+PLANIFIE
+
+Aucun compte bancaire reel, IBAN, RIB ou numero bancaire
+n'a ete invente.
+
+MODELE DE TRAÇABILITE :
+Achat cadeaux
+    ->
+Encaissement
+    ->
+Compte cadeaux
+    ->
+Registre cadeaux
+    ->
+Envoi
+    ->
+Beneficiaire
+    ->
+Retrait
+    ->
+Compte de retraits
+    ->
+Paiement
+
+MODULES :
+- FinancialAccount
+- BankReconciliation
+- GiftFinancialLedger
+
+============================================================
+ FIN
+============================================================

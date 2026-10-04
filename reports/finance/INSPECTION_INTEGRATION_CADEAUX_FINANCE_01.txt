@@ -1,0 +1,20 @@
+﻿============================================================
+ NSIKAY - INSPECTION INTEGRATION CADEAUX FINANCE
+============================================================
+
+Objectif :
+Préparation liaison :
+CADEAUX -> COMPTES FINANCIERS NSIKAY
+
+Recherche terminée.
+
+Prochaine étape :
+Connexion automatique :
+- achat cadeaux
+- portefeuille cadeaux
+- envoi cadeaux
+- bénéficiaire
+- retrait
+- frais
+
+============================================================

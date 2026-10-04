@@ -1,0 +1,10 @@
+
+# NSIKAY production secrets
+.env
+.env.*
+backend/.env
+backend/.env.*
+frontend/.env
+frontend/.env.*
+production_package/
+deployment_railway/

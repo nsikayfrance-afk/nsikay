@@ -1,0 +1,265 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Workflow administratif NSIKAY</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background: #f5f7fa;
+        }
+
+        h1 {
+            margin-bottom: 5px;
+        }
+
+        .topbar {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 14px;
+            background: #1f4f8f;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .filter {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #e9eef5;
+        }
+
+        .pending {
+            font-weight: bold;
+        }
+
+        .success {
+            color: green;
+        }
+
+        .danger {
+            color: #a00;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<h1>NSIKAY — Workflow administratif</h1>
+
+<p>
+Gestion centralisée des demandes :
+demande → validation → rejet → activation.
+</p>
+
+<div class="topbar">
+
+    <a
+        class="button"
+        href="{% url 'workflow_admin_dashboard' %}"
+    >
+        Tableau
+    </a>
+
+    <a
+        class="button"
+        href="{% url 'workflow_admin_create' %}"
+    >
+        Nouvelle demande
+    </a>
+
+</div>
+
+<div class="filter">
+
+<form method="get">
+
+<label>Statut :</label>
+
+<select name="status">
+
+<option value="">
+Tous
+</option>
+
+{% for value,label in status_choices %}
+
+<option
+    value="{{ value }}"
+    {% if selected_status == value %}
+        selected
+    {% endif %}
+>
+    {{ label }}
+</option>
+
+{% endfor %}
+
+</select>
+
+<label>Service :</label>
+
+<select name="service">
+
+<option value="">
+Tous
+</option>
+
+{% for service in services %}
+
+<option
+    value="{{ service.id }}"
+    {% if selected_service == service.id|stringformat:"s" %}
+        selected
+    {% endif %}
+>
+    {{ service.name }}
+</option>
+
+{% endfor %}
+
+</select>
+
+<label>Pays :</label>
+
+<select name="country">
+
+<option value="">
+Tous
+</option>
+
+{% for country in countries %}
+
+<option
+    value="{{ country.id }}"
+    {% if selected_country == country.id|stringformat:"s" %}
+        selected
+    {% endif %}
+>
+    {{ country.country_name }}
+</option>
+
+{% endfor %}
+
+</select>
+
+<button type="submit">
+Filtrer
+</button>
+
+</form>
+
+</div>
+
+<table>
+
+<thead>
+
+<tr>
+    <th>ID</th>
+    <th>Service</th>
+    <th>Pays</th>
+    <th>Demandeur</th>
+    <th>Bénéficiaire</th>
+    <th>Statut</th>
+    <th>Date</th>
+    <th>Action</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for item in requests %}
+
+<tr>
+
+<td>
+{{ item.id }}
+</td>
+
+<td>
+{{ item.service.name }}
+</td>
+
+<td>
+{{ item.country.country_name }}
+</td>
+
+<td>
+{{ item.requested_by.username }}
+</td>
+
+<td>
+{{ item.beneficiary_user.username }}
+</td>
+
+<td>
+{{ item.get_status_display }}
+</td>
+
+<td>
+{{ item.created_at }}
+</td>
+
+<td>
+
+<a
+    href="{% url 'workflow_admin_detail' item.id %}"
+>
+Ouvrir
+</a>
+
+</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+
+<td colspan="8">
+Aucune demande.
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</body>
+</html>
+

@@ -1,0 +1,35 @@
+﻿============================================================
+NSIKAY - PREPARATION AVANT HEBERGEMENT
+============================================================
+
+DATE : 20260930_192835
+
+MATRICE :
+Pays primaires       : 249
+Pays operationnels   : 240
+Pays inactifs        : 9
+Services             : 28
+Regles               : 28
+Relations            : 10472
+Activations actives  : 2
+Validations          : 3
+Demandes             : 0
+
+CONTROLES :
+Django check         : OK
+Migrations           : STABLES
+Workflow             : OK
+Routes               : OK
+Collectstatic        : OK
+Matrice              : INTACTE
+Regles Banque        : OK
+Assurance sante      : OK
+
+Aucune activation metier nouvelle.
+Aucune demande nouvelle.
+Aucune suppression de donnees.
+
+Le projet est pret pour la phase de deploiement,
+sous reserve de la configuration propre a l'hebergeur.
+============================================================
+

@@ -1,0 +1,71 @@
+﻿from django.core.management.base import BaseCommand
+
+from service_control.models import (
+    CountryServiceStatus,
+    GlobalService
+)
+
+
+COUNTRIES = [
+    ("FRA", "France"),
+    ("COD", "République démocratique du Congo"),
+    ("USA", "États-Unis"),
+    ("GBR", "Royaume-Uni"),
+    ("CHN", "Chine"),
+    ("BRA", "Brésil"),
+    ("CAN", "Canada"),
+]
+
+
+SERVICES = [
+    ("Entreprises", "Economie"),
+    ("Ecoles", "Education"),
+    ("Universites", "Education"),
+    ("Centres de formation", "Education"),
+    ("Hopitaux", "Sante"),
+    ("Banques et finance", "Finance"),
+    ("Reseaux telecom SIM eSIM", "Telecommunication"),
+    ("SMS Internet Roaming", "Telecommunication"),
+    ("Assurance sante", "Assurance"),
+    ("Immobilier", "Immobilier"),
+    ("Construction", "Construction"),
+    ("Automobile", "Transport"),
+    ("Transport", "Transport"),
+    ("Justice", "Justice"),
+    ("Notaires Avocats Huissiers", "Justice"),
+    ("WENZE Commerce", "Commerce"),
+    ("Evenements", "Communication"),
+    ("Publicite", "Communication"),
+    ("Musique Audio", "Culture"),
+    ("Sport", "Sport"),
+    ("Tourisme", "Tourisme"),
+    ("Agriculture", "Agriculture"),
+    ("Technologie", "Innovation"),
+    ("Emploi Missions", "Emploi"),
+]
+
+
+class Command(BaseCommand):
+
+    help = "Initialisation services NSIKAY"
+
+    def handle(self, *args, **kwargs):
+
+        for code, name in COUNTRIES:
+            CountryServiceStatus.objects.get_or_create(
+                country_code=code,
+                country_name=name
+            )
+
+        for name, category in SERVICES:
+            GlobalService.objects.get_or_create(
+                name=name,
+                category=category
+            )
+
+        self.stdout.write(
+            self.style.SUCCESS(
+                "Services NSIKAY initialises"
+            )
+        )
+

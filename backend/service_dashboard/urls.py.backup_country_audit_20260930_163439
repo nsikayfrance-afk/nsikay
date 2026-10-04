@@ -1,0 +1,61 @@
+﻿from django.urls import path
+from .operational_countries_views import operational_countries
+from . import dashboard_views
+
+
+app_name = "service_dashboard"
+
+
+urlpatterns = [
+    path('operational-countries/', operational_countries, name='operational_countries'),
+
+    path(
+        "",
+        dashboard_views.dashboard_home,
+        name="dashboard_home"
+    ),
+
+
+    path(
+        "statistics/",
+        dashboard_views.administration_statistics,
+        name="administration_statistics"
+    ),
+
+
+    path(
+        "control-center/",
+        dashboard_views.control_center,
+        name="control_center"
+    ),
+
+
+    path(
+        "control-center-filtered/",
+        dashboard_views.control_center_filtered,
+        name="control_center_filtered"
+    ),
+
+
+    path(
+        "history/",
+        dashboard_views.administration_history,
+        name="administration_history"
+    ),
+
+
+    path(
+        "activate/<int:activation_id>/",
+        dashboard_views.activate_service,
+        name="activate_service"
+    ),
+
+    path(
+        "deactivate/<int:activation_id>/",
+        dashboard_views.deactivate_service,
+        name="deactivate_service"
+    ),
+
+]
+
+

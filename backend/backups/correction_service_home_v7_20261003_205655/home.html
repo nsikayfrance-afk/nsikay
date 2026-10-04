@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+
+<meta charset="UTF-8">
+
+<title>Dashboard Administration NSIKAY</title>
+
+<style>
+
+body {
+    font-family: Arial, sans-serif;
+    background:#f4f6f8;
+    margin:20px;
+}
+
+h1 {
+    color:#1a237e;
+}
+
+.cards {
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.card {
+
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    width:180px;
+    box-shadow:0 2px 8px #ccc;
+
+}
+
+
+.number {
+
+    font-size:30px;
+    font-weight:bold;
+    color:#1565c0;
+
+}
+
+
+table {
+
+width:100%;
+background:white;
+border-collapse:collapse;
+margin-top:30px;
+
+}
+
+
+th,td {
+
+padding:10px;
+border:1px solid #ddd;
+
+}
+
+
+th {
+
+background:#1a237e;
+color:white;
+
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<h1>
+<div>
+<a href="{% url 'control_center' %}">
+🌍 Centre de contrôle
+</a>
+|
+<a href="{% url 'service_dashboard:administration_history' %}">
+📋 Historique
+</a>
+</div>🌍 Administration NSIKAY - Supervision Mondiale</h1>
+
+
+<div class="cards">
+
+
+<div class="card">
+Services
+<div class="number">{{ services }}</div>
+</div>
+
+
+<div class="card">
+Pays
+<div class="number">{{ countries }}</div>
+</div>
+
+
+<div class="card">
+Matrice Services/Pays
+<div class="number">{{ matrix }}</div>
+</div>
+
+
+<div class="card">
+Actifs
+<div class="number">{{ active }}</div>
+</div>
+
+
+<div class="card">
+Validés
+<div class="number">{{ validated }}</div>
+</div>
+
+
+</div>
+
+
+
+<h2>Services par catégorie</h2>
+
+
+<table>
+
+<tr>
+<th>Catégorie</th>
+<th>Total</th>
+</tr>
+
+
+{% for c in categories %}
+
+<tr>
+
+<td>{{ c.category }}</td>
+
+<td>{{ c.total }}</td>
+
+</tr>
+
+{% endfor %}
+
+
+</table>
+
+
+
+<h2>Supervision des pays</h2>
+
+
+<table>
+
+<tr>
+
+<th>Pays</th>
+<th>Total services</th>
+<th>Services actifs</th>
+
+</tr>
+
+
+{% for p in country_statistics %}
+
+<tr>
+
+<td>{{ p.country_name }}</td>
+
+<td>{{ p.total_services }}</td>
+
+<td>{{ p.active_services }}</td>
+
+</tr>
+
+
+{% endfor %}
+
+
+</table>
+
+
+
+</body>
+
+</html>
+

@@ -1,0 +1,48 @@
+﻿============================================================
+ NSIKAY - DESIGN 16 - AUDIT DES MODULES
+============================================================
+
+Date : 2026-10-01 11:37:16
+Racine : C:\Users\DELL Technologies\Desktop\nsikay nante
+
+MODULES
+-------
+Activites : TROUVE (45 fichier(s))
+BUKA PRIX : TROUVE (4 fichier(s))
+Evenements : TROUVE (308 fichier(s))
+Publicite : TROUVE (62 fichier(s))
+Economie : TROUVE (13 fichier(s))
++18 : TROUVE (12 fichier(s))
+Paiements : TROUVE (29 fichier(s))
+Credit : TROUVE (14 fichier(s))
+Assurance : TROUVE (56 fichier(s))
+Partenaires : TROUVE (123 fichier(s))
+Entreprises : TROUVE (46 fichier(s))
+Employes : TROUVE (4 fichier(s))
+Devises : TROUVE (108 fichier(s))
+Parametres : TROUVE (547 fichier(s))
+
+COMPOSANTS DJANGO
+-----------------
+serializers.py : 9
+admin.py : 34
+forms.py : 5
+views.py : 41
+models.py : 49
+urls.py : 36
+
+DJANGO CHECK
+------------
+OK - aucune erreur
+
+REGLES NSIKAY DEJA VALIDEES
+---------------------------
+Stockage gratuit : NON
+10 Go : 10 EUR
+100 Go : 50 EUR
+Stockage accessible telephone + PC
+Stockage lie au compte NSIKAY
+
+============================================================
+ FIN AUDIT DESIGN 16
+============================================================

@@ -1,0 +1,887 @@
+
+======================================================================
+NSIKAY - AUDIT CADEAUX FINAL 07
+======================================================================
+MODE : LECTURE SEULE - AUCUNE MODIFICATION
+BASE : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\db.sqlite3
+ENGINE : django.db.backends.sqlite3
+
+======================================================================
+FINANCIAL_ACCOUNTS
+======================================================================
+MODEL : financial_accounts.GiftFinancialLedger
+TABLE : financial_accounts_giftfinancialledger
+  id | BigAutoField | null=False | blank=True
+  reference | CharField | null=False | blank=False
+  operation_type | CharField | null=False | blank=False
+  currency | CharField | null=False | blank=False
+  amount | DecimalField | null=False | blank=False
+  buyer_reference | CharField | null=False | blank=True
+  sender_reference | CharField | null=False | blank=True
+  beneficiary_reference | CharField | null=False | blank=True
+  financial_account | ForeignKey | null=False | blank=False -> financial_accounts.FinancialAccount
+  related_reference | CharField | null=False | blank=True
+  created_at | DateTimeField | null=False | blank=True
+
+COUNT : 0
+
+======================================================================
+WALLET OPERATIONNEL
+======================================================================
+MODEL : wallet.Wallet
+TABLE : wallet_wallet
+  id | BigAutoField | null=False | blank=True
+  user | OneToOneField | null=False | blank=False -> auth.User
+  status | CharField | null=False | blank=False
+  created_at | DateTimeField | null=False | blank=True
+
+COUNT : 1
+MODEL : wallet.WalletBalance
+TABLE : wallet_walletbalance
+  id | BigAutoField | null=False | blank=True
+  wallet | ForeignKey | null=False | blank=False -> wallet.Wallet
+  currency | CharField | null=False | blank=False
+  available_balance | DecimalField | null=False | blank=False
+  locked_balance | DecimalField | null=False | blank=False
+  updated_at | DateTimeField | null=False | blank=True
+UNIQUE_TOGETHER : (('wallet', 'currency'),)
+
+COUNT : 0
+MODEL : wallet.WalletTransaction
+TABLE : wallet_wallettransaction
+  id | BigAutoField | null=False | blank=True
+  wallet | ForeignKey | null=False | blank=False -> wallet.Wallet
+  transaction_type | CharField | null=False | blank=False
+  amount | DecimalField | null=False | blank=False
+  currency | CharField | null=False | blank=False
+  reference | CharField | null=False | blank=False
+  status | CharField | null=False | blank=False
+  created_at | DateTimeField | null=False | blank=True
+
+COUNT : 0
+MODEL : wallet.WalletOperation
+TABLE : wallet_walletoperation
+  id | BigAutoField | null=False | blank=True
+  wallet | ForeignKey | null=False | blank=False -> wallet.Wallet
+  operation_type | CharField | null=False | blank=False
+  amount | DecimalField | null=False | blank=False
+  currency | CharField | null=False | blank=False
+  fee | DecimalField | null=False | blank=False
+  destination_wallet | ForeignKey | null=True | blank=True -> wallet.Wallet
+  created_at | DateTimeField | null=False | blank=True
+
+COUNT : 0
+MODEL : wallet.WalletCommission
+TABLE : wallet_walletcommission
+  id | BigAutoField | null=False | blank=True
+  transfer_fee_percent | DecimalField | null=False | blank=False
+  withdrawal_fee_percent | DecimalField | null=False | blank=False
+  updated_at | DateTimeField | null=False | blank=True
+
+COUNT : 0
+MODEL : wallet.WalletAuditLog
+TABLE : wallet_walletauditlog
+  id | BigAutoField | null=False | blank=True
+  wallet | ForeignKey | null=False | blank=False -> wallet.Wallet
+  action | CharField | null=False | blank=False
+  ip_address | GenericIPAddressField | null=True | blank=True
+  details | JSONField | null=False | blank=False
+  created_at | DateTimeField | null=False | blank=True
+
+COUNT : 0
+MODEL : wallet.WalletCurrencyBalance
+TABLE : wallet_walletcurrencybalance
+  id | BigAutoField | null=False | blank=True
+  wallet | ForeignKey | null=False | blank=False -> wallet.Wallet
+  currency | CharField | null=False | blank=False
+  balance | DecimalField | null=False | blank=False
+  updated_at | DateTimeField | null=False | blank=True
+UNIQUE_TOGETHER : (('wallet', 'currency'),)
+
+COUNT : 3
+MODEL : wallet.WalletKYCProfile
+TABLE : wallet_walletkycprofile
+  id | BigAutoField | null=False | blank=True
+  user | OneToOneField | null=False | blank=False -> auth.User
+  level | CharField | null=False | blank=False
+  daily_deposit_limit | DecimalField | null=False | blank=False
+  daily_withdraw_limit | DecimalField | null=False | blank=False
+  daily_transfer_limit | DecimalField | null=False | blank=False
+  active | BooleanField | null=False | blank=False
+  updated_at | DateTimeField | null=False | blank=True
+
+COUNT : 0
+MODEL : wallet.WalletBankAccount
+TABLE : wallet_walletbankaccount
+  id | BigAutoField | null=False | blank=True
+  wallet | ForeignKey | null=False | blank=False -> wallet.Wallet
+  bank_name | CharField | null=False | blank=False
+  account_name | CharField | null=False | blank=False
+  account_number | CharField | null=False | blank=False
+  country | CharField | null=False | blank=False
+  currency | CharField | null=False | blank=False
+  status | CharField | null=False | blank=False
+  certified | BooleanField | null=False | blank=False
+  created_at | DateTimeField | null=False | blank=True
+
+COUNT : 0
+
+======================================================================
+CADEAUX - CREATEURS - PUBLICATIONS
+======================================================================
+MODEL : api_nsikay.VirtualGift
+TABLE : api_nsikay_virtualgift
+  id | BigAutoField | null=False | blank=True
+  name | CharField | null=False | blank=False
+  value | DecimalField | null=False | blank=False
+  currency | CharField | null=False | blank=False
+
+COUNT : 0
+MODEL : api_nsikay.GiftTransaction
+TABLE : api_nsikay_gifttransaction
+  id | BigAutoField | null=False | blank=True
+  sender | ForeignKey | null=False | blank=False -> auth.User
+  receiver | ForeignKey | null=False | blank=False -> auth.User
+  gift | ForeignKey | null=False | blank=False -> api_nsikay.VirtualGift
+  created_at | DateTimeField | null=False | blank=True
+
+COUNT : 0
+MODEL : api_nsikay.CreatorProfile
+TABLE : api_nsikay_creatorprofile
+  id | BigAutoField | null=False | blank=True
+  user | OneToOneField | null=False | blank=False -> auth.User
+  verified | BooleanField | null=False | blank=False
+  followers | IntegerField | null=False | blank=False
+  earnings | DecimalField | null=False | blank=False
+
+COUNT : 0
+MODEL : api_nsikay.SocialPost
+TABLE : api_nsikay_socialpost
+  id | BigAutoField | null=False | blank=True
+  author | ForeignKey | null=False | blank=False -> auth.User
+  content | TextField | null=False | blank=False
+  image | URLField | null=False | blank=True
+  likes | IntegerField | null=False | blank=False
+  created_at | DateTimeField | null=False | blank=True
+
+COUNT : 0
+
+======================================================================
+RECHERCHE LIVE / FAVORI / REWARD
+======================================================================
+financial_accounts.GiftFinancialLedger | table=financial_accounts_giftfinancialledger
+tv_regie.LiveStream | table=tv_regie_livestream
+tv_regie.BroadcastSchedule | table=tv_regie_broadcastschedule
+api_nsikay.VirtualGift | table=api_nsikay_virtualgift
+api_nsikay.GiftTransaction | table=api_nsikay_gifttransaction
+
+======================================================================
+GROUPES DJANGO
+======================================================================
+Administration Pays | permissions=133
+Agent de Validation | permissions=124
+Autorité de Certification | permissions=124
+Banque Partenaire | permissions=92
+Contrôleur Financier | permissions=108
+Gestionnaire Publicité | permissions=0
+Gestionnaire WENZE | permissions=84
+Gestionnaire Événements | permissions=0
+Super Administrateur | permissions=12
+Super Administrateur NSIKAY | permissions=572
+Superviseur Conformité | permissions=296
+
+======================================================================
+ROLES API NSIKAY
+======================================================================
+MODEL : api_nsikay.UserRole
+TABLE : api_nsikay_userrole
+  id | BigAutoField | null=False | blank=True
+  user | OneToOneField | null=False | blank=False -> auth.User
+  role | CharField | null=False | blank=False
+  active | BooleanField | null=False | blank=False
+  created_at | DateTimeField | null=False | blank=True
+
+ROLE : CLIENT -> Client
+ROLE : AGENT -> Agent NSIKAY
+ROLE : BANK -> Banque
+ROLE : ADMIN -> Administrateur
+
+======================================================================
+SERVICES FINANCE WALLET
+======================================================================
+PATH : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\wallet_service.py
+﻿from decimal import Decimal
+
+from .models import WalletTransaction
+
+
+
+def credit_wallet(wallet, amount, reference):
+
+    wallet.balance += Decimal(amount)
+
+    wallet.save()
+
+
+    WalletTransaction.objects.create(
+
+        wallet=wallet,
+
+        transaction_type="deposit",
+
+        amount=amount,
+
+        reference=reference,
+
+        status="completed"
+
+    )
+
+
+    return wallet.balance
+
+
+
+
+def debit_wallet(wallet, amount, reference):
+
+    amount = Decimal(amount)
+
+
+    if wallet.balance < amount:
+
+        raise Exception(
+            "Solde insuffisant"
+        )
+
+
+    wallet.balance -= amount
+
+    wallet.save()
+
+
+    WalletTransaction.objects.create(
+
+        wallet=wallet,
+
+        transaction_type="withdraw",
+
+        amount=amount,
+
+        reference=reference,
+
+        status="completed"
+
+    )
+
+
+    return wallet.balance
+
+
+
+
+def transfer_wallet(sender, receiver, amount, reference):
+
+    amount = Decimal(amount)
+
+
+    if sender.balance < amount:
+
+        raise Exception(
+            "Solde insuffisant"
+        )
+
+
+    sender.balance -= amount
+
+    receiver.balance += amount
+
+
+    sender.save()
+
+    receiver.save()
+
+
+    WalletTransaction.objects.create(
+
+        wallet=sender,
+
+        transaction_type="transfer",
+
+        amount=amount,
+
+        reference=reference+"-OUT",
+
+        status="completed"
+
+    )
+
+
+    WalletTransaction.objects.create(
+
+        wallet=receiver,
+
+        transaction_type="transfer",
+
+        amount=amount,
+
+        reference=reference+"-IN",
+
+        status="completed"
+
+    )
+
+
+    return True
+
+
+
+PATH : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\finance\fees.py
+﻿from decimal import Decimal
+
+from financial_routing.services import calculate_fee
+
+
+def _fee(amount, fee_type):
+
+    result = calculate_fee(
+        amount=Decimal(str(amount)),
+        fee_type=fee_type,
+    )
+
+    if isinstance(result, dict):
+
+        if "fee_amount" not in result:
+            raise RuntimeError(
+                "Le retour financier ne contient pas fee_amount."
+            )
+
+        return Decimal(
+            str(result["fee_amount"])
+        )
+
+    if isinstance(result, (tuple, list)):
+
+        if len(result) == 5:
+            return Decimal(str(result[3]))
+
+        if len(result) == 2:
+            return Decimal(str(result[0]))
+
+    raise RuntimeError(
+        "Format de retour financier inattendu."
+    )
+
+
+def calculate_platform_commission(amount):
+    return _fee(
+        amount,
+        "TRANSFER_INTERNAL",
+    )
+
+
+def calculate_transfer_fee(amount):
+    return _fee(
+        amount,
+        "TRANSFER_INTERNAL",
+    )
+
+
+def calculate_withdraw_cost(amount):
+    return _fee(
+        amount,
+        "WITHDRAWAL",
+    )
+
+
+def calculate_withdrawal_fee(amount):
+    return _fee(
+        amount,
+        "WITHDRAWAL",
+    )
+
+
+def calculate_mobile_money_fee(amount):
+    return _fee(
+        amount,
+        "TRANSFER_MOBILE_MONEY",
+    )
+
+
+def calculate_visa_fee(amount):
+    return _fee(
+        amount,
+        "TRANSFER_VISA",
+    )
+
+
+def calculate_wenze_fee(amount):
+    return _fee(
+        amount,
+        "WENZE",
+    )
+
+PATH : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\financial_accounts
+--- FILE __init__.py ---
+
+--- FILE admin.py ---
+﻿from django.contrib import admin
+
+from .models import (
+    BankReconciliation,
+    FinancialAccount,
+    GiftFinancialLedger,
+)
+
+
+@admin.register(FinancialAccount)
+class FinancialAccountAdmin(admin.ModelAdmin):
+
+    list_display = (
+        "code",
+        "name",
+        "account_type",
+        "currency",
+        "status",
+        "current_balance",
+        "bank_partner",
+        "is_internal_ledger",
+    )
+
+    list_filter = (
+        "account_type",
+        "currency",
+        "status",
+        "is_internal_ledger",
+    )
+
+    search_fields = (
+        "code",
+        "name",
+        "bank_partner",
+        "external_reference",
+    )
+
+    readonly_fields = (
+        "created_at",
+        "updated_at",
+    )
+
+
+@admin.register(BankReconciliation)
+class BankReconciliationAdmin(admin.ModelAdmin):
+
+    list_display = (
+        "reference",
+        "financial_account",
+        "transaction_type",
+        "currency",
+        "nsikay_amount",
+        "bank_amount",
+        "difference",
+        "status",
+        "transaction_date",
+    )
+
+    list_filter = (
+        "status",
+        "currency",
+        "transaction_type",
+    )
+
+    search_fields = (
+        "reference",
+        "nsikay_reference",
+        "bank_reference",
+    )
+
+    readonly_fields = (
+        "created_at",
+        "updated_at",
+    )
+
+
+@admin.register(GiftFinancialLedger)
+class GiftFinancialLedgerAdmin(admin.ModelAdmin):
+
+    list_display = (
+        "reference",
+        "operation_type",
+        "currency",
+        "amount",
+        "buyer_reference",
+        "beneficiary_reference",
+        "financial_account",
+        "created_at",
+    )
+
+    list_filter = (
+        "operation_type",
+        "currency",
+    )
+
+    search_fields = (
+        "reference",
+        "buyer_reference",
+        "sender_reference",
+        "beneficiary_reference",
+        "related_reference",
+    )
+
+    readonly_fields = (
+        "created_at",
+    )
+
+--- FILE apps.py ---
+﻿from django.apps import AppConfig
+
+
+class FinancialAccountsConfig(AppConfig):
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "financial_accounts"
+    verbose_name = "Comptes financiers NSIKAY"
+
+--- FILE models.py ---
+﻿from decimal import Decimal
+
+from django.db import models
+
+
+class FinancialAccount(models.Model):
+
+    class AccountType(models.TextChoices):
+        PRINCIPAL = "PRINCIPAL", "Compte principal"
+        GIFTS = "GIFTS", "Compte cadeaux"
+        FEES = "FEES", "Compte commissions et frais"
+        PAYOUT = "PAYOUT", "Compte retraits"
+
+    class AccountStatus(models.TextChoices):
+        PLANNED = "PLANNED", "Planifie"
+        ACTIVE = "ACTIVE", "Actif"
+        SUSPENDED = "SUSPENDED", "Suspendu"
+        CLOSED = "CLOSED", "Ferme"
+
+    code = models.CharField(
+        max_length=80,
+        unique=True,
+        db_index=True
+    )
+
+    name = models.CharField(max_length=150)
+
+    account_type = models.CharField(
+        max_length=20,
+        choices=AccountType.choices,
+        db_index=True
+    )
+
+    currency = models.CharField(
+        max_length=3,
+        db_index=True
+    )
+
+    status = models.CharField(
+        max_length=20,
+        choices=AccountStatus.choices,
+        default=AccountStatus.PLANNED,
+        db_index=True
+    )
+
+    bank_partner = models.CharField(
+        max_length=200,
+        blank=True,
+        default=""
+    )
+
+    external_reference = models.CharField(
+        max_length=200,
+        blank=True,
+        default=""
+    )
+
+    current_balance = models.DecimalField(
+        max_digits=24,
+        decimal_places=2,
+        default=Decimal("0.00")
+    )
+
+    description = models.TextField(
+        blank=True,
+        default=""
+    )
+
+    is_internal_ledger = models.BooleanField(
+        default=True
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["account_type", "currency", "code"]
+        indexes = [
+            models.Index(fields=["account_type", "currency"]),
+            models.Index(fields=["status", "currency"]),
+        ]
+
+    def __str__(self):
+        return f"{self.code} - {self.name}"
+
+
+class BankReconciliation(models.Model):
+
+    class Status(models.TextChoices):
+        PENDING = "PENDING", "En attente"
+        MATCHED = "MATCHED", "Rapproche"
+        DIFFERENCE = "DIFFERENCE", "Difference"
+        CANCELLED = "CANCELLED", "Annule"
+
+    reference = models.CharField(
+        max_length=100,
+        unique=True,
+        db_index=True
+    )
+
+    financial_account = models.ForeignKey(
+        FinancialAccount,
+        on_delete=models.PROTECT,
+        related_name="reconciliations"
+    )
+
+    nsikay_reference = models.CharField(
+        max_length=150,
+        db_index=True
+    )
+
+    bank_reference = models.CharField(
+        max_length=150,
+        blank=True,
+        default=""
+    )
+
+    transaction_type = models.CharField(
+        max_length=80
+    )
+
+    currency = models.CharField(
+        max_length=3
+    )
+
+    nsikay_amount = models.DecimalField(
+        max_digits=24,
+        decimal_places=2
+    )
+
+    bank_amount = models.DecimalField(
+        max_digits=24,
+        decimal_places=2,
+        null=True,
+        blank=True
+    )
+
+    difference = models.DecimalField(
+        max_digits=24,
+        decimal_places=2,
+        default=Decimal("0.00")
+    )
+
+    status = models.CharField(
+        max_length=20,
+        choices=Status.choices,
+        default=Status.PENDING,
+        db_index=True
+    )
+
+    transaction_date = models.DateTimeField()
+
+    notes = models.TextField(
+        blank=True,
+        default=""
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-transaction_date"]
+        indexes = [
+            models.Index(fields=["status", "currency"]),
+            models.Index(fields=["nsikay_reference"]),
+            models.Index(fields=["bank_reference"]),
+        ]
+
+    def __str__(self):
+        return self.reference
+
+
+class GiftFinancialLedger(models.Model):
+
+    class OperationType(models.TextChoices):
+        PURCHASE = "PURCHASE", "Achat de cadeaux"
+        SEND = "SEND", "Envoi de cadeaux"
+        RECEIVE = "RECEIVE", "Reception de cadeaux"
+        WITHDRAWAL = "WITHDRAWAL", "Retrait"
+        REFUND = "REFUND", "Remboursement"
+        ADJUSTMENT = "ADJUSTMENT", "Ajustement"
+
+    reference = models.CharField(
+        max_length=120,
+        unique=True,
+        db_index=True
+    )
+
+    operation_type = models.CharField(
+        max_length=20,
+        choices=OperationType.choices
+    )
+
+    currency = models.CharField(
+        max_length=3
+    )
+
+    amount = models.DecimalField(
+        max_digits=24,
+        decimal_places=2
+    )
+
+    buyer_reference = models.CharField(
+        max_length=150,
+        blank=True,
+        default=""
+    )
+
+    sender_reference = models.CharField(
+        max_length=150,
+        blank=True,
+        default=""
+    )
+
+    beneficiary_reference = models.CharField(
+        max_length=150,
+        blank=True,
+        default=""
+    )
+
+    financial_account = models.ForeignKey(
+        FinancialAccount,
+        on_delete=models.PROTECT,
+        related_name="gift_ledger_entries"
+    )
+
+    related_reference = models.CharField(
+        max_length=150,
+        blank=True,
+        default=""
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+        indexes = [
+            models.Index(fields=["operation_type", "currency"]),
+            models.Index(fields=["buyer_reference"]),
+            models.Index(fields=["beneficiary_reference"]),
+        ]
+
+    def __str__(self):
+        return self.reference
+
+--- FILE seed_accounts.py ---
+﻿from django.db import transaction
+
+from .models import FinancialAccount
+
+
+ACCOUNT_TYPES = [
+    ("PRINCIPAL", "Compte principal NSIKAY", "Compte operationnel principal de NSIKAY."),
+    ("GIFTS", "Compte cadeaux NSIKAY", "Compte logique de reglement et de tracabilite des cadeaux."),
+    ("FEES", "Compte commissions et frais NSIKAY", "Compte logique des revenus et frais effectivement dus a NSIKAY."),
+    ("PAYOUT", "Compte retraits NSIKAY", "Compte logique de preparation et de reglement des retraits."),
+]
+
+CURRENCIES = ["CDF", "USD", "EUR"]
+
+
+@transaction.atomic
+def seed():
+
+    created = 0
+    existing = 0
+
+    for account_type, label, description in ACCOUNT_TYPES:
+
+        for currency in CURRENCIES:
+
+            code = f"NSIKAY-{account_type}-{currency}"
+
+            account, was_created = FinancialAccount.objects.get_or_create(
+                code=code,
+                defaults={
+                    "name": f"{label} - {currency}",
+                    "account_type": account_type,
+                    "currency": currency,
+                    "status": FinancialAccount.AccountStatus.PLANNED,
+                    "description": description,
+                    "is_internal_ledger": True,
+                },
+            )
+
+            if was_created:
+                created += 1
+                print(f"[CREATE] {code}")
+            else:
+                existing += 1
+                print(f"[EXIST]  {code}")
+
+    print("")
+    print("==============================================")
+    print(" NSIKAY - COMPTES FINANCIERS")
+    print("==============================================")
+    print(f"Crees     : {created}")
+    print(f"Existants : {existing}")
+    print("Statut initial : PLANIFIE")
+    print("==============================================")
+
+
+if __name__ == "__main__":
+    seed()
+
+--- FILE tests.py ---
+from django.test import TestCase
+
+# Create your tests here.
+
+--- FILE views.py ---
+from django.shortcuts import render
+
+# Create your views here.
+
+
+======================================================================
+MIGRATIONS FINANCIAL_ACCOUNTS
+======================================================================
+0001_initial.py
+__init__.py
+
+======================================================================
+REFERENCES GIFT FINANCIAL LEDGER
+======================================================================
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\_audit_cadeaux_final_07.py :
+  56 | "financial_accounts.GiftFinancialLedger",
+  221 | if "GiftFinancialLedger" in txt:
+  224 | if "GiftFinancialLedger" in line:
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\financial_accounts\admin.py :
+  6 | GiftFinancialLedger,
+  77 | @admin.register(GiftFinancialLedger)
+  78 | class GiftFinancialLedgerAdmin(admin.ModelAdmin):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\financial_accounts\models.py :
+  175 | class GiftFinancialLedger(models.Model):
+C:\Users\DELL Technologies\Desktop\nsikay nante\backend\financial_accounts\migrations\0001_initial.py :
+  63 | name='GiftFinancialLedger',
+
+======================================================================
+FIN
+======================================================================

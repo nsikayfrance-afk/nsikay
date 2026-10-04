@@ -1,0 +1,37 @@
+﻿============================================================
+ NSIKAY - WENZE + BUKA PRIX ACTIVATION
+============================================================
+
+Date : 2026-10-01 11:52:26
+
+WENZE :
+- Module commercial principal : OUI
+- Produits : OUI
+- Commandes : OUI
+- Stock : OUI
+- Prix : OUI
+- Devise : OUI
+- Commission commerciale WENZE : 0 %
+
+BUKA PRIX :
+- Campagnes : OUI
+- Prix promotionnel : OUI
+- Date de début : OUI
+- Date de fin : OUI
+- Activation administrative : OUI
+- Rattachement aux produits WENZE : OUI
+
+ANCIEN MARKETPLACE :
+- Route API active : DESACTIVEE
+- Ancienne migration 0007 : CONSERVEE
+- Ancien historique Django : CONSERVE
+- Anciennes sauvegardes : CONSERVEES
+
+SECURITE :
+- Sauvegarde : C:\Users\DELL Technologies\Desktop\nsikay nante\backend\backups_wenze_migration_20261001_115212
+- Django check : exécuté
+- Makemigrations check : exécuté
+
+============================================================
+ FIN
+============================================================

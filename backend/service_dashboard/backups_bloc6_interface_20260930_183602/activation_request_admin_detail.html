@@ -1,0 +1,355 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>NSIKAY - Détail demande</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            color: #20252b;
+        }
+
+        .header {
+            background: #101820;
+            color: white;
+            padding: 22px 30px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 25px auto;
+            padding: 0 20px;
+        }
+
+        .box {
+            background: white;
+            padding: 22px;
+            border-radius: 8px;
+            margin-bottom: 18px;
+            box-shadow: 0 1px 7px rgba(0,0,0,.08);
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #e5e7ea;
+        }
+
+        td:first-child {
+            width: 35%;
+            font-weight: bold;
+            background: #f7f8f9;
+        }
+
+        .ok {
+            color: #167a35;
+            font-weight: bold;
+        }
+
+        .no {
+            color: #b00020;
+            font-weight: bold;
+        }
+
+        .status {
+            padding: 7px 12px;
+            border-radius: 15px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .approved {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .rejected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .actions form {
+            display: inline;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 11px 16px;
+            border-radius: 5px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            color: white;
+        }
+
+        .validate {
+            background: #16833b;
+        }
+
+        .reject {
+            background: #b00020;
+        }
+
+        .back {
+            background: #1456a0;
+        }
+
+        .journal {
+            background: #555;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border-left: 5px solid #e0a800;
+            padding: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="header">
+    <h1>NSIKAY — Détail de la demande #{{ activation_request.id }}</h1>
+    <div>Contrôle administratif</div>
+</div>
+
+<div class="container">
+
+    <div class="box">
+
+        <h2>Identification</h2>
+
+        <table>
+            <tr>
+                <td>ID demande</td>
+                <td>#{{ activation_request.id }}</td>
+            </tr>
+
+            <tr>
+                <td>Service</td>
+                <td><strong>{{ activation_request.service.name }}</strong></td>
+            </tr>
+
+            <tr>
+                <td>Pays</td>
+                <td>{{ activation_request.country.country_name }}</td>
+            </tr>
+
+            <tr>
+                <td>Demandeur</td>
+                <td>{{ activation_request.requested_by.username }}</td>
+            </tr>
+
+            <tr>
+                <td>Statut</td>
+                <td>
+                    {% if activation_request.status == "pending" %}
+                        <span class="status pending">EN ATTENTE</span>
+                    {% elif activation_request.status == "approved" %}
+                        <span class="status approved">APPROUVÉE</span>
+                    {% elif activation_request.status == "rejected" %}
+                        <span class="status rejected">REFUSÉE</span>
+                    {% else %}
+                        <strong>{{ activation_request.status|upper }}</strong>
+                    {% endif %}
+                </td>
+            </tr>
+
+            <tr>
+                <td>Créée le</td>
+                <td>{{ activation_request.created_at|date:"d/m/Y H:i:s" }}</td>
+            </tr>
+
+            <tr>
+                <td>Dernière modification</td>
+                <td>{{ activation_request.updated_at|date:"d/m/Y H:i:s" }}</td>
+            </tr>
+
+            <tr>
+                <td>Validation</td>
+                <td>
+                    {% if activation_request.validated_at %}
+                        {{ activation_request.validated_at|date:"d/m/Y H:i:s" }}
+                    {% else %}
+                        Non validée
+                    {% endif %}
+                </td>
+            </tr>
+
+            <tr>
+                <td>Activation réelle</td>
+                <td>
+                    {% if activation_request.activated_at %}
+                        {{ activation_request.activated_at|date:"d/m/Y H:i:s" }}
+                    {% else %}
+                        <span class="ok">Aucune activation automatique</span>
+                    {% endif %}
+                </td>
+            </tr>
+        </table>
+
+    </div>
+
+    <div class="box">
+
+        <h2>Contrôles administratifs</h2>
+
+        <table>
+
+            <tr>
+                <td>Certification</td>
+                <td>
+                    {% if activation_request.certification_checked %}
+                        <span class="ok">✓ VALIDÉE</span>
+                    {% else %}
+                        <span class="no">✗ NON VALIDÉE</span>
+                    {% endif %}
+                </td>
+            </tr>
+
+            <tr>
+                <td>Assurance santé</td>
+                <td>
+                    {% if activation_request.health_insurance_checked %}
+                        <span class="ok">✓ VALIDÉE</span>
+                    {% else %}
+                        <span class="no">✗ NON VALIDÉE</span>
+                    {% endif %}
+                </td>
+            </tr>
+
+            <tr>
+                <td>Partenaire bancaire</td>
+                <td>
+                    {% if activation_request.bank_partner_checked %}
+                        <span class="ok">✓ VALIDÉ</span>
+                    {% else %}
+                        <span class="no">✗ NON VALIDÉ</span>
+                    {% endif %}
+                </td>
+            </tr>
+
+            <tr>
+                <td>Partenaire financier</td>
+                <td>
+                    {% if activation_request.financial_partner_checked %}
+                        <span class="ok">✓ VALIDÉ</span>
+                    {% else %}
+                        <span class="no">✗ NON VALIDÉ</span>
+                    {% endif %}
+                </td>
+            </tr>
+
+            <tr>
+                <td>Autorisation pays</td>
+                <td>
+                    {% if activation_request.country_authorization_checked %}
+                        <span class="ok">✓ VALIDÉE</span>
+                    {% else %}
+                        <span class="no">✗ NON VALIDÉE</span>
+                    {% endif %}
+                </td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <div class="box">
+
+        <h2>Message du contrôle</h2>
+
+        <p>
+            {{ activation_request.validation_message|default:"Aucun message." }}
+        </p>
+
+        {% if activation_request.rejection_reason %}
+            <h3>Motif de refus</h3>
+            <p>{{ activation_request.rejection_reason }}</p>
+        {% endif %}
+
+    </div>
+
+    <div class="box">
+
+        <h2>Actions administratives</h2>
+
+        <div class="warning">
+            <strong>Règle NSIKAY :</strong>
+            la validation d'une demande ne déclenche pas automatiquement
+            l'activation du service dans le pays.
+            L'activation réelle reste une opération distincte et contrôlée.
+        </div>
+
+        <br>
+
+        <div class="actions">
+
+            {% if activation_request.status == "pending" %}
+
+                <form
+                    method="post"
+                    action="/service-dashboard/activation-requests/{{ activation_request.id }}/validate/"
+                >
+                    {% csrf_token %}
+                    <button class="btn validate" type="submit">
+                        Valider la demande
+                    </button>
+                </form>
+
+                <form
+                    method="post"
+                    action="/service-dashboard/activation-requests/{{ activation_request.id }}/reject/"
+                >
+                    {% csrf_token %}
+                    <button class="btn reject" type="submit">
+                        Refuser la demande
+                    </button>
+                </form>
+
+            {% endif %}
+
+            <a
+                class="btn back"
+                href="/service-dashboard/activation-requests/admin/"
+            >
+                Retour aux demandes
+            </a>
+
+            <a
+                class="btn journal"
+                href="/service-dashboard/administrative-log/"
+            >
+                Journal administratif
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,59 @@
+﻿============================================================
+NSIKAY - DESIGN 11
+ESPACE UTILISATEUR CONNECTE
+============================================================
+
+OBJECTIF
+--------
+CrÃ©er une interface utilisateur unique permettant d'accÃ©der
+aux principaux espaces NSIKAY depuis une seule identitÃ©.
+
+ESPACES
+-------
+1. Tableau de bord
+2. Profil personnel
+3. ActivitÃ©s
+4. Engagement
+5. Libenga
+6. WENZE
+7. Ã‰vÃ©nements
+8. PublicitÃ©
+9. Notifications
+10. ParamÃ¨tres
+
+IDENTITE
+--------
+L'utilisateur conserve une identitÃ© NSIKAY unique.
+
+Les espaces :
+- Profil personnel
+- ActivitÃ©s
+- Engagement
+
+sont prÃ©sentÃ©s comme trois dimensions du mÃªme compte.
+
+LIBENGA
+-------
+L'interface prÃ©pare l'accÃ¨s au portefeuille Libenga.
+
+Aucune opÃ©ration financiÃ¨re rÃ©elle n'est crÃ©Ã©e par cette
+maquette.
+
+WENZE
+-----
+WENZE reste l'espace permanent de commerce NSIKAY.
+
+PUBLICITE
+---------
+L'espace utilisateur permet de prÃ©parer les campagnes
+publicitaires et l'accÃ¨s au MaÃ®tre des PublicitÃ©s.
+
+MOBILE
+------
+L'interface est responsive :
+- desktop
+- tablette
+- smartphone
+
+Aucune donnÃ©e de production n'est crÃ©Ã©e par cette maquette.
+============================================================

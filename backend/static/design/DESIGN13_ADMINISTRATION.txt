@@ -1,0 +1,81 @@
+﻿============================================================
+NSIKAY - DESIGN 13
+ADMINISTRATION NSIKAY
+============================================================
+
+OBJECTIF
+--------
+Créer l'interface visuelle centrale de l'administration NSIKAY.
+
+MODULES REPRESENTES
+-------------------
+1. Tableau de bord
+2. Pays & territoires
+3. Services par pays
+4. Certifications
+5. Assurance santé
+6. Banques partenaires
+7. Partenaires financiers
+8. Demandes d'activation
+9. Journal administratif
+10. Statistiques
+11. WENZE
+12. Événements
+13. Publicité
+14. Utilisateurs
+15. Institutionnel
+16. Sécurité
+17. Paramètres
+
+ETAT DE REFERENCE VISUEL
+------------------------
+Pays principaux : 249
+Pays opérationnels : 240
+Pays inactifs : 9
+Services : 28
+Relations service/pays : 10472
+Activations actives : 2
+Demandes en attente : 0
+
+REGLES VISUELLES
+----------------
+- Les chiffres présentés correspondent à l'état de référence
+  utilisé pour la maquette.
+- Aucun bouton de cette maquette ne doit être considéré comme
+  une activation réelle.
+- L'interface doit être reliée aux vues Django existantes avant
+  toute utilisation opérationnelle.
+- Les contrôles administratifs existants restent prioritaires.
+- Les validations, certifications, partenaires financiers et
+  autorisations pays doivent être conservés.
+
+SECURITE
+--------
+La présente étape est purement visuelle.
+
+Aucune migration.
+Aucune création de donnée.
+Aucune modification de ServiceActivation.
+Aucune activation.
+Aucune désactivation.
+Aucune demande d'activation créée.
+
+RESPONSIVE
+----------
+Desktop
+Tablette
+Mobile
+
+IDENTITE
+--------
+NSIKAY France
+Association déclarée en France
+Administration centrale
+
+PARTENAIRE
+----------
+En collaboration avec ANANSI SA.
+
+FIN DESIGN 13
+============================================================
+

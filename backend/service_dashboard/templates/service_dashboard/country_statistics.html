@@ -1,0 +1,269 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>NSIKAY - Statistiques Pays</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 30px;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #17202a;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        h1 {
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #667085;
+            margin-bottom: 30px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 22px;
+            box-shadow: 0 2px 8px rgba(0,0,0,.08);
+        }
+
+        .label {
+            font-size: 14px;
+            color: #667085;
+            margin-bottom: 10px;
+        }
+
+        .value {
+            font-size: 34px;
+            font-weight: 700;
+        }
+
+        .percent {
+            font-size: 18px;
+            margin-top: 8px;
+        }
+
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 22px;
+            box-shadow: 0 2px 8px rgba(0,0,0,.08);
+        }
+
+        .bar {
+            width: 100%;
+            height: 24px;
+            background: #e5e7eb;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+
+        .bar-fill {
+            height: 100%;
+            width: {{ operational_percent }}%;
+            background: #198754;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+        }
+
+        th {
+            background: #f8fafc;
+        }
+
+        .active {
+            color: #198754;
+            font-weight: 700;
+        }
+
+        .inactive {
+            color: #b42318;
+            font-weight: 700;
+        }
+
+        .rollback {
+            color: #b54708;
+            font-weight: 700;
+        }
+
+        .links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .links a {
+            display: inline-block;
+            padding: 11px 16px;
+            background: #1f4e79;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Statistiques des pays NSIKAY</h1>
+
+    <div class="subtitle">
+        Tableau de contrôle de la configuration opérationnelle mondiale.
+    </div>
+
+    <div class="grid">
+
+        <div class="card">
+            <div class="label">Pays ISO principaux</div>
+            <div class="value">{{ primary_count }}</div>
+        </div>
+
+        <div class="card">
+            <div class="label">Pays opérationnels</div>
+            <div class="value active">{{ operational_count }}</div>
+        </div>
+
+        <div class="card">
+            <div class="label">Pays inactifs</div>
+            <div class="value inactive">{{ inactive_count }}</div>
+        </div>
+
+        <div class="card">
+            <div class="label">Taux opérationnel</div>
+            <div class="value">{{ operational_percent }} %</div>
+        </div>
+
+    </div>
+
+    <div class="section">
+
+        <h2>État mondial</h2>
+
+        <p>
+            {{ operational_count }} pays opérationnels sur
+            {{ primary_count }} pays principaux.
+        </p>
+
+        <div class="bar">
+            <div class="bar-fill"></div>
+        </div>
+
+    </div>
+
+    <div class="section">
+
+        <h2>Historique des configurations</h2>
+
+        <table>
+            <tr>
+                <th>Indicateur</th>
+                <th>Valeur</th>
+            </tr>
+
+            <tr>
+                <td>Configurations enregistrées</td>
+                <td>{{ configuration_count }}</td>
+            </tr>
+
+            <tr>
+                <td>Configurations annulées</td>
+                <td class="rollback">{{ rolled_back_count }}</td>
+            </tr>
+
+            {% if last_configuration %}
+            <tr>
+                <td>Dernière configuration</td>
+                <td>
+                    {{ last_configuration.action }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>Administrateur</td>
+                <td>
+                    {{ last_configuration.admin_user }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>Date</td>
+                <td>
+                    {{ last_configuration.created_at }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>État</td>
+                <td>
+                    {% if last_configuration.rolled_back %}
+                        <span class="rollback">ANNULÉE</span>
+                    {% else %}
+                        <span class="active">ACTIVE</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="2">
+                    Aucune configuration enregistrée.
+                </td>
+            </tr>
+            {% endif %}
+
+        </table>
+
+    </div>
+
+    <div class="section">
+
+        <h2>Administration</h2>
+
+        <div class="links">
+
+            <a href="{% url 'service_dashboard:operational_countries' %}">
+                Configuration des pays
+            </a>
+
+            <a href="{% url 'service_dashboard:operational_countries_history' %}">
+                Historique
+            </a>
+
+            <a href="{% url 'service_dashboard:control_center' %}">
+                Centre de contrôle
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
+

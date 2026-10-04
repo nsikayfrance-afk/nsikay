@@ -1,0 +1,105 @@
+﻿/* =========================================================
+   NSIKAY DESIGN 10
+   COUCHE VISUELLE INTERACTIVE ACCUEIL
+========================================================= */
+
+.nsikay-publicite {
+    padding: 50px 25px;
+    background: #f5f5f5;
+}
+
+.publicite-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.publicite-container h2 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.publicite-slider {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+}
+
+.publicite-card {
+    overflow: hidden;
+    border-radius: 20px;
+    background: #ffffff;
+    box-shadow: 0 8px 25px rgba(0,0,0,.12);
+}
+
+.publicite-card img {
+    display: block;
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+}
+
+.publicite-card p {
+    padding: 18px;
+    margin: 0;
+    font-weight: 600;
+}
+
+
+/* FILIGRANE EMPIRE KUBA */
+
+.empire-kuba-watermark {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 1;
+    opacity: .08;
+    text-align: center;
+    transform: rotate(-15deg);
+}
+
+.empire-kuba-watermark span {
+    font-size: clamp(45px, 8vw, 110px);
+    font-weight: 900;
+    letter-spacing: 8px;
+}
+
+.empire-kuba-watermark div {
+    font-size: clamp(12px, 2vw, 24px);
+    letter-spacing: 3px;
+}
+
+
+/* HERO */
+
+.nsikay-hero-royal {
+    position: relative;
+    overflow: hidden;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+
+    .publicite-slider {
+        grid-template-columns: 1fr;
+    }
+
+    .publicite-card img {
+        height: 210px;
+    }
+
+    .empire-kuba-watermark span {
+        letter-spacing: 3px;
+    }
+
+    .empire-kuba-watermark div {
+        letter-spacing: 1px;
+    }
+
+}
+
