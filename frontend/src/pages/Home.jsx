@@ -1,17 +1,91 @@
-import React from "react";
+﻿import React from "react";
 import { Link } from "react-router-dom";
+
+const news = [
+  {
+    category: "ÉCONOMIE",
+    title: "Les nouvelles dynamiques économiques qui transforment l’Afrique",
+    text: "Analyses, initiatives, entreprises et opportunités au cœur de l’actualité économique.",
+    path: "/editorial/economie",
+    featured: true,
+  },
+  {
+    category: "CULTURE",
+    title: "Patrimoine, création et nouvelles générations",
+    text: "La culture africaine entre héritage et création contemporaine.",
+    path: "/editorial/culture",
+  },
+  {
+    category: "TECHNOLOGIE",
+    title: "Le numérique accélère les transformations",
+    text: "Innovation, intelligence numérique et nouveaux usages.",
+    path: "/editorial/technologie",
+  },
+  {
+    category: "AGRICULTURE",
+    title: "Agriculture et souveraineté alimentaire",
+    text: "Initiatives, production et innovation agricole.",
+    path: "/editorial/agriculture",
+  },
+];
+
+const categories = [
+  ["Économie", "/editorial/economie"],
+  ["Sport & Loisirs", "/editorial/sport"],
+  ["Culture & Art", "/editorial/culture"],
+  ["Technologie & Innovation", "/editorial/technologie"],
+  ["Agriculture & Agronomie", "/editorial/agriculture"],
+  ["Social", "/editorial/social"],
+  ["Religion & Histoire", "/editorial/religion"],
+  ["+18", "/editorial/adulte"],
+];
 
 export default function Home() {
   return (
-    <main className="ns-kuba-watermark">
+    <main className="ns-media-home">
+      <div className="ns-kuba-watermark" aria-hidden="true" />
 
-      <section className="ns-hero">
-        <div className="ns-container ns-hero-content">
-          <div className="ns-section-kicker">
-            NSIKAY — ÉCOSYSTÈME INTERNATIONAL
+      <header className="ns-media-header">
+        <div className="ns-media-topline">
+          <div className="ns-container ns-media-topline-inner">
+            <span>NSIKAY — ÉCOSYSTÈME INTERNATIONAL</span>
+            <span>INTERNATIONAL · AFRIQUE · MONDE</span>
+          </div>
+        </div>
+
+        <div className="ns-container ns-media-mainbar">
+          <Link to="/" className="ns-media-logo">NSIKAY</Link>
+
+          <nav className="ns-media-mainnav">
+            <Link to="/editorial">Actualités</Link>
+            <Link to="/jobs">Emploi</Link>
+            <Link to="/wenze">WENZE</Link>
+            <Link to="/events">Événements</Link>
+            <Link to="/tv">NSIKAY TV</Link>
+          </nav>
+
+          <div className="ns-media-actions">
+            <Link to="/connexion" className="ns-media-login">Connexion</Link>
+            <Link to="/inscription" className="ns-media-register">Inscription</Link>
+          </div>
+        </div>
+
+        <div className="ns-media-rubrics">
+          <div className="ns-container ns-media-rubrics-inner">
+            {categories.map(([label, path]) => (
+              <Link key={label} to={path}>{label}</Link>
+            ))}
+          </div>
+        </div>
+      </header>
+
+      <section className="ns-media-intro">
+        <div className="ns-container">
+          <div className="ns-media-kicker">
+            UNE PLATEFORME · UNE INFORMATION · DES OPPORTUNITÉS
           </div>
 
-          <h1 className="ns-hero-title">
+          <h1>
             Une identité.
             <br />
             Des activités.
@@ -19,409 +93,237 @@ export default function Home() {
             <span>Un engagement.</span>
           </h1>
 
-          <p className="ns-hero-text">
-            Une plateforme internationale pour connecter les personnes,
-            les entreprises, les opportunités, la culture et le commerce.
-          </p>
-
-          <div className="ns-hero-actions">
-            <Link to="/inscription" className="ns-btn ns-btn-gold">
-              Créer mon compte
-            </Link>
-
-            <Link to="/connexion" className="ns-btn ns-btn-dark">
-              Se connecter
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <section className="ns-section ns-employment">
-        <div className="ns-container">
-
-          <div className="ns-section-header">
-            <div>
-              <div className="ns-section-kicker">
-                EMPLOI & OPPORTUNITÉS
-              </div>
-
-              <h2 className="ns-section-title">
-                Trouver une opportunité. Créer son avenir.
-              </h2>
-            </div>
-
-            <Link to="/jobs" className="ns-btn ns-btn-gold">
-              Voir les offres
-            </Link>
-          </div>
-
-          <div className="ns-job-grid">
-
-            <article className="ns-job-card">
-              <span className="ns-badge">EMPLOI</span>
-              <h3>Offres d'emploi</h3>
-              <p>
-                Découvrez les opportunités proposées par les entreprises
-                et organisations présentes sur NSIKAY.
-              </p>
-              <Link to="/jobs">
-                Consulter les offres →
-              </Link>
-            </article>
-
-            <article className="ns-job-card">
-              <span className="ns-badge">ENTREPRISES</span>
-              <h3>Recrutement</h3>
-              <p>
-                Les entreprises peuvent publier leurs besoins et
-                développer leurs équipes.
-              </p>
-              <Link to="/companies">
-                Recruter sur NSIKAY →
-              </Link>
-            </article>
-
-            <article className="ns-job-card">
-              <span className="ns-badge">FORMATION</span>
-              <h3>Stages & formations</h3>
-              <p>
-                Accédez aux stages, formations et programmes de
-                développement des compétences.
-              </p>
-              <Link to="/training">
-                Découvrir les programmes →
-              </Link>
-            </article>
-
-            <article className="ns-job-card">
-              <span className="ns-badge">MISSIONS</span>
-              <h3>Missions & opportunités</h3>
-              <p>
-                Trouvez des missions, projets et collaborations adaptés
-                à vos compétences.
-              </p>
-              <Link to="/opportunities">
-                Voir les opportunités →
-              </Link>
-            </article>
-
-          </div>
-        </div>
-      </section>
-
-      <section className="ns-section ns-section-dark">
-        <div className="ns-container">
-
-          <div className="ns-section-header">
-            <div>
-              <div className="ns-section-kicker">
-                ACTUALITÉS
-              </div>
-
-              <h2 className="ns-section-title">
-                À la une
-              </h2>
-            </div>
-
-            <Link to="/editorial" className="ns-btn ns-btn-dark">
-              Toutes les actualités
-            </Link>
-          </div>
-
-          <div className="ns-news-grid">
-
-            <article className="ns-news-main">
-              <div className="ns-news-main-content">
-
-                <span className="ns-badge">
-                  ÉCONOMIE
-                </span>
-
-                <h3>
-                  L'Afrique au cœur des nouvelles opportunités
-                  économiques et numériques
-                </h3>
-
-                <p>
-                  Retrouvez les analyses, initiatives et informations
-                  qui façonnent les économies africaines et internationales.
-                </p>
-
-                <Link to="/editorial/economie">
-                  Lire l'article →
-                </Link>
-
-              </div>
-            </article>
-
-            <div className="ns-news-side">
-
-              <article className="ns-news-card">
-                <span className="ns-badge">
-                  CULTURE & ART
-                </span>
-
-                <h3>
-                  Culture, patrimoine et création
-                </h3>
-
-                <p>
-                  Découvrez les artistes, patrimoines et initiatives
-                  culturelles.
-                </p>
-
-                <Link to="/editorial/culture">
-                  Lire →
-                </Link>
-              </article>
-
-              <article className="ns-news-card">
-                <span className="ns-badge">
-                  TECHNOLOGIE
-                </span>
-
-                <h3>
-                  Innovation & numérique
-                </h3>
-
-                <p>
-                  Les technologies qui transforment les sociétés.
-                </p>
-
-                <Link to="/editorial/technologie">
-                  Lire →
-                </Link>
-              </article>
-
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="ns-section">
-        <div className="ns-container">
-
-          <div className="ns-section-header">
-            <div>
-              <div className="ns-section-kicker">
-                PORTAIL ÉDITORIAL
-              </div>
-
-              <h2 className="ns-section-title">
-                Nos rubriques
-              </h2>
-            </div>
-          </div>
-
-          <div className="ns-category-bar">
-
-            <Link to="/editorial/economie" className="ns-category">
-              Économie
-            </Link>
-
-            <Link to="/editorial/sport" className="ns-category">
-              Sport & Loisirs
-            </Link>
-
-            <Link to="/editorial/culture" className="ns-category">
-              Culture & Art
-            </Link>
-
-            <Link to="/editorial/technologie" className="ns-category">
-              Technologie & Innovation
-            </Link>
-
-            <Link to="/editorial/agriculture" className="ns-category">
-              Agriculture & Agronomie
-            </Link>
-
-            <Link to="/editorial/social" className="ns-category">
-              Social
-            </Link>
-
-            <Link to="/editorial/religion" className="ns-category">
-              Religion & Histoire
-            </Link>
-
-            <Link to="/editorial/adulte" className="ns-category">
-              +18
-            </Link>
-
-          </div>
-        </div>
-      </section>
-
-      <section className="ns-section ns-wenze">
-        <div className="ns-container">
-
-          <div className="ns-wenze-card">
-
-            <div>
-              <div className="ns-section-kicker">
-                COMMERCE
-              </div>
-
-              <h2 className="ns-section-title">
-                WENZE
-              </h2>
-
-              <p>
-                Achetez et vendez dans l'écosystème commercial NSIKAY.
-              </p>
-            </div>
-
-            <Link to="/wenze" className="ns-btn ns-btn-gold">
-              Entrer dans WENZE
-            </Link>
-
-          </div>
-        </div>
-      </section>
-
-      <section className="ns-section ns-section-dark">
-        <div className="ns-container">
-
-          <div className="ns-section-header">
-            <div>
-              <div className="ns-section-kicker">
-                AGENDA
-              </div>
-
-              <h2 className="ns-section-title">
-                Événements
-              </h2>
-            </div>
-
-            <Link to="/events" className="ns-btn ns-btn-gold">
-              Voir les événements
-            </Link>
-          </div>
-
-          <div className="ns-events-grid">
-
-            <article className="ns-event-card">
-              <span className="ns-badge">
-                INTERNATIONAL
-              </span>
-
-              <h3>
-                Conférences & rencontres
-              </h3>
-
-              <p>
-                Rencontres professionnelles, culturelles et
-                institutionnelles.
-              </p>
-            </article>
-
-            <article className="ns-event-card">
-              <span className="ns-badge">
-                CULTURE
-              </span>
-
-              <h3>
-                Culture & spectacles
-              </h3>
-
-              <p>
-                Découvrez les événements culturels et artistiques.
-              </p>
-            </article>
-
-            <article className="ns-event-card">
-              <span className="ns-badge">
-                SPORT
-              </span>
-
-              <h3>
-                Sport & loisirs
-              </h3>
-
-              <p>
-                Retrouvez les compétitions et activités sportives.
-              </p>
-            </article>
-
-          </div>
-        </div>
-      </section>
-
-      <section className="ns-section">
-        <div className="ns-container">
-
-          <div className="ns-ad-slot">
-            <span>PUBLICITÉ</span>
-
-            <strong>
-              Votre visibilité sur l'écosystème NSIKAY
-            </strong>
-          </div>
-
-        </div>
-      </section>
-
-      <footer className="ns-footer">
-        <div className="ns-container">
-
-          <div className="ns-footer-grid">
-
-            <div>
-              <div className="ns-logo">
-                NSIKAY
-              </div>
-
-              <p>
-                Une identité. Des activités. Un engagement.
-              </p>
-            </div>
-
-            <div>
-              <strong>
-                Plateforme
-              </strong>
-
-              <Link to="/jobs">
-                Emploi
-              </Link>
-
-              <Link to="/wenze">
-                WENZE
-              </Link>
-
-              <Link to="/events">
-                Événements
-              </Link>
-            </div>
-
-            <div>
-              <strong>
-                Éditorial
-              </strong>
-
-              <Link to="/editorial">
-                Actualités
-              </Link>
-
-              <Link to="/editorial/culture">
-                Culture
-              </Link>
-
-              <Link to="/editorial/technologie">
-                Technologie
-              </Link>
-            </div>
-
-          </div>
-
-          <div className="ns-divider" />
-
           <p>
-            © {new Date().getFullYear()} NSIKAY — Tous droits réservés.
+            NSIKAY rassemble information, emploi, commerce, culture,
+            événements, technologie et engagement dans un même écosystème.
           </p>
+        </div>
+      </section>
 
+      <section className="ns-media-news">
+        <div className="ns-container">
+          <div className="ns-media-section-title">
+            <span>À LA UNE</span>
+            <Link to="/editorial">Toute l’actualité →</Link>
+          </div>
+
+          <div className="ns-media-lead-grid">
+            <article className="ns-media-lead">
+              <div className="ns-media-lead-image">
+                <span>NSIKAY</span>
+              </div>
+
+              <div className="ns-media-lead-content">
+                <span className="ns-media-category">{news[0].category}</span>
+                <h2>{news[0].title}</h2>
+                <p>{news[0].text}</p>
+                <Link to={news[0].path}>Lire la suite →</Link>
+              </div>
+            </article>
+
+            <div className="ns-media-secondary">
+              {news.slice(1, 3).map((item) => (
+                <article className="ns-media-story" key={item.title}>
+                  <div className="ns-media-story-image">
+                    <span>{item.category}</span>
+                  </div>
+
+                  <div>
+                    <span className="ns-media-category">{item.category}</span>
+                    <h3>{item.title}</h3>
+                    <p>{item.text}</p>
+                    <Link to={item.path}>Lire →</Link>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+
+          <div className="ns-media-news-strip">
+            {news.slice(3).map((item) => (
+              <article key={item.title}>
+                <span>{item.category}</span>
+                <h3>{item.title}</h3>
+                <Link to={item.path}>Lire →</Link>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="ns-media-employment">
+        <div className="ns-container">
+          <div className="ns-media-section-title">
+            <span>EMPLOI & OPPORTUNITÉS</span>
+            <Link to="/jobs">Toutes les offres →</Link>
+          </div>
+
+          <div className="ns-employment-editorial">
+            <div className="ns-employment-main">
+              <span className="ns-media-category">EMPLOI</span>
+
+              <h2>
+                Les opportunités professionnelles
+                au cœur de l’écosystème NSIKAY
+              </h2>
+
+              <p>
+                Consultez les offres d’emploi, les recrutements,
+                les stages, les formations et les missions disponibles
+                sur la plateforme.
+              </p>
+
+              <Link to="/jobs" className="ns-gold-link">
+                Découvrir les offres d’emploi →
+              </Link>
+            </div>
+
+            <div className="ns-employment-list">
+              <article>
+                <span>OFFRES</span>
+                <h3>Emplois disponibles</h3>
+                <p>Découvrez les opportunités publiées.</p>
+                <Link to="/jobs">Voir les offres →</Link>
+              </article>
+
+              <article>
+                <span>ENTREPRISES</span>
+                <h3>Recruter sur NSIKAY</h3>
+                <p>Publiez vos besoins et trouvez vos talents.</p>
+                <Link to="/companies">Pour les entreprises →</Link>
+              </article>
+
+              <article>
+                <span>COMPÉTENCES</span>
+                <h3>Stages & formations</h3>
+                <p>Développez vos compétences et votre parcours.</p>
+                <Link to="/training">Découvrir →</Link>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="ns-media-categories">
+        <div className="ns-container">
+          <div className="ns-media-section-title">
+            <span>NOS RUBRIQUES</span>
+          </div>
+
+          <div className="ns-editorial-grid">
+            {categories.map(([label, path], index) => (
+              <Link key={label} to={path} className={index === 0 ? "active" : ""}>
+                <small>0{index + 1}</small>
+                <strong>{label}</strong>
+                <span>→</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="ns-media-commerce">
+        <div className="ns-container">
+          <div className="ns-commerce-layout">
+            <div>
+              <span className="ns-media-category">COMMERCE</span>
+              <h2>WENZE</h2>
+              <p>
+                Acheter, vendre et développer son activité
+                dans l’écosystème commercial NSIKAY.
+              </p>
+            </div>
+
+            <Link to="/wenze" className="ns-gold-button">
+              Entrer dans WENZE →
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="ns-media-events">
+        <div className="ns-container">
+          <div className="ns-media-section-title">
+            <span>ÉVÉNEMENTS</span>
+            <Link to="/events">Tout l’agenda →</Link>
+          </div>
+
+          <div className="ns-event-editorial-grid">
+            <article>
+              <span>01 · INTERNATIONAL</span>
+              <h3>Conférences & rencontres</h3>
+              <p>Rencontres professionnelles, culturelles et institutionnelles.</p>
+              <Link to="/events">Découvrir →</Link>
+            </article>
+
+            <article>
+              <span>02 · CULTURE</span>
+              <h3>Culture & spectacles</h3>
+              <p>Artistes, patrimoine, spectacles et création.</p>
+              <Link to="/events">Découvrir →</Link>
+            </article>
+
+            <article>
+              <span>03 · SPORT</span>
+              <h3>Sport & loisirs</h3>
+              <p>Compétitions, activités et grands rendez-vous.</p>
+              <Link to="/events">Découvrir →</Link>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section className="ns-media-tv">
+        <div className="ns-container ns-tv-layout">
+          <div>
+            <span className="ns-media-category">NSIKAY TV</span>
+            <h2>L’information en images.</h2>
+            <p>
+              Retrouvez les programmes, émissions, directs
+              et contenus audiovisuels de NSIKAY.
+            </p>
+          </div>
+
+          <Link to="/tv" className="ns-gold-button">
+            Regarder NSIKAY TV →
+          </Link>
+        </div>
+      </section>
+
+      <section className="ns-media-advertising">
+        <div className="ns-container">
+          <div className="ns-ad-editorial">
+            <span>PUBLICITÉ</span>
+            <strong>Votre visibilité auprès de l’écosystème NSIKAY</strong>
+            <Link to="/advertising">Découvrir les solutions →</Link>
+          </div>
+        </div>
+      </section>
+
+      <footer className="ns-media-footer">
+        <div className="ns-container">
+          <div className="ns-footer-top">
+            <div>
+              <Link to="/" className="ns-media-logo">NSIKAY</Link>
+              <p>Une identité. Des activités. Un engagement.</p>
+            </div>
+
+            <div className="ns-footer-links">
+              <Link to="/editorial">Actualités</Link>
+              <Link to="/jobs">Emploi</Link>
+              <Link to="/wenze">WENZE</Link>
+              <Link to="/events">Événements</Link>
+              <Link to="/tv">NSIKAY TV</Link>
+              <Link to="/connexion">Connexion</Link>
+            </div>
+          </div>
+
+          <div className="ns-footer-bottom">
+            <span>© {new Date().getFullYear()} NSIKAY</span>
+            <span>Écosystème international</span>
+          </div>
         </div>
       </footer>
-
     </main>
   );
 }
