@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import "../styles/nsikay-dashboard.css";
 
 const spaces = [
   {
@@ -23,20 +22,6 @@ const spaces = [
   },
 ];
 
-const profileTypes = [
-  ["👤", "Personne", "Profil personnel"],
-  ["💼", "Professionnel", "Métier / activité"],
-  ["🏢", "Entreprise", "Organisation commerciale"],
-  ["🏦", "Banque", "Services financiers"],
-  ["🏫", "École", "Éducation / université"],
-  ["🎓", "Formation", "Centre de formation"],
-  ["🏥", "Santé", "Hôpital / santé"],
-  ["🤝", "Association", "ONG / association"],
-  ["🏛️", "Institution", "Institution publique"],
-  ["🎨", "Artiste", "Créateur / culture"],
-  ["🧑‍💼", "Agent", "Expert / mission"],
-];
-
 const modules = [
   ["🛒", "WENZE", "Commerce", "0 % de commission commerciale", "/wenze"],
   ["💰", "LIBENGA", "Portefeuille", "Paiements et opérations", "/libenga"],
@@ -46,30 +31,9 @@ const modules = [
   ["📢", "Publicité", "Visibilité", "Développez votre présence", "/publicite"],
 ];
 
-
-const administrationModule = [
-  [
-    "⚙️",
-    "Administration",
-    "Gestion",
-    "Administration générale de NSIKAY",
-    "/admin",
-  ],
-];
-
-
-const certificationAuthorityModule = [
-  [
-    "🛡️",
-    "Autorité Certification",
-    "Administration",
-    "Gérer les certifications des activités NSIKAY",
-    "/certification-activites",
-  ],
-];
-
 export default function Dashboard() {
   const navigate = useNavigate();
+
   const {
     user,
     profile,
@@ -94,49 +58,59 @@ export default function Dashboard() {
     user?.username ||
     "Membre NSIKAY";
 
-  
-const visibleModules = canAccessAdministration
-  ? [...modules, ...administrationModule]
-  : modules;
-return (
-    <div className="ns-dashboard nsikay-dashboard-premium">
+  const visibleModules = canAccessAdministration
+    ? [
+        ...modules,
+        ["⚙️", "Administration", "Gestion", "Administration générale de NSIKAY", "/admin"],
+      ]
+    : modules;
 
-      <header className="ns-topbar">
-        <div className="ns-brand" onClick={() => navigate("/espace")}>
-          <div className="ns-brand-mark">N</div>
+  return (
+    <div className="ns-dashboard-page">
+      <header className="ns-dashboard-header">
+        <div
+          className="ns-dashboard-brand"
+          onClick={() => navigate("/espace")}
+        >
+          <div className="ns-dashboard-logo">N</div>
           <div>
             <strong>NSIKAY</strong>
             <span>Écosystème international</span>
           </div>
         </div>
 
-        <nav className="ns-topnav">
+        <nav className="ns-dashboard-nav">
           <button onClick={() => navigate("/espace")}>Accueil</button>
           <button onClick={() => navigate("/profils")}>Profils</button>
           <button onClick={() => navigate("/events")}>Événements</button>
           <button onClick={() => navigate("/tv")}>TV</button>
         </nav>
 
-        <div className="ns-user-menu">
+        <div className="ns-dashboard-user">
           <button
-            className="ns-avatar"
+            className="ns-dashboard-avatar"
             onClick={() => navigate("/mon-profil")}
             title="Mon profil"
           >
             {displayName.charAt(0).toUpperCase()}
           </button>
 
-          <button className="ns-logout nsikay-dashboard-logout" onClick={handleLogout}>
+          <button
+            className="ns-dashboard-logout"
+            onClick={handleLogout}
+          >
             Déconnexion
           </button>
         </div>
       </header>
 
-      <main>
+      <main className="ns-dashboard-main">
 
-        <section className="ns-hero">
-          <div className="ns-hero-content">
-            <span className="ns-eyebrow">ESPACE MEMBRE</span>
+        <section className="ns-dashboard-hero">
+          <div className="ns-kuba-watermark" />
+
+          <div className="ns-dashboard-hero-content">
+            <span className="ns-section-kicker">ESPACE MEMBRE NSIKAY</span>
 
             <h1>
               Bienvenue dans
@@ -149,158 +123,130 @@ return (
               engagement dans l'écosystème NSIKAY.
             </p>
 
-            <div className="ns-hero-actions">
+            <div className="ns-dashboard-actions">
               <button
-                className="ns-btn ns-btn-primary"
+                className="ns-btn-gold"
                 onClick={() => navigate("/mon-profil")}
               >
                 Mon profil →
               </button>
 
               <button
-                className="ns-btn ns-btn-secondary"
-                onClick={() => navigate("/profils")}
+                className="ns-dashboard-outline"
+                onClick={() => navigate("/metiers")}
               >
-                Explorer les profils
+                Mes activités
               </button>
             </div>
           </div>
+        </section>
 
-          <div className="ns-hero-orbit">
-            <div className="ns-orbit-center">N</div>
-            <div className="ns-orbit-item orbit-one">👤</div>
-            <div className="ns-orbit-item orbit-two">💼</div>
-            <div className="ns-orbit-item orbit-three">🤝</div>
+        <section className="ns-dashboard-section">
+          <div className="ns-section-header">
+            <span className="ns-section-kicker">IDENTITÉ · ACTIVITÉS · ENGAGEMENT</span>
+            <h2 className="ns-section-title">Vos trois espaces essentiels</h2>
+          </div>
+
+          <div className="ns-dashboard-space-grid">
+            {spaces.map(([item], index) => {
+              const space = spaces[index];
+
+              return (
+                <button
+                  key={space.path}
+                  className="ns-dashboard-space-card"
+                  onClick={() => navigate(space.path)}
+                >
+                  <span className="ns-dashboard-card-icon">
+                    {space.icon}
+                  </span>
+
+                  <span className="ns-dashboard-card-title">
+                    {space.title}
+                  </span>
+
+                  <span className="ns-dashboard-card-text">
+                    {space.text}
+                  </span>
+
+                  <span className="ns-dashboard-card-link">
+                    Accéder →
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </section>
 
-        <section className="ns-section">
-          <div className="ns-section-heading">
-            <div>
-              <span className="ns-eyebrow">IDENTITÉ NSIKAY</span>
-              <h2>Votre espace 3-en-1</h2>
-            </div>
-            <p>
-              Une identité unique pour gérer votre présence, vos activités
-              et votre participation.
-            </p>
+        <section className="ns-dashboard-section">
+          <div className="ns-section-header">
+            <span className="ns-section-kicker">ÉCOSYSTÈME NSIKAY</span>
+            <h2 className="ns-section-title">Services et modules</h2>
           </div>
 
-          <div className="ns-space-grid">
-            {spaces.map((space) => (
-              <button
-                key={space.title}
-                className="ns-space-card"
-                onClick={() => navigate(space.path)}
-              >
-                <span className="ns-card-icon">{space.icon}</span>
-                <h3>{space.title}</h3>
-                <p>{space.text}</p>
-                <span className="ns-card-link">Accéder →</span>
-              </button>
-            ))}
+          <div className="ns-dashboard-module-grid">
+            {visibleModules.map(
+              ([icon, title, category, text, path]) => (
+                <button
+                  key={path}
+                  className="ns-dashboard-module-card"
+                  onClick={() => navigate(path)}
+                >
+                  <span className="ns-dashboard-module-icon">
+                    {icon}
+                  </span>
+
+                  <span className="ns-dashboard-module-category">
+                    {category}
+                  </span>
+
+                  <span className="ns-dashboard-module-title">
+                    {title}
+                  </span>
+
+                  <span className="ns-dashboard-module-text">
+                    {text}
+                  </span>
+
+                  <span className="ns-dashboard-card-link">
+                    Ouvrir →
+                  </span>
+                </button>
+              )
+            )}
           </div>
         </section>
 
-        <section className="ns-section ns-section-dark">
-          <div className="ns-section-heading">
-            <div>
-              <span className="ns-eyebrow">ÉCOSYSTÈME</span>
-              <h2>Créer ou découvrir un profil</h2>
+        {isCertificationAuthority && (
+          <section className="ns-dashboard-section ns-dashboard-authority">
+            <div className="ns-section-header">
+              <span className="ns-section-kicker">
+                AUTORITÉ DE CERTIFICATION
+              </span>
+
+              <h2 className="ns-section-title">
+                Administration des certifications
+              </h2>
             </div>
+
             <button
-              className="ns-link-button"
-              onClick={() => navigate("/profils")}
+              className="ns-dashboard-authority-card"
+              onClick={() => navigate("/certification-activites")}
             >
-              Voir tous les profils →
+              <span className="ns-dashboard-card-icon">🛡️</span>
+              <span>
+                Gérer les certifications des activités NSIKAY →
+              </span>
             </button>
-          </div>
-
-          <div className="ns-profile-grid">
-            {profileTypes.map(([icon, title, text]) => (
-              <button
-                key={title}
-                className="ns-profile-card"
-                onClick={() => navigate("/profils")}
-              >
-                <span>{icon}</span>
-                <strong>{title}</strong>
-                <small>{text}</small>
-              </button>
-            ))}
-          </div>
-        </section>
-
-        <section className="ns-section">
-          <div className="ns-section-heading">
-            <div>
-              <span className="ns-eyebrow">SERVICES NSIKAY</span>
-              <h2>Les grands modules</h2>
-            </div>
-          </div>
-
-          <div className="ns-module-grid">
-            {[
-  ...visibleModules,
-  ...(isCertificationAuthority
-    ? certificationAuthorityModule
-    : []),
-].map(([icon, title, category, text, path]) => (
-  <button
-    key={title}
-    className="ns-module-card"
-    onClick={() => navigate(path)}
-  >
-    <div className="ns-module-icon">{icon}</div>
-
-    <div className="ns-module-content">
-      <span className="ns-module-category">{category}</span>
-      <h3>{title}</h3>
-      <p>{text}</p>
-    </div>
-  </button>
-))}
-          </div>
-        </section>
-
-        <section className="ns-quick-panel">
-          <div>
-            <span className="ns-eyebrow">VOTRE IDENTITÉ</span>
-            <h2>{displayName}</h2>
-            <p>
-              Connecté avec le compte <strong>@{user?.username || "membre"}</strong>
-            </p>
-          </div>
-
-          <div className="ns-quick-actions">
-            <button onClick={() => navigate("/mon-profil")}>
-              Modifier mon profil
-            </button>
-            <button onClick={() => navigate("/certification")}>
-              Vérifier mes activités
-            </button>
-          </div>
-        </section>
+          </section>
+        )}
 
       </main>
 
-      <footer className="ns-footer">
-        <div>
-          <strong>NSIKAY</strong>
-          <span>Écosystème international</span>
-        </div>
-
-        <div className="ns-footer-links">
-          <button onClick={() => navigate("/profils")}>Profils</button>
-          <button onClick={() => navigate("/wenze")}>WENZE</button>
-          <button onClick={() => navigate("/libenga")}>LIBENGA</button>
-          <button onClick={() => navigate("/events")}>Événements</button>
-          <button onClick={() => navigate("/tv")}>NSIKAY TV</button>
-        </div>
+      <footer className="ns-dashboard-footer">
+        <strong>NSIKAY</strong>
+        <span>Une identité. Des activités. Un engagement.</span>
       </footer>
-
     </div>
   );
 }
-
-
