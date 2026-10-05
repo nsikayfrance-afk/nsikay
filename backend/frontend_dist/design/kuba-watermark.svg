@@ -1,0 +1,27 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <defs>
+    <pattern id="kubaPattern" width="180" height="180" patternUnits="userSpaceOnUse">
+      <path d="M90 12 L168 90 L90 168 L12 90 Z"
+            fill="none" stroke="#D4AF37" stroke-width="3" opacity="0.22"/>
+      <path d="M90 35 L145 90 L90 145 L35 90 Z"
+            fill="none" stroke="#D4AF37" stroke-width="2" opacity="0.18"/>
+      <path d="M90 55 L125 90 L90 125 L55 90 Z"
+            fill="none" stroke="#D4AF37" stroke-width="2" opacity="0.16"/>
+      <path d="M12 90 H168 M90 12 V168"
+            stroke="#D4AF37" stroke-width="1.5" opacity="0.10"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="800" fill="url(#kubaPattern)"/>
+
+  <g opacity="0.08" transform="translate(600 400)">
+    <circle r="245" fill="none" stroke="#D4AF37" stroke-width="8"/>
+    <circle r="220" fill="none" stroke="#D4AF37" stroke-width="3"/>
+    <path d="M-155 80 Q0 -115 155 80"
+          fill="none" stroke="#D4AF37" stroke-width="12"/>
+    <path d="M-105 25 Q0 -70 105 25"
+          fill="none" stroke="#D4AF37" stroke-width="7"/>
+    <path d="M-75 100 L-45 35 L0 75 L45 35 L75 100"
+          fill="none" stroke="#D4AF37" stroke-width="9"/>
+  </g>
+</svg>
