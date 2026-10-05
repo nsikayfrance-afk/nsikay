@@ -35,6 +35,7 @@ ALLOWED_HOSTS = [h.strip() for h in os.environ.get('ALLOWED_HOSTS', 'localhost,1
 # Application definition
 
 INSTALLED_APPS = [
+    "jobs.apps.JobsConfig",
     'nsikay_activities',
     'nsikay_profiles',
     'rest_framework',
@@ -327,4 +328,5 @@ if not DEBUG:
     SECURE_HSTS_SECONDS = 31536000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
+
 

@@ -8,3 +8,57 @@ frontend/.env
 frontend/.env.*
 production_package/
 deployment_railway/
+# ==============================
+# NSIKAY - fichiers temporaires
+# ==============================
+
+# Python
+__pycache__/
+*.py[cod]
+*.class
+
+# Django
+*.log
+db.sqlite3
+db.sqlite3-journal
+
+# Environnement
+.env
+.env.*
+!.env.example
+
+# Node / Vite
+node_modules/
+frontend/dist/
+
+# Cache
+.vscode/.ropeproject/
+.vscode/*.log
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Fichiers temporaires / sauvegardes locales
+*.tmp
+*.temp
+*.bak
+*.backup
+*.backup_*
+*.orig
+
+# OS
+Thumbs.db
+Desktop.ini
+
+
+# Backups locaux - ne pas publier
+**/backup_*/
+**/*_backup_*/
+backups/
+backups_*/
+
+# Sauvegardes de travail
+**/backup_*/
+**/*_backup_*/
+backups/
+

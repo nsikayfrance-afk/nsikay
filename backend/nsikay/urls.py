@@ -1,4 +1,4 @@
-from django.conf.urls.static import static
+﻿from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
@@ -15,6 +15,7 @@ from nsikay_activities.views import (
 )
 
 urlpatterns = [
+    path("api/jobs/", include("jobs.urls")),
     path("assets/<path:path>", frontend_static, {"folder": "assets"}),
     path("images/<path:path>", frontend_static, {"folder": "images"}),
     path("favicon.svg", frontend_static, {"path": "favicon.svg", "folder": ""}, name="frontend-favicon"),
@@ -60,8 +61,8 @@ urlpatterns = [
     # SERVICES SYSTEME
     #
     # IMPORTANT :
-    # /api/services/ appartient â”œÃ¢Ã£Ã†â”œÃ©â”¬Ã¡ service_control.
-    # Les services liâ”œÃ¢Ã£Ã†â”œÃ©â”¬Â®s â”œÃ¢Ã£Ã†â”œÃ©â”¬Ã¡ une activitâ”œÃ¢Ã£Ã†â”œÃ©â”¬Â® sont sous :
+    # /api/services/ appartient Ã¢â€Å“ÃƒÂ¢ÃƒÂ£Ãƒâ€ Ã¢â€Å“ÃƒÂ©Ã¢â€Â¬ÃƒÂ¡ service_control.
+    # Les services liÃ¢â€Å“ÃƒÂ¢ÃƒÂ£Ãƒâ€ Ã¢â€Å“ÃƒÂ©Ã¢â€Â¬Ã‚Â®s Ã¢â€Å“ÃƒÂ¢ÃƒÂ£Ãƒâ€ Ã¢â€Å“ÃƒÂ©Ã¢â€Â¬ÃƒÂ¡ une activitÃ¢â€Å“ÃƒÂ¢ÃƒÂ£Ãƒâ€ Ã¢â€Å“ÃƒÂ©Ã¢â€Â¬Ã‚Â® sont sous :
     # /api/activities/services/
     # ========================================================
 
@@ -217,3 +218,4 @@ if settings.DEBUG:
         settings.MEDIA_URL,
         document_root=settings.MEDIA_ROOT,
     )
+

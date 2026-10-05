@@ -1,8 +1,0 @@
-
-LineNumber Line                                     
----------- ----                                     
-       130 class GiftInventoryUnit(models.Model):   
-       599 class GiftResellerAuditLog(models.Model):
-
-
-

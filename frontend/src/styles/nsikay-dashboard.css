@@ -1,479 +1,630 @@
-/* ============================================================
-   NSIKAY — ESPACE UTILISATEUR PREMIUM
+﻿/* ============================================================
+   NSIKAY — DESIGN ADMINISTRATION CENTRALE
+   Noir / Bleu institutionnel / Or / Blanc
    ============================================================ */
 
-.nsikay-dashboard-premium {
+.ns-admin-page {
+  position: relative;
+  isolation: isolate;
   min-height: 100vh;
-
-  background:
-    radial-gradient(
-      circle at 85% 0%,
-      rgba(212,170,69,.10),
-      transparent 28%
-    ),
-    linear-gradient(
-      135deg,
-      #f7f9fc 0%,
-      #eef3f9 100%
-    );
-
-  color: #061a38;
-
-  font-family:
-    Inter,
-    ui-sans-serif,
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
-}
-
-/* ------------------------------------------------------------
-   CONTENEUR PRINCIPAL
-   ------------------------------------------------------------ */
-
-.nsikay-dashboard-premium > * {
-  box-sizing: border-box;
-}
-
-/* ------------------------------------------------------------
-   BARRE SUPERIEURE
-   ------------------------------------------------------------ */
-
-.nsikay-dashboard-premium header,
-.nsikay-dashboard-premium [class*="header"] {
-  border-bottom:
-    1px solid rgba(6,26,56,.08);
-
-  background:
-    rgba(255,255,255,.88);
-
-  backdrop-filter:
-    blur(18px);
-}
-
-/* ------------------------------------------------------------
-   TITRES
-   ------------------------------------------------------------ */
-
-.nsikay-dashboard-premium h1 {
-  color: #031126;
-
-  font-size:
-    clamp(30px, 4vw, 48px);
-
-  font-weight: 800;
-
-  letter-spacing: -1.8px;
-
-  line-height: 1.05;
-}
-
-.nsikay-dashboard-premium h2 {
-  color: #061a38;
-
-  font-size: 26px;
-
-  font-weight: 800;
-
-  letter-spacing: -.8px;
-}
-
-.nsikay-dashboard-premium h3 {
-  color: #0a2853;
-
-  font-weight: 750;
-}
-
-/* ------------------------------------------------------------
-   CARTES
-   ------------------------------------------------------------ */
-
-.nsikay-dashboard-premium [class*="card"],
-.nsikay-dashboard-premium [class*="Card"] {
-  border:
-    1px solid rgba(6,26,56,.08);
-
-  border-radius: 16px;
-
-  background: #ffffff;
-
-  box-shadow:
-    0 14px 45px rgba(3,17,38,.07);
-
-  transition:
-    transform .2s ease,
-    box-shadow .2s ease,
-    border-color .2s ease;
-}
-
-.nsikay-dashboard-premium [class*="card"]:hover,
-.nsikay-dashboard-premium [class*="Card"]:hover {
-  transform:
-    translateY(-2px);
-
-  border-color:
-    rgba(212,170,69,.35);
-
-  box-shadow:
-    0 20px 55px rgba(3,17,38,.10);
-}
-
-/* ------------------------------------------------------------
-   BOUTONS
-   ------------------------------------------------------------ */
-
-.nsikay-dashboard-premium button {
-  min-height: 42px;
-
-  border-radius: 9px;
-
-  border: 1px solid transparent;
-
-  font-weight: 750;
-
-  cursor: pointer;
-
-  transition:
-    transform .18s ease,
-    box-shadow .18s ease,
-    background .18s ease;
-}
-
-.nsikay-dashboard-premium button:hover {
-  transform:
-    translateY(-1px);
-}
-
-/* ------------------------------------------------------------
-   LIENS
-   ------------------------------------------------------------ */
-
-.nsikay-dashboard-premium a {
-  transition:
-    color .18s ease,
-    background .18s ease,
-    border-color .18s ease;
-}
-
-/* ------------------------------------------------------------
-   FORMULAIRES
-   ------------------------------------------------------------ */
-
-.nsikay-dashboard-premium input,
-.nsikay-dashboard-premium select,
-.nsikay-dashboard-premium textarea {
-  width: 100%;
-
-  min-height: 42px;
-
-  border:
-    1px solid #d9e0e9;
-
-  border-radius: 9px;
-
-  background: #ffffff;
-
-  color: #061a38;
-
-  padding:
-    10px 13px;
-
-  outline: none;
-
-  transition:
-    border-color .18s ease,
-    box-shadow .18s ease;
-}
-
-.nsikay-dashboard-premium input:focus,
-.nsikay-dashboard-premium select:focus,
-.nsikay-dashboard-premium textarea:focus {
-  border-color:
-    #d4aa45;
-
-  box-shadow:
-    0 0 0 3px rgba(212,170,69,.12);
-}
-
-/* ------------------------------------------------------------
-   TABLEAUX
-   ------------------------------------------------------------ */
-
-.nsikay-dashboard-premium table {
-  width: 100%;
-
-  border-collapse: collapse;
-
-  background: #ffffff;
-
-  border-radius: 14px;
-
   overflow: hidden;
-}
-
-.nsikay-dashboard-premium th {
-  padding:
-    13px 15px;
-
   background:
-    #061a38;
-
-  color:
-    #f4dc8b;
-
-  font-size: 11px;
-
-  text-align: left;
-
-  text-transform: uppercase;
-
-  letter-spacing: .7px;
+    radial-gradient(circle at 85% 5%, rgba(212,170,69,.10), transparent 25%),
+    radial-gradient(circle at 5% 80%, rgba(7,35,75,.08), transparent 30%),
+    #f4f6f9;
+  color: #07152b;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-.nsikay-dashboard-premium td {
-  padding:
-    13px 15px;
+.ns-admin-watermark {
+  position: fixed;
+  right: -120px;
+  bottom: 80px;
+  z-index: -1;
+  font-size: 130px;
+  font-weight: 950;
+  letter-spacing: .04em;
+  color: rgba(7, 21, 43, .025);
+  transform: rotate(-18deg);
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+}
 
-  border-bottom:
-    1px solid #edf0f4;
+.ns-admin-container {
+  width: min(1480px, calc(100% - 36px));
+  margin: 0 auto;
+  padding: 28px 0 50px;
+}
 
-  color:
-    #4f6075;
+.ns-admin-loading-screen {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: #07152b;
+  color: #f4dc8b;
+  font-weight: 800;
+  font-size: 15px;
+}
 
+/* HERO */
+
+.ns-admin-hero {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(212,170,69,.25);
+  border-radius: 24px;
+  padding: 38px;
+  color: #fff;
+  background:
+    radial-gradient(circle at 90% 15%, rgba(212,170,69,.18), transparent 25%),
+    linear-gradient(135deg, #030b18 0%, #07152b 55%, #0d2749 100%);
+  box-shadow: 0 22px 70px rgba(3, 17, 38, .20);
+}
+
+.ns-admin-hero::after {
+  content: "NSIKAY";
+  position: absolute;
+  right: 35px;
+  bottom: -35px;
+  font-size: 150px;
+  font-weight: 950;
+  letter-spacing: -.08em;
+  color: rgba(255,255,255,.025);
+  pointer-events: none;
+}
+
+.ns-admin-hero-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 330px;
+  gap: 30px;
+  align-items: center;
+}
+
+.ns-admin-eyebrow,
+.ns-admin-section-kicker {
+  font-size: 11px;
+  font-weight: 850;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.ns-admin-eyebrow {
+  color: #f4dc8b;
+}
+
+.ns-admin-hero h1 {
+  margin: 9px 0 12px;
+  font-size: clamp(34px, 5vw, 58px);
+  line-height: .98;
+  letter-spacing: -.045em;
+  font-weight: 950;
+}
+
+.ns-admin-hero p {
+  max-width: 760px;
+  margin: 0;
+  color: rgba(255,255,255,.72);
+  line-height: 1.7;
+  font-size: 15px;
+}
+
+.ns-admin-hero-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 25px;
+}
+
+.ns-admin-gold-button,
+.ns-admin-dark-button {
+  min-height: 44px;
+  padding: 0 17px;
+  border-radius: 10px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: .18s ease;
+}
+
+.ns-admin-gold-button {
+  border: 1px solid #f4dc8b;
+  color: #07152b;
+  background: #d4aa45;
+}
+
+.ns-admin-gold-button:hover {
+  background: #f0cb67;
+  transform: translateY(-1px);
+}
+
+.ns-admin-gold-button:disabled {
+  opacity: .55;
+  cursor: wait;
+}
+
+.ns-admin-dark-button {
+  border: 1px solid rgba(255,255,255,.22);
+  color: #fff;
+  background: rgba(255,255,255,.06);
+}
+
+.ns-admin-dark-button:hover {
+  background: rgba(255,255,255,.12);
+  transform: translateY(-1px);
+}
+
+.ns-admin-identity-card {
+  padding: 22px;
+  border: 1px solid rgba(255,255,255,.13);
+  border-radius: 18px;
+  background: rgba(255,255,255,.055);
+  backdrop-filter: blur(16px);
+}
+
+.ns-admin-identity-label {
+  color: #f4dc8b;
+  font-size: 10px;
+  font-weight: 850;
+  letter-spacing: .14em;
+}
+
+.ns-admin-identity-title {
+  margin-top: 9px;
+  font-size: 18px;
+  line-height: 1.3;
+  font-weight: 850;
+}
+
+.ns-admin-identity-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  color: #d6e5d9;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.ns-admin-identity-status span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 0 4px rgba(74,222,128,.12);
+}
+
+.ns-admin-identity-divider {
+  height: 1px;
+  margin: 18px 0;
+  background: rgba(255,255,255,.10);
+}
+
+.ns-admin-identity-note {
+  color: rgba(255,255,255,.58);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* SECTIONS */
+
+.ns-admin-section {
+  margin-top: 22px;
+  padding: 25px;
+  border: 1px solid #e2e7ee;
+  border-radius: 20px;
+  background: rgba(255,255,255,.94);
+  box-shadow: 0 12px 38px rgba(3,17,38,.055);
+}
+
+.ns-admin-section-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: flex-end;
+  margin-bottom: 20px;
+}
+
+.ns-admin-section-kicker {
+  color: #b58420;
+}
+
+.ns-admin-section h2 {
+  margin: 5px 0 4px;
+  color: #07152b;
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: -.025em;
+}
+
+.ns-admin-section-heading p {
+  margin: 0;
+  color: #718096;
   font-size: 13px;
 }
 
-/* ------------------------------------------------------------
-   BADGES
-   ------------------------------------------------------------ */
+.ns-admin-refresh {
+  color: #7a8798;
+  font-size: 11px;
+  white-space: nowrap;
+}
 
-.nsikay-dashboard-premium [class*="badge"],
-.nsikay-dashboard-premium [class*="Badge"],
-.nsikay-dashboard-premium [class*="status"],
-.nsikay-dashboard-premium [class*="Status"] {
+/* STATS */
+
+.ns-admin-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.ns-admin-stat {
+  min-height: 135px;
+  padding: 18px;
+  border: 1px solid #e3e8ef;
+  border-radius: 15px;
+  background: linear-gradient(145deg, #fff, #f8fafc);
+}
+
+.ns-admin-stat-label {
+  color: #718096;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.ns-admin-stat-value {
+  margin-top: 13px;
+  color: #07152b;
+  font-size: 31px;
+  font-weight: 950;
+  letter-spacing: -.04em;
+}
+
+.ns-admin-stat-description {
+  margin-top: 6px;
+  color: #9aa5b3;
+  font-size: 11px;
+}
+
+/* ERROR / EMPTY */
+
+.ns-admin-error {
+  margin-bottom: 16px;
+  padding: 13px 15px;
+  border: 1px solid #fecaca;
+  border-radius: 11px;
+  background: #fff1f2;
+  color: #991b1b;
+  font-size: 13px;
+}
+
+.ns-admin-empty {
+  padding: 25px;
+  border: 1px dashed #d6dde7;
+  border-radius: 13px;
+  background: #f8fafc;
+  color: #7b8796;
+  text-align: center;
+  font-size: 13px;
+}
+
+/* TABLE */
+
+.ns-admin-table-wrap {
+  overflow-x: auto;
+  border: 1px solid #e4e9ef;
+  border-radius: 14px;
+}
+
+.ns-admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 560px;
+}
+
+.ns-admin-table th {
+  padding: 13px 15px;
+  background: #07152b;
+  color: #f4dc8b;
+  text-align: left;
+  font-size: 10px;
+  font-weight: 850;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+
+.ns-admin-table td {
+  padding: 14px 15px;
+  border-bottom: 1px solid #edf0f4;
+  color: #526174;
+  font-size: 13px;
+}
+
+.ns-admin-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.ns-admin-table tbody tr:hover {
+  background: #fbfcfe;
+}
+
+.ns-admin-table td.strong {
+  color: #10243f;
+  font-weight: 800;
+}
+
+.ns-admin-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  padding: 5px 9px;
   border-radius: 999px;
+  font-size: 11px;
+  font-weight: 850;
 }
 
-/* ------------------------------------------------------------
-   BLOCS DE NAVIGATION
-   ------------------------------------------------------------ */
-
-.nsikay-dashboard-premium nav {
-  scrollbar-width: thin;
+.ns-admin-badge.success {
+  color: #17633b;
+  background: #e8f7ee;
 }
 
-.nsikay-dashboard-premium nav a {
-  border-radius: 9px;
+.ns-admin-badge.neutral {
+  color: #58677a;
+  background: #edf1f5;
 }
 
-/* ------------------------------------------------------------
-   BARRE LATERALE
-   ------------------------------------------------------------ */
+/* MODULES */
 
-.nsikay-dashboard-premium aside {
+.ns-admin-module-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 13px;
+}
+
+.ns-admin-module {
+  position: relative;
+  min-height: 190px;
+  padding: 19px;
+  border: 1px solid #e1e6ed;
+  border-radius: 16px;
+  background: #fff;
+  color: #07152b;
+  text-align: left;
+  cursor: pointer;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+.ns-admin-module:hover {
+  transform: translateY(-3px);
+  border-color: rgba(212,170,69,.65);
+  box-shadow: 0 15px 38px rgba(3,17,38,.09);
+}
+
+.ns-admin-module.featured {
+  border-color: rgba(212,170,69,.60);
   background:
-    linear-gradient(
-      180deg,
-      #031126 0%,
-      #061a38 100%
-    );
-
-  color: #ffffff;
-
-  border-right:
-    1px solid rgba(255,255,255,.07);
+    radial-gradient(circle at 100% 0%, rgba(212,170,69,.16), transparent 35%),
+    #07152b;
+  color: #fff;
 }
 
-.nsikay-dashboard-premium aside a {
-  color:
-    rgba(255,255,255,.68);
-
-  text-decoration: none;
+.ns-admin-module-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
 }
 
-.nsikay-dashboard-premium aside a:hover {
-  color:
-    #f4dc8b;
+.ns-admin-module-icon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: #eef3f8;
+  color: #0c315c;
+  font-weight: 950;
+  font-size: 17px;
+}
 
+.ns-admin-module.featured .ns-admin-module-icon {
+  background: rgba(212,170,69,.16);
+  color: #f4dc8b;
+}
+
+.ns-admin-module-category {
+  color: #8a96a5;
+  font-size: 9px;
+  font-weight: 850;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+
+.ns-admin-module.featured .ns-admin-module-category {
+  color: rgba(255,255,255,.48);
+}
+
+.ns-admin-module-title {
+  margin-top: 18px;
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.ns-admin-module-description {
+  min-height: 48px;
+  margin-top: 6px;
+  color: #778496;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.ns-admin-module.featured .ns-admin-module-description {
+  color: rgba(255,255,255,.62);
+}
+
+.ns-admin-module-action {
+  position: absolute;
+  right: 19px;
+  bottom: 17px;
+  color: #b58420;
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.ns-admin-module-action span {
+  margin-left: 5px;
+}
+
+/* CONTROL */
+
+.ns-admin-control-panel {
+  margin-top: 22px;
+  padding: 27px;
+  border-radius: 20px;
+  color: #fff;
   background:
-    rgba(212,170,69,.08);
+    radial-gradient(circle at 95% 0%, rgba(212,170,69,.17), transparent 30%),
+    #07152b;
+  box-shadow: 0 18px 50px rgba(3,17,38,.15);
 }
 
-/* ------------------------------------------------------------
-   ACCENTS NSIKAY
-   ------------------------------------------------------------ */
-
-.nsikay-dashboard-premium [class*="gold"],
-.nsikay-dashboard-premium [class*="Gold"],
-.nsikay-dashboard-premium [data-accent="gold"] {
-  color:
-    #c99a32;
+.ns-admin-control-panel h2 {
+  margin: 5px 0 0;
+  font-size: 25px;
+  font-weight: 900;
 }
 
-/* ------------------------------------------------------------
-   MOBILE
-   ------------------------------------------------------------ */
+.ns-admin-control-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.ns-admin-control-grid > div {
+  padding: 16px;
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 13px;
+  background: rgba(255,255,255,.045);
+}
+
+.ns-admin-control-grid strong {
+  display: block;
+  color: #f4dc8b;
+  font-size: 13px;
+}
+
+.ns-admin-control-grid span {
+  display: block;
+  margin-top: 6px;
+  color: rgba(255,255,255,.58);
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+/* FOOTER */
+
+.ns-admin-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 22px;
+  padding: 18px 4px;
+  color: #8995a4;
+  font-size: 11px;
+}
+
+.ns-admin-footer strong,
+.ns-admin-footer span {
+  display: block;
+}
+
+.ns-admin-footer strong {
+  color: #07152b;
+  font-size: 13px;
+}
+
+.ns-admin-footer span {
+  margin-top: 3px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1200px) {
+  .ns-admin-stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .ns-admin-module-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .ns-admin-control-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
 
 @media (max-width: 900px) {
-
-  .nsikay-dashboard-premium {
-    min-height: 100vh;
+  .ns-admin-hero-grid {
+    grid-template-columns: 1fr;
   }
 
-  .nsikay-dashboard-premium aside {
-    position: relative;
-
-    width: 100%;
-
-    border-right: 0;
-
-    border-bottom:
-      1px solid rgba(255,255,255,.08);
+  .ns-admin-identity-card {
+    max-width: 500px;
   }
 
-  .nsikay-dashboard-premium main {
-    width: 100%;
+  .ns-admin-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .ns-admin-module-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 640px) {
-
-  .nsikay-dashboard-premium {
-    font-size: 14px;
+  .ns-admin-container {
+    width: min(100% - 20px, 1480px);
+    padding-top: 10px;
   }
 
-  .nsikay-dashboard-premium h1 {
-    font-size: 30px;
+  .ns-admin-hero,
+  .ns-admin-section,
+  .ns-admin-control-panel {
+    padding: 19px;
+    border-radius: 17px;
   }
 
-  .nsikay-dashboard-premium h2 {
-    font-size: 22px;
+  .ns-admin-hero h1 {
+    font-size: 35px;
   }
 
-  .nsikay-dashboard-premium [class*="grid"],
-  .nsikay-dashboard-premium [class*="Grid"] {
-    grid-template-columns: 1fr !important;
+  .ns-admin-stats-grid,
+  .ns-admin-module-grid,
+  .ns-admin-control-grid {
+    grid-template-columns: 1fr;
   }
 
-  .nsikay-dashboard-premium table {
+  .ns-admin-section-heading {
     display: block;
-
-    overflow-x: auto;
   }
 
-  .nsikay-dashboard-premium button {
-    min-height: 44px;
+  .ns-admin-refresh {
+    margin-top: 10px;
   }
-}
 
-/* ------------------------------------------------------------
-   IDENTITE VISUELLE
-   ------------------------------------------------------------ */
+  .ns-admin-footer {
+    display: block;
+  }
 
-.nsikay-dashboard-premium::selection {
-  background:
-    #d4aa45;
+  .ns-admin-footer > div + div {
+    margin-top: 10px;
+  }
 
-  color:
-    #031126;
-}
-
-/* ============================================================
-   NSIKAY - ESPACE UTILISATEUR V2
-   Couche d'harmonisation visuelle
-   ============================================================ */
-
-.nsikay-dashboard-premium {
-    position: relative;
-    isolation: isolate;
-}
-
-.nsikay-dashboard-premium .ns-dashboard-header,
-.nsikay-dashboard-premium .ns-header,
-.nsikay-dashboard-premium header {
-    position: relative;
-    z-index: 2;
-}
-
-.nsikay-dashboard-premium .ns-card,
-.nsikay-dashboard-premium .dashboard-card,
-.nsikay-dashboard-premium .card {
-    transition:
-        transform .18s ease,
-        box-shadow .18s ease,
-        border-color .18s ease;
-}
-
-.nsikay-dashboard-premium .ns-card:hover,
-.nsikay-dashboard-premium .dashboard-card:hover,
-.nsikay-dashboard-premium .card:hover {
-    transform: translateY(-2px);
-}
-
-.nsikay-dashboard-premium .ns-logout,
-.nsikay-dashboard-premium .nsikay-dashboard-logout {
-    transition:
-        transform .15s ease,
-        box-shadow .15s ease,
-        opacity .15s ease;
-}
-
-.nsikay-dashboard-premium .ns-logout:hover,
-.nsikay-dashboard-premium .nsikay-dashboard-logout:hover {
-    transform: translateY(-1px);
-}
-
-.nsikay-dashboard-premium button,
-.nsikay-dashboard-premium a {
-    transition:
-        transform .15s ease,
-        box-shadow .15s ease,
-        background-color .15s ease,
-        border-color .15s ease;
-}
-
-.nsikay-dashboard-premium .ns-stat,
-.nsikay-dashboard-premium .stat-card,
-.nsikay-dashboard-premium .dashboard-stat {
-    min-height: 110px;
-}
-
-.nsikay-dashboard-premium table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.nsikay-dashboard-premium table th {
-    font-weight: 700;
-}
-
-.nsikay-dashboard-premium .badge,
-.nsikay-dashboard-premium .status,
-.nsikay-dashboard-premium [class*="badge"] {
-    border-radius: 999px;
-}
-
-@media (max-width: 900px) {
-    .nsikay-dashboard-premium {
-        width: 100%;
-    }
-
-    .nsikay-dashboard-premium table {
-        display: block;
-        overflow-x: auto;
-    }
-}
-
-@media (max-width: 640px) {
-    .nsikay-dashboard-premium {
-        padding-left: 12px;
-        padding-right: 12px;
-    }
-
-    .nsikay-dashboard-premium button,
-    .nsikay-dashboard-premium a {
-        max-width: 100%;
-    }
+  .ns-admin-watermark {
+    font-size: 70px;
+  }
 }

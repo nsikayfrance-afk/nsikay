@@ -1,4 +1,4 @@
-﻿import "./styles/nsikay-global.css";
+import "./styles/nsikay-global.css";
 import {
     BrowserRouter,
     Navigate,
